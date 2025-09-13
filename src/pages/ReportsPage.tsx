@@ -81,154 +81,176 @@ const ReportsPage = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Reports & Analytics</h1>
-          <p className="text-muted-foreground">Generate and download comprehensive reports</p>
+    <div className="w-full">
+      {/* Hero Section */}
+      <section className="relative py-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/30 to-slate-900/60" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8 pt-8 px-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                System Reports
+              </h1>
+              <p className="text-base md:text-lg text-white/95 max-w-2xl mx-auto drop-shadow-sm">
+                Generate and download comprehensive system reports
+              </p>
+            </div>
+            
+            <div className="flex justify-center px-4">
+              <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-6 md:px-8 py-3 w-full sm:w-auto">
+                <FileText className="w-4 h-4 mr-2" />
+                Create Report
+              </Button>
+            </div>
+          </div>
         </div>
-        <Button className="gradient-hero text-white">
-          <FileText className="h-4 w-4 mr-2" />
-          Create Report
-        </Button>
-      </div>
+      </section>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {quickStats.map((stat, index) => (
-          <Card key={index}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{stat.label}</CardTitle>
-                <stat.icon className="h-4 w-4 text-muted-foreground" />
+      <div className="py-16 -mt-8 relative z-10">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto space-y-6">
+            {/* Quick Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                {quickStats.map((stat, index) => (
+                  <Card key={index}>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-sm font-medium text-muted-foreground">{stat.label}</CardTitle>
+                        <stat.icon className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="text-2xl font-bold">{stat.value}</div>
+                        <Badge variant="secondary" className="text-green-600">
+                          {stat.change}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                ))}
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <Badge variant="secondary" className="text-green-600">
-                  {stat.change}
-                </Badge>
+
+              {/* Filters */}
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Filters:</span>
+                </div>
+                <Select value={dateRange} onValueChange={setDateRange}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="last-7-days">Last 7 days</SelectItem>
+                    <SelectItem value="last-30-days">Last 30 days</SelectItem>
+                    <SelectItem value="last-quarter">Last quarter</SelectItem>
+                    <SelectItem value="last-year">Last year</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={reportType} onValueChange={setReportType}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Reports</SelectItem>
+                    <SelectItem value="academic">Academic</SelectItem>
+                    <SelectItem value="analytics">Analytics</SelectItem>
+                    <SelectItem value="assessment">Assessment</SelectItem>
+                    <SelectItem value="administrative">Administrative</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
 
-      {/* Filters */}
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-2">
-          <Filter className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm font-medium">Filters:</span>
-        </div>
-        <Select value={dateRange} onValueChange={setDateRange}>
-          <SelectTrigger className="w-40">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="last-7-days">Last 7 days</SelectItem>
-            <SelectItem value="last-30-days">Last 30 days</SelectItem>
-            <SelectItem value="last-quarter">Last quarter</SelectItem>
-            <SelectItem value="last-year">Last year</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={reportType} onValueChange={setReportType}>
-          <SelectTrigger className="w-40">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Reports</SelectItem>
-            <SelectItem value="academic">Academic</SelectItem>
-            <SelectItem value="analytics">Analytics</SelectItem>
-            <SelectItem value="assessment">Assessment</SelectItem>
-            <SelectItem value="administrative">Administrative</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+              {/* Report Tabs */}
+              <Tabs defaultValue="available" className="space-y-6">
+                <TabsList>
+                  <TabsTrigger value="available">Available Reports</TabsTrigger>
+                  <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
+                  <TabsTrigger value="custom">Custom Reports</TabsTrigger>
+                </TabsList>
 
-      {/* Report Tabs */}
-      <Tabs defaultValue="available" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="available">Available Reports</TabsTrigger>
-          <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
-          <TabsTrigger value="custom">Custom Reports</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="available" className="space-y-4">
-          <div className="grid gap-4">
-            {reports.map((report) => (
-              <Card key={report.id} className="hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <CardTitle className="text-lg">{report.title}</CardTitle>
-                      <CardDescription>{report.description}</CardDescription>
-                    </div>
-                    <Badge className={getTypeColor(report.type)}>
-                      {report.type}
-                    </Badge>
+                <TabsContent value="available" className="space-y-4">
+                  <div className="grid gap-4">
+                    {reports.map((report) => (
+                      <Card key={report.id} className="hover:shadow-md transition-shadow">
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div className="space-y-1">
+                              <CardTitle className="text-lg">{report.title}</CardTitle>
+                              <CardDescription>{report.description}</CardDescription>
+                            </div>
+                            <Badge className={getTypeColor(report.type)}>
+                              {report.type}
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
+                            <div>
+                              <span className="text-muted-foreground">Last Generated: </span>
+                              <span className="font-medium">{report.lastGenerated}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Format: </span>
+                              <span className="font-medium">{report.format}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Size: </span>
+                              <span className="font-medium">{report.size}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Downloads: </span>
+                              <span className="font-medium">{report.downloads}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-end space-x-2">
+                            <Button variant="outline" size="sm">
+                              <Calendar className="h-4 w-4 mr-2" />
+                              Schedule
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download
+                            </Button>
+                            <Button size="sm">Generate New</Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
-                    <div>
-                      <span className="text-muted-foreground">Last Generated: </span>
-                      <span className="font-medium">{report.lastGenerated}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Format: </span>
-                      <span className="font-medium">{report.format}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Size: </span>
-                      <span className="font-medium">{report.size}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Downloads: </span>
-                      <span className="font-medium">{report.downloads}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-end space-x-2">
-                    <Button variant="outline" size="sm">
+                </TabsContent>
+
+                <TabsContent value="scheduled">
+                  <div className="text-center py-8">
+                    <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium mb-2">No Scheduled Reports</h3>
+                    <p className="text-muted-foreground">You can schedule reports to be generated automatically</p>
+                    <Button variant="outline" className="mt-4">
                       <Calendar className="h-4 w-4 mr-2" />
-                      Schedule
+                      Schedule a Report
                     </Button>
-                    <Button variant="outline" size="sm">
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
-                    <Button size="sm">Generate New</Button>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
+                </TabsContent>
 
-        <TabsContent value="scheduled">
-          <div className="text-center py-8">
-            <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">No Scheduled Reports</h3>
-            <p className="text-muted-foreground">You can schedule reports to be generated automatically</p>
-            <Button variant="outline" className="mt-4">
-              <Calendar className="h-4 w-4 mr-2" />
-              Schedule a Report
-            </Button>
-          </div>
-        </TabsContent>
+                <TabsContent value="custom">
+                  <div className="text-center py-8">
+                    <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium mb-2">Custom Report Builder</h3>
+                    <p className="text-muted-foreground">Create custom reports with specific metrics and filters</p>
+                    <Button variant="outline" className="mt-4">
+                      <FileText className="h-4 w-4 mr-2" />
+                      Build Custom Report
+                    </Button>
+                  </div>
+                </TabsContent>
+              </Tabs>
 
-        <TabsContent value="custom">
-          <div className="text-center py-8">
-            <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">Custom Report Builder</h3>
-            <p className="text-muted-foreground">Create custom reports with specific metrics and filters</p>
-            <Button variant="outline" className="mt-4">
-              <FileText className="h-4 w-4 mr-2" />
-              Build Custom Report
-            </Button>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+          </div> {/* Close max-w-6xl */}
+        </div> {/* Close container */}
+      </div> {/* Close py-16 section */}
+    </div> 
   );
 };
 

@@ -197,7 +197,7 @@ const SecurityPage = () => {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="relative py-16 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
+      <section className="relative py-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/30 to-slate-900/60" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
@@ -228,7 +228,8 @@ const SecurityPage = () => {
       </section>
 
       <div className="py-16 -mt-8 relative z-10">
-        <div className="container mx-auto px-6 space-y-8">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto space-y-8">
 
       {/* Security Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -368,6 +369,8 @@ const SecurityPage = () => {
           </div>
         </CardContent>
       </Card>
+        
+          </div> {/* Close max-w-6xl */}
         </div>
       </div>
     </div>

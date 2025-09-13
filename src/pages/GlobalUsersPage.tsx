@@ -114,7 +114,7 @@ const GlobalUsersPage = () => {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="relative py-16 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
+      <section className="relative py-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/30 to-slate-900/60" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
@@ -131,7 +131,7 @@ const GlobalUsersPage = () => {
             </div>
             
             <div className="flex justify-center px-4">
-              <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-6 md:px-8 py-3 w-full sm:w-auto">
+              <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-6 md:px-8 py-3 w-full sm:w-auto shadow-lg">
                 <UserCheck className="w-4 md:w-5 h-4 md:h-5 mr-2" />
                 Add User
               </Button>
@@ -141,94 +141,96 @@ const GlobalUsersPage = () => {
       </section>
 
       <div className="py-16 -mt-8 relative z-10">
-        <div className="container mx-auto px-6 space-y-8">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto space-y-8">
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {userStats.map((stat, index) => (
-          <Card key={index} className="shadow-elegant hover:shadow-2xl transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
-                  <p className="text-2xl font-bold text-foreground mt-1">{stat.value}</p>
-                  <p className={`text-sm mt-1 ${
-                    stat.changeType === 'positive' ? 'text-green-600' : 
-                    stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
-                  }`}>
-                    {stat.change} this month
-                  </p>
-                </div>
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                  <stat.icon className="w-6 h-6 text-white" />
-                </div>
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {userStats.map((stat, index) => (
+                  <Card key={index} className="shadow-elegant hover:shadow-2xl transition-all duration-300">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
+                          <p className="text-2xl font-bold text-foreground mt-1">{stat.value}</p>
+                          <p className={`text-sm mt-1 ${
+                            stat.changeType === 'positive' ? 'text-green-600' : 
+                            stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
+                          }`}>
+                            {stat.change} this month
+                          </p>
+                        </div>
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+                          <stat.icon className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
 
-      {/* Users Management */}
-      <Card className="shadow-elegant">
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <CardTitle className="text-xl font-bold">All Users</CardTitle>
-              <p className="text-muted-foreground">Complete list of platform users</p>
-            </div>
-            <div className="flex gap-3 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-80">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search users..."
-                  className="pl-10"
-                />
-              </div>
-              <Button variant="outline">
-                <Filter className="w-4 h-4 mr-2" />
-                Filter
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {globalUsers.map((user) => (
-              <div key={user.id} className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 hover:from-primary/10 hover:to-secondary/10 transition-all duration-300 border border-border/10">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white font-semibold">
-                    {user.name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-3 mb-1">
-                      <h3 className="font-semibold text-foreground">{user.name}</h3>
-                      {getRoleBadge(user.role)}
-                      {getStatusBadge(user.status)}
+              {/* Users Management */}
+              <Card className="shadow-elegant">
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <CardTitle className="text-xl font-bold">All Users</CardTitle>
+                      <p className="text-muted-foreground">Complete list of platform users</p>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Mail className="w-3 h-3" />
-                        {user.email}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Building2 className="w-3 h-3" />
-                        {user.organization}
-                      </span>
+                    <div className="flex gap-3 w-full sm:w-auto">
+                      <div className="relative flex-1 sm:w-80">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="Search users..."
+                          className="pl-10"
+                        />
+                      </div>
+                      <Button variant="outline">
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                      </Button>
                     </div>
                   </div>
-                </div>
-                <div className="text-right space-y-1">
-                  <p className="text-sm text-muted-foreground">Last login: {user.lastLogin}</p>
-                  <p className="text-xs text-muted-foreground">Joined: {user.joinDate}</p>
-                  <Button variant="ghost" size="sm">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {globalUsers.map((user) => (
+                      <div key={user.id} className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 hover:from-primary/10 hover:to-secondary/10 transition-all duration-300 border border-border/10">
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white font-semibold">
+                            {user.name.split(' ').map(n => n[0]).join('')}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-3 mb-1">
+                              <h3 className="font-semibold text-foreground">{user.name}</h3>
+                              {getRoleBadge(user.role)}
+                              {getStatusBadge(user.status)}
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Mail className="w-3 h-3" />
+                                {user.email}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Building2 className="w-3 h-3" />
+                                {user.organization}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right space-y-1">
+                          <p className="text-sm text-muted-foreground">Last login: {user.lastLogin}</p>
+                          <p className="text-xs text-muted-foreground">Joined: {user.joinDate}</p>
+                          <Button variant="ghost" size="sm">
+                            <MoreHorizontal className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+          </div> {/* Close max-w-6xl */}
         </div>
       </div>
     </div>

@@ -141,7 +141,7 @@ const LoginPage = () => {
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">Demo Accounts</CardTitle>
             <CardDescription>
-              Use these credentials to test different user roles (password: <code className="font-mono bg-muted px-1 rounded">demo</code>)
+              Use these credentials to test different user roles (password: <code className="font-mono bg-muted px-1 rounded">algoristic123</code>)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -149,14 +149,20 @@ const LoginPage = () => {
               <div 
                 key={index}
                 className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-smooth cursor-pointer"
-                onClick={() => setEmail(account.email)}
+                onClick={() => {
+                  setEmail(account.email);
+                  setPassword("algoristic123");
+                }}
               >
                 <div>
                   <div className="font-medium text-sm">{account.role}</div>
                   <div className="text-xs text-muted-foreground">{account.email}</div>
                   <div className="text-xs text-muted-foreground">{account.org}</div>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => setEmail(account.email)}>
+                <Button variant="ghost" size="sm" onClick={() => {
+                  setEmail(account.email);
+                  setPassword("algoristic123");
+                }}>
                   Use
                 </Button>
               </div>
