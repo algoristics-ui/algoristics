@@ -111,9 +111,9 @@ const ReportsPage = () => {
 
       <div className="py-16 -mt-8 relative z-10">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto space-y-6">
+          <div className="max-w-6xl mx-auto space-y-8">
             {/* Quick Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {quickStats.map((stat, index) => (
                   <Card key={index}>
                     <CardHeader className="pb-3">

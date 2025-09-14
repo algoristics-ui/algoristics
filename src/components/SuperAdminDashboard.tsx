@@ -158,6 +158,9 @@ const SuperAdminDashboard = () => {
 
   return (
     <div className="w-full">
+      {/* <div style={{ background: '#ffeaea', color: '#b10000', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 'bold', textAlign: 'center' }}>
+        [SuperAdminDashboard] Test: This component is rendering!
+      </div> */}
       {/* Hero Section - Matching main page */}
       <section className="relative py-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/30 to-slate-900/60" />
@@ -176,7 +179,7 @@ const SuperAdminDashboard = () => {
               </p>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {systemMetrics.map((metric, index) => (
                 <Card key={index} className="p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
                   <div className="text-center">
@@ -201,9 +204,10 @@ const SuperAdminDashboard = () => {
       {/* Organizations Section */}
       <section className="py-16 -mt-8 relative z-10">
         <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto space-y-8">
 
-          {/* Organizations Overview */}
-          <div className="max-w-6xl mx-auto mb-16">
+            {/* Organizations Overview */}
+            <div>
             <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
               <div className="flex items-center justify-between mb-8">
                 <div>
@@ -246,6 +250,8 @@ const SuperAdminDashboard = () => {
                 ))}
               </div>
             </Card>
+            </div>
+
           </div>
         </div>
       </section>

@@ -1,3 +1,16 @@
+import { 
+
+  Lock,
+  Key,
+  CheckCircle2,
+  UserCheck,
+  FileText,
+  Activity,
+  Zap,
+  XCircle
+} from "lucide-react";
+
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -32,7 +45,183 @@ import {
   Settings
 } from "lucide-react";
 
-const OrganizationsPage_bkp = () => {
+const OrganizationsPage = () => {
+  const securityMetrics = [
+    {
+      title: "Security Score",
+      value: "98%",
+      status: "excellent",
+      icon: Shield,
+      description: "Overall security rating"
+    },
+    {
+      title: "Active Sessions",
+      value: "12,847",
+      status: "normal",
+      icon: Activity,
+      description: "Current user sessions"
+    },
+    {
+      title: "Failed Logins",
+      value: "23",
+      status: "warning",
+      icon: XCircle,
+      description: "Last 24 hours"
+    },
+    {
+      title: "Compliance",
+      value: "100%",
+      status: "excellent",
+      icon: CheckCircle2,
+      description: "SOC 2 & GDPR compliant"
+    }
+  ];
+
+  const securityFeatures = [
+    {
+      name: "Two-Factor Authentication",
+      status: "enabled",
+      usage: "89%",
+      icon: Lock,
+      description: "Users with 2FA enabled"
+    },
+    {
+      name: "Single Sign-On",
+      status: "active",
+      usage: "67%",
+      icon: Key,
+      description: "Organizations using SSO"
+    },
+    {
+      name: "Session Management",
+      status: "active",
+      usage: "100%",
+      icon: Clock,
+      description: "Auto-logout after inactivity"
+    }
+  ];
+
+  const orgTabs = [
+    {
+      name: "All Organizations",
+      state: "active" 
+    },
+    {
+      name: "Enterprise",
+      state: "active" 
+    },
+    {
+      name: "Trial",
+      state: "active" 
+    },
+    {
+      name: "New Partners",
+      state: "active" 
+    }
+  ];
+
+  const recentAlerts = [
+    {
+      id: 1,
+      type: "critical",
+      title: "Suspicious Login Activity",
+      description: "Multiple failed login attempts from IP 192.168.1.100",
+      time: "5 minutes ago",
+      action: "IP temporarily blocked",
+      resolved: false
+    },
+    {
+      id: 2,
+      type: "warning",
+      title: "Weak Password Detected",
+      description: "User john.doe@company.com is using a weak password",
+      time: "2 hours ago",
+      action: "Password reset required",
+      resolved: false
+    },
+    {
+      id: 3,
+      type: "info",
+      title: "Certificate Renewal",
+      description: "SSL certificate renewed successfully",
+      time: "1 day ago",
+      action: "Automatic renewal completed",
+      resolved: true
+    },
+    {
+      id: 4,
+      type: "resolved",
+      title: "DDoS Attack Mitigated",
+      description: "Distributed denial of service attack blocked by firewall",
+      time: "2 days ago",
+      action: "Traffic filtered, service restored",
+      resolved: true
+    }
+  ];
+
+  const complianceStatus = [
+    {
+      name: "SOC 2 Type II",
+      status: "compliant",
+      lastAudit: "March 2024",
+      nextAudit: "March 2025"
+    },
+    {
+      name: "GDPR",
+      status: "compliant",
+      lastReview: "January 2024",
+      nextReview: "January 2025"
+    },
+    {
+      name: "CCPA",
+      status: "compliant",
+      lastReview: "February 2024",
+      nextReview: "February 2025"
+    },
+    {
+      name: "FERPA",
+      status: "compliant",
+      lastReview: "April 2024",
+      nextReview: "April 2025"
+    }
+  ];
+
+  // const getStatusColor = (status: string) => {
+  //   switch (status) {
+  //     case "excellent":
+  //     case "enabled":
+  //     case "active":
+  //     case "compliant":
+  //       return "bg-green-500/10 text-green-700 border-green-200";
+  //     case "normal":
+  //     case "configured":
+  //       return "bg-blue-500/10 text-blue-700 border-blue-200";
+  //     case "warning":
+  //       return "bg-yellow-500/10 text-yellow-700 border-yellow-200";
+  //     case "critical":
+  //       return "bg-red-500/10 text-red-700 border-red-200";
+  //     default:
+  //       return "bg-gray-500/10 text-gray-700 border-gray-200";
+  //   }
+  // };
+
+  const getAlertColor = (type: string) => {
+    switch (type) {
+      case "critical":
+        return "bg-red-500/10 text-red-700 border-red-200";
+      case "warning":
+        return "bg-yellow-500/10 text-yellow-700 border-yellow-200";
+      case "info":
+        return "bg-blue-500/10 text-blue-700 border-blue-200";
+      case "resolved":
+        return "bg-green-500/10 text-green-700 border-green-200";
+      default:
+        return "bg-gray-500/10 text-gray-700 border-gray-200";
+    }
+  };
+
+
+//Organization settings
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
 
@@ -364,71 +553,134 @@ const OrganizationsPage_bkp = () => {
 
   // Component to render organization cards
   const renderOrganizationCard = (org: any) => (
-    <Card key={org.id} className="hover:shadow-lg transition-all duration-300 border border-border">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between">
+    <Card key={org.id} className="hover:shadow-2xl transition-all duration-300 border-l-4 overflow-hidden glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:-translate-y-1" style={{ borderLeftColor: org.primaryColor }}>
+      {/* Header Image Section */}
+      <div className="h-32 bg-gradient-to-r relative overflow-hidden" style={{ 
+        backgroundImage: `url(${org.headerImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute top-4 right-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" size="sm" className="bg-white/10 hover:bg-white/20 text-white border-white/20">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>
+                <Eye className="h-4 w-4 mr-2" />
+                View Portal
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit Organization
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Shield className="h-4 w-4 mr-2" />
+                Manage Access
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+
+      <CardContent className="p-6 -mt-12 relative">
+        <div className="flex items-start space-x-6">
+          {/* Logo */}
+          <div className="relative">
+            <Avatar className="h-20 w-20 border-4 border-background shadow-lg" style={{ borderColor: org.primaryColor }}>
+              <AvatarImage src={org.logo} alt={org.name} />
+              <AvatarFallback 
+                className="text-lg font-bold text-white" 
+                style={{ backgroundColor: org.primaryColor }}
+              >
+                {getInitials(org.name)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-2 border-background flex items-center justify-center"
+                 style={{ backgroundColor: org.status === 'Active' ? '#10b981' : org.status === 'Trial' ? '#f59e0b' : '#ef4444' }}>
+              {org.status === 'Active' && <CheckCircle className="h-3 w-3 text-white" />}
+              {org.status === 'Trial' && <Clock className="h-3 w-3 text-white" />}
+              {org.status === 'Inactive' && <AlertTriangle className="h-3 w-3 text-white" />}
+            </div>
+          </div>
+          
           {/* Organization Info */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xl font-bold text-foreground truncate">{org.name}</h3>
-              <div className="flex items-center space-x-2">
-                <Badge variant="secondary" className="ml-2">
-                  {org.subscription || org.planType}
-                </Badge>
-                <Badge 
-                  variant={org.status === 'Active' ? 'default' : org.status === 'Trial' ? 'secondary' : 'destructive'}
-                  className="font-medium"
-                >
-                  {org.status}
-                </Badge>
+            <div className="flex items-start justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Badge className={getStatusColor(org.status)}>
+                    {org.status}
+                  </Badge>
+                  <Badge variant="outline" className={getSubscriptionColor(org.subscription)}>
+                    {org.subscription}
+                  </Badge>
+                </div>
+                <h3 className="text-2xl font-bold text-foreground">{org.name}</h3>
+                <p className="text-muted-foreground">{org.industry} • {org.type}</p>
+                <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                  <div className="flex items-center space-x-1">
+                    <Globe className="h-3 w-3" />
+                    <span>{org.customUrl}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <MapPin className="h-3 w-3" />
+                    <span>{org.location}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Calendar className="h-3 w-3" />
+                    <span>Joined {new Date(org.joinedDate).toLocaleDateString()}</span>
+                  </div>
+                </div>
               </div>
             </div>
             
-            <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
-              <div className="flex items-center">
-                <Building2 className="mr-1 h-4 w-4" />
-                {org.industry || org.type}
-              </div>
-              <div className="flex items-center">
-                <MapPin className="mr-1 h-4 w-4" />
-                {org.location}
-              </div>
-              <div className="flex items-center">
-                <Calendar className="mr-1 h-4 w-4" />
-                Joined {new Date(org.joinedDate || org.joinDate).toLocaleDateString()}
-              </div>
-            </div>
-
-            {/* Metrics */}
-            <div className="grid grid-cols-4 gap-4 mb-4">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">
-                  {org.students?.toLocaleString() || org.users}
+                <div className="text-2xl font-bold" style={{ color: org.primaryColor }}>
+                  {org.students.toLocaleString()}
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">Students</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">
+                <div className="text-2xl font-bold" style={{ color: org.primaryColor }}>
                   {org.instructors}
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">Instructors</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">
+                <div className="text-2xl font-bold" style={{ color: org.primaryColor }}>
                   {org.courses}
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">Courses</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">
-                  {org.completionRate || org.engagement}%
+                <div className="text-2xl font-bold" style={{ color: org.primaryColor }}>
+                  {org.completionRate}%
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">Completion</div>
               </div>
             </div>
 
-            {/* Contact Info */}
-            <div className="flex items-center justify-between pt-4 border-t border-border">
+            {/* Progress Bar */}
+            <div className="mt-6">
+              <div className="flex justify-between text-sm text-muted-foreground mb-2">
+                <span>Overall Progress</span>
+                <span>{org.completionRate}%</span>
+              </div>
+              <Progress value={org.completionRate} className="h-3" />
+            </div>
+            
+            {/* Contact and Revenue Info */}
+            <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
               <div className="space-y-1">
                 <div className="flex items-center space-x-2 text-sm">
                   <Users className="h-4 w-4 text-muted-foreground" />
@@ -446,29 +698,50 @@ const OrganizationsPage_bkp = () => {
                 </div>
               </div>
               
-              <div className="flex items-center space-x-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                      <Eye className="mr-2 h-4 w-4" />
-                      View Details
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Edit className="mr-2 h-4 w-4" />
-                      Edit Organization
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Settings className="mr-2 h-4 w-4" />
-                      Manage Settings
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              <div className="text-right">
+                {org.totalRevenue > 0 ? (
+                  <div className="space-y-1">
+                    <div className="text-lg font-bold text-green-600">
+                      ${org.totalRevenue.toLocaleString()}
+                    </div>
+                    <div className="text-xs text-muted-foreground flex items-center">
+                      <TrendingUp className="h-3 w-3 mr-1 text-green-500" />
+                      +{org.growth}% growth
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    <div className="text-sm text-muted-foreground">Trial Period</div>
+                    <div className="text-xs text-muted-foreground flex items-center">
+                      <TrendingUp className="h-3 w-3 mr-1 text-blue-500" />
+                      +{org.growth}% growth
+                    </div>
+                  </div>
+                )}
               </div>
+            </div>
+            
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-3 mt-6">
+              <Button variant="outline" size="sm">
+                <Mail className="h-4 w-4 mr-2" />
+                Contact
+              </Button>
+              <Button variant="outline" size="sm">
+                <TrendingUp className="h-4 w-4 mr-2" />
+                Analytics
+              </Button>
+              <Button 
+                size="sm" 
+                asChild
+                style={{ backgroundColor: org.primaryColor }}
+                className="text-white hover:opacity-90 font-semibold shadow-lg"
+              >
+                <Link to={`/portal/${org.id}`}>
+                  <Building2 className="h-4 w-4 mr-2" />
+                  Manage Portal
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -476,28 +749,28 @@ const OrganizationsPage_bkp = () => {
     </Card>
   );
 
+
   return (
     <div className="w-full">
-      {/* Hero Section - Matching main page */}
+      {/* Hero Section */}
       <section className="relative py-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/30 to-slate-900/60" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
         
         <div className="container mx-auto px-6 relative z-10">
-          
-          
-            {/* Organizations Management */}
+          <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8 pt-8 px-4">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                 Organizations Management
-              </h2>
+              </h1>
               <p className="text-base md:text-lg text-white/95 max-w-2xl mx-auto drop-shadow-sm">
                 Manage and monitor all organizations on your platform
               </p>
             </div>
-            
-            {/* Platform Statistics Cards */}
+
+
+                      {/* Platform Statistics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
                 <div className="text-center">
@@ -548,140 +821,150 @@ const OrganizationsPage_bkp = () => {
                 </div>
               </Card>
             </div>
-          
+
+          </div>
         </div>
       </section>
 
-      {/* Organizations Section */}
       <div className="py-16 -mt-8 relative z-10">
-        <div className="container mx-auto px-6 space-y-8">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto space-y-8">
 
-          {/* Organizations Overview */}
-          {/* <div> */}
-            {/* Search and Filter Controls */}
-            {/* <Card className="p-6 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300 mb-8">
-              <div className="flex items-center space-x-4">
-                <div className="relative flex-1 max-w-sm">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                  <Input
-                    placeholder="Search organizations..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 border-border/30 bg-background/50"
-                  />
-                </div>
-                <Select value={typeFilter} onValueChange={setTypeFilter}>
-                  <SelectTrigger className="w-40 border-border/30 bg-background/50">
-                    <Filter className="h-4 w-4 mr-2" />
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="corporate">Corporate</SelectItem>
-                    <SelectItem value="educational">Educational</SelectItem>
-                    <SelectItem value="healthcare">Healthcare</SelectItem>
-                    <SelectItem value="manufacturing">Manufacturing</SelectItem>
-                  </SelectContent>
-                </Select>
+
+
+            <div className="shadow-elegant">
+
+
+
+
+                {/* Organization Tabs  */}
+                <Tabs defaultValue="all" className="space-y-6">
+                  
+                  {/* <Card className="p-6 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant">
+                    <TabsList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bg-muted/50">
+                      <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">All Organizations</TabsTrigger>
+                      <TabsTrigger value="enterprise" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Enterprise</TabsTrigger>
+                      <TabsTrigger value="trial" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Trial</TabsTrigger>
+                      <TabsTrigger value="new" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">New Partners</TabsTrigger>
+                    </TabsList>
+                  </Card>   */}
+
+                  <TabsContent value="all" className="space-y-4">
+                    <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+                      <div className="flex items-center justify-between mb-8">
+                        <div>
+                          <h2 className="text-2xl font-bold text-foreground mb-2">All Organizations</h2>
+                          <p className="text-muted-foreground">Complete overview of all organizations on the platform</p>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <Button 
+                            variant="outline" 
+                            className="border-primary/20 hover:bg-primary/5 text-foreground hover:text-foreground font-semibold"
+                            asChild
+                          >
+                            <Link to="/create-organization">
+                              <Plus className="w-4 h-4 mr-2" />
+                              Create Organization
+                            </Link>
+                          </Button>
+                          <Badge className="bg-blue-600 text-white border-blue-700 font-semibold text-lg px-3 py-1">
+                            {filteredOrganizations.length} Total
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {filteredOrganizations.map((org) => renderOrganizationCard(org))}
+                      </div>
+                    </Card>
+                  </TabsContent>
+
+                  {/* <TabsContent value="enterprise" className="space-y-4">
+                    <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+                      <div className="flex items-center justify-between mb-8">
+                        <div>
+                          <h2 className="text-2xl font-bold text-foreground mb-2">Enterprise Organizations</h2>
+                          <p className="text-muted-foreground">Organizations with enterprise-level subscriptions and premium features</p>
+                        </div>
+                        <Badge className="bg-purple-600 text-white border-purple-700 font-semibold text-lg px-3 py-1">
+                          {enterpriseOrganizations.length} Enterprise
+                        </Badge>
+                      </div>
+                      <div className="grid gap-6">
+                        {enterpriseOrganizations.map((org) => renderOrganizationCard(org))}
+                      </div>
+                    </Card>
+                  </TabsContent>
+
+                  <TabsContent value="trial" className="space-y-4">
+                    <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+                      <div className="flex items-center justify-between mb-8">
+                        <div>
+                          <h2 className="text-2xl font-bold text-foreground mb-2">Trial Organizations</h2>
+                          <p className="text-muted-foreground">Organizations currently evaluating our platform on trial subscriptions</p>
+                        </div>
+                        <Badge className="bg-orange-600 text-white border-orange-700 font-semibold text-lg px-3 py-1">
+                          {trialOrganizations.length} Trials
+                        </Badge>
+                      </div>
+                      <div className="grid gap-6">
+                        {trialOrganizations.map((org) => renderOrganizationCard(org))}
+                      </div>
+                    </Card>
+                  </TabsContent>
+
+                  <TabsContent value="new" className="space-y-4">
+                    <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+                      <div className="flex items-center justify-between mb-8">
+                        <div>
+                          <h2 className="text-2xl font-bold text-foreground mb-2">New Partners</h2>
+                          <p className="text-muted-foreground">Organizations that joined our platform in the last 30 days</p>
+                        </div>
+                        <Badge className="bg-green-600 text-white border-green-700 font-semibold text-lg px-3 py-1">
+                          {newPartnerOrganizations.length} New
+                        </Badge>
+                      </div>
+                      <div className="grid gap-6">
+                        {newPartnerOrganizations.map((org) => renderOrganizationCard(org))}
+                      </div>
+                    </Card>
+                  </TabsContent> */}
+                </Tabs>
+            </div>
+
+      {/* Security Features */}
+      {/* <Card className="shadow-elegant">
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {orgTabs.map((org, index) => (
+              <div key={index} className="p-4 rounded-xl bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 border border-border/10">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <h3 className="font-semibold text-foreground">{org.name}</h3>
+                  </div>                 
+                </div>                
               </div>
-            </Card> */}
+            ))}
+          </div>
+        </CardContent>
+      </Card> */}
 
-            {/* Organization Tabs */}
-            <Tabs defaultValue="all" className="space-y-6">
-              {/* <Card className="p-6 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant">
-                <TabsList className="grid w-full grid-cols-4 bg-muted/50">
-                  <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">All Organizations</TabsTrigger>
-                  <TabsTrigger value="enterprise" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Enterprise</TabsTrigger>
-                  <TabsTrigger value="trial" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Trial</TabsTrigger>
-                  <TabsTrigger value="new" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">New Partners</TabsTrigger>
-                </TabsList>
-              </Card> */}
-
-              <TabsContent value="all" className="space-y-4">
-                <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
-                  <div className="flex items-center justify-between mb-8">
-                    <div>
-                      <h2 className="text-2xl font-bold text-foreground mb-2">All Organizations</h2>
-                      <p className="text-muted-foreground">Complete overview of all organizations on the platform</p>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <Button 
-                        variant="outline" 
-                        className="border-primary/20 hover:bg-primary/5 text-foreground hover:text-foreground font-semibold"
-                        asChild
-                      >
-                        <Link to="/create-organization">
-                          <Plus className="w-4 h-4 mr-2" />
-                          Create Organization
-                        </Link>
-                      </Button>
-                      <Badge className="bg-blue-600 text-white border-blue-700 font-semibold text-lg px-3 py-1">
-                        {filteredOrganizations.length} Total
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="grid gap-6">
-                    {filteredOrganizations.map((org) => renderOrganizationCard(org))}
-                  </div>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="enterprise" className="space-y-4">
-                <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
-                  <div className="flex items-center justify-between mb-8">
-                    <div>
-                      <h2 className="text-2xl font-bold text-foreground mb-2">Enterprise Organizations</h2>
-                      <p className="text-muted-foreground">Organizations with enterprise-level subscriptions and premium features</p>
-                    </div>
-                    <Badge className="bg-purple-600 text-white border-purple-700 font-semibold text-lg px-3 py-1">
-                      {enterpriseOrganizations.length} Enterprise
-                    </Badge>
-                  </div>
-                  <div className="grid gap-6">
-                    {enterpriseOrganizations.map((org) => renderOrganizationCard(org))}
-                  </div>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="trial" className="space-y-4">
-                <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
-                  <div className="flex items-center justify-between mb-8">
-                    <div>
-                      <h2 className="text-2xl font-bold text-foreground mb-2">Trial Organizations</h2>
-                      <p className="text-muted-foreground">Organizations currently evaluating our platform on trial subscriptions</p>
-                    </div>
-                    <Badge className="bg-orange-600 text-white border-orange-700 font-semibold text-lg px-3 py-1">
-                      {trialOrganizations.length} Trials
-                    </Badge>
-                  </div>
-                  <div className="grid gap-6">
-                    {trialOrganizations.map((org) => renderOrganizationCard(org))}
-                  </div>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="new" className="space-y-4">
-                <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
-                  <div className="flex items-center justify-between mb-8">
-                    <div>
-                      <h2 className="text-2xl font-bold text-foreground mb-2">New Partners</h2>
-                      <p className="text-muted-foreground">Organizations that joined our platform in the last 30 days</p>
-                    </div>
-                    <Badge className="bg-green-600 text-white border-green-700 font-semibold text-lg px-3 py-1">
-                      {newPartnerOrganizations.length} New
-                    </Badge>
-                  </div>
-                  <div className="grid gap-6">
-                    {newPartnerOrganizations.map((org) => renderOrganizationCard(org))}
-                  </div>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          {/* </div> */}
+      <Card className="p-6 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant">
+        <CardContent>
+          <Tabs defaultValue="all" className="space-y-6">
+            <TabsList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bg-muted/50">
+            {orgTabs.map((org, index) => (
+               <TabsTrigger key={index} value={org.name} className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{org.name}</TabsTrigger>
+            ))}
+            </TabsList>
+          </Tabs>
+        </CardContent>
+      </Card> 
+        
+          </div> {/* Close max-w-6xl */}
         </div>
       </div>
     </div>
   );
 };
 
-export default OrganizationsPage_bkp;
+export default OrganizationsPage;

@@ -61,9 +61,10 @@ const SettingsPage = () => {
 
       <div className="py-16 -mt-8 relative z-10">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto space-y-6">
+          <div className="max-w-6xl mx-auto space-y-8">
+
             {/* Settings Tabs */}
-              <Tabs defaultValue="general" className="space-y-6">
+            <Tabs defaultValue="general" className="space-y-8">
                 <TabsList className="grid w-full grid-cols-6">
                   <TabsTrigger value="general">General</TabsTrigger>
                   <TabsTrigger value="notifications">Notifications</TabsTrigger>
@@ -74,7 +75,7 @@ const SettingsPage = () => {
                 </TabsList>
 
                 {/* General Settings */}
-                <TabsContent value="general" className="space-y-6">
+                <TabsContent value="general" className="space-y-8">
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center">
@@ -85,6 +86,7 @@ const SettingsPage = () => {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
+                        
                         <div className="space-y-2">
                           <Label htmlFor="platform-name">Platform Name</Label>
                           <Input id="platform-name" defaultValue="Algoristics" />
@@ -164,7 +166,7 @@ const SettingsPage = () => {
                 </TabsContent>
 
                 {/* Notifications */}
-                <TabsContent value="notifications" className="space-y-6">
+                <TabsContent value="notifications" className="space-y-8">
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center">
@@ -259,7 +261,7 @@ const SettingsPage = () => {
                 </TabsContent>
 
                 {/* Security */}
-                <TabsContent value="security" className="space-y-6">
+                <TabsContent value="security" className="space-y-8">
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center">
@@ -340,7 +342,7 @@ const SettingsPage = () => {
                 </TabsContent>
 
                 {/* Users */}
-                <TabsContent value="users" className="space-y-6">
+                <TabsContent value="users" className="space-y-8">
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center">
@@ -376,7 +378,7 @@ const SettingsPage = () => {
                 </TabsContent>
 
                 {/* Integrations */}
-                <TabsContent value="integrations" className="space-y-6">
+                <TabsContent value="integrations" className="space-y-8">
                   <Card>
                     <CardHeader>
                       <CardTitle>Third-Party Integrations</CardTitle>
@@ -411,7 +413,7 @@ const SettingsPage = () => {
                 </TabsContent>
 
                 {/* Advanced */}
-                <TabsContent value="advanced" className="space-y-6">
+                <TabsContent value="advanced" className="space-y-8">
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center">

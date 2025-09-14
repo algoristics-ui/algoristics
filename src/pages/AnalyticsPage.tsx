@@ -107,7 +107,7 @@ const AnalyticsPage = () => {
 
       <div className="py-16 -mt-8 relative z-10">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto space-y-6">
+          <div className="max-w-6xl mx-auto space-y-8">
             {/* Key Metrics */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {keyMetrics.map((metric, index) => (

@@ -203,6 +203,7 @@ const App = () => (
               </ProtectedRoute>
             } />
 
+
             <Route path="/newsfeed" element={
               <ProtectedRoute>
                 <DashboardLayout>
