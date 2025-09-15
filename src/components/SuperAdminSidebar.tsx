@@ -115,11 +115,11 @@ const SuperAdminSidebar = () => {
         {Object.entries(menuGroups).map(([groupName, items], index) => (
           <SidebarGroup key={groupName}>
             {groupName === "Overview" ? (
-              <div className="flex items-center justify-between py-3 px-3">
+              <div className="flex items-center space-x-2 py-3 px-3">
+                <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity bg-transparent hover:bg-muted rounded-sm p-1" />
                 <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   {groupName}
                 </SidebarGroupLabel>
-                <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity bg-transparent hover:bg-muted rounded-sm p-1" />
               </div>
             ) : (
               <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden text-xs font-semibold text-muted-foreground uppercase tracking-wider">

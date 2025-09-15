@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useParams } from "react-router-dom";
-import { OrganizationLayout } from "@/components/OrganizationLayout";
+import { useParams, useLocation } from "react-router-dom";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   Megaphone,
   Plus,
@@ -18,12 +18,16 @@ import {
   AlertCircle,
   BookOpen,
   ClipboardList,
-  Calendar
+  Calendar,
+  Search,
+  Users,
+  BarChart3
 } from "lucide-react";
 
 const OrganizationNewsFeedPage = () => {
   const { orgId } = useParams();
-  
+  const location = useLocation();
+  const orgData = getOrganizationDataFromPath(location.pathname);
 
   const [newsFeedItems, setNewsFeedItems] = useState([
     {
@@ -138,156 +142,225 @@ const OrganizationNewsFeedPage = () => {
   };
 
   return (
-    <OrganizationLayout 
-      orgId={orgId}
-      title="News Feed Management"
-    >
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div className="p-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">News Feed Management</h1>
+          <h1 className="text-3xl font-bold text-foreground">News Feed</h1>
           <p className="text-muted-foreground">Create and manage announcements for your organization</p>
         </div>
-              
-              <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button style={{ backgroundColor: orgData.primaryColor }} className="text-white">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create News Item
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[500px]">
-                  <DialogHeader>
-                    <DialogTitle>Create News Item</DialogTitle>
-                    <DialogDescription>
-                      Add a new announcement or news item for your organization.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="type">Type</Label>
-                        <Select value={newItem.type} onValueChange={(value) => setNewItem({...newItem, type: value})}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="announcement">Announcement</SelectItem>
-                            <SelectItem value="new_course">New Course</SelectItem>
-                            <SelectItem value="assessment">Assessment</SelectItem>
-                            <SelectItem value="due_date">Due Date</SelectItem>
-                          </SelectContent>
-                        </Select>
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <DialogTrigger asChild>
+            <Button style={{ backgroundColor: orgData.primaryColor }} className="text-white">
+              <Plus className="h-4 w-4 mr-2" />
+              Create News Item
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>Create News Item</DialogTitle>
+              <DialogDescription>
+                Add a new announcement or news item for your organization.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="type">Type</Label>
+                  <Select value={newItem.type} onValueChange={(value) => setNewItem({...newItem, type: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="announcement">Announcement</SelectItem>
+                      <SelectItem value="new_course">New Course</SelectItem>
+                      <SelectItem value="assessment">Assessment</SelectItem>
+                      <SelectItem value="due_date">Due Date</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="priority">Priority</Label>
+                  <Select value={newItem.priority} onValueChange={(value) => setNewItem({...newItem, priority: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="title">Title</Label>
+                <Input 
+                  id="title"
+                  value={newItem.title}
+                  onChange={(e) => setNewItem({...newItem, title: e.target.value})}
+                  placeholder="Enter news item title"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="content">Content</Label>
+                <Textarea 
+                  id="content"
+                  value={newItem.content}
+                  onChange={(e) => setNewItem({...newItem, content: e.target.value})}
+                  placeholder="Enter news item content"
+                  rows={3}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="date">Event Date</Label>
+                <Input 
+                  id="date"
+                  type="date"
+                  value={newItem.date}
+                  onChange={(e) => setNewItem({...newItem, date: e.target.value})}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleCreate} style={{ backgroundColor: orgData.primaryColor }} className="text-white">
+                Create
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Quick Actions */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <span>Quick Actions</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => setIsCreateDialogOpen(true)}
+            >
+              <Plus className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-sm">Create News</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => window.location.href = `/${orgData.acronym}/courses`}
+            >
+              <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-sm">View Courses</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => window.location.href = `/${orgData.acronym}/students`}
+            >
+              <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-sm">View Students</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => window.location.href = `/${orgData.acronym}/analytics`}
+            >
+              <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-sm">View Analytics</span>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Search and Filters */}
+      <Card className="mb-6">
+        <CardContent className="pt-6">
+          <div className="flex items-center space-x-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input placeholder="Search news items..." className="pl-9" />
+            </div>
+            <Button variant="outline">Filter by Type</Button>
+            <Button variant="outline">Filter by Priority</Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* News Feed Items */}
+      <Card>
+        <CardHeader>
+          <CardTitle>All News Items</CardTitle>
+          <CardDescription>Manage announcements and news for your organization</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {newsFeedItems.map((item) => {
+              const TypeIcon = getTypeIcon(item.type);
+              return (
+                <div key={item.id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50">
+                  <div className="flex items-start space-x-4 flex-1">
+                    <div className="p-2 rounded-lg" style={{ backgroundColor: `${getPriorityColor(item.priority)}15` }}>
+                      <TypeIcon className="h-5 w-5" style={{ color: getPriorityColor(item.priority) }} />
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-1">
+                        <h3 className="font-semibold">{item.title}</h3>
+                        <Badge 
+                          variant="secondary"
+                          style={{ 
+                            backgroundColor: `${getPriorityColor(item.priority)}20`,
+                            color: getPriorityColor(item.priority)
+                          }}
+                        >
+                          {item.priority.toUpperCase()}
+                        </Badge>
+                        <Badge variant="outline">
+                          {item.type.replace('_', ' ').toUpperCase()}
+                        </Badge>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="priority">Priority</Label>
-                        <Select value={newItem.priority} onValueChange={(value) => setNewItem({...newItem, priority: value})}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select priority" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="high">High</SelectItem>
-                            <SelectItem value="medium">Medium</SelectItem>
-                            <SelectItem value="low">Low</SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <p className="text-sm text-muted-foreground mb-2">{item.content}</p>
+                      <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="h-3 w-3" />
+                          <span>Event: {new Date(item.date).toLocaleDateString()}</span>
+                        </div>
+                        <span>Created: {new Date(item.createdAt).toLocaleDateString()}</span>
+                        <span>By: {item.author}</span>
                       </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="title">Title</Label>
-                      <Input 
-                        id="title"
-                        value={newItem.title}
-                        onChange={(e) => setNewItem({...newItem, title: e.target.value})}
-                        placeholder="Enter news item title"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="content">Content</Label>
-                      <Textarea 
-                        id="content"
-                        value={newItem.content}
-                        onChange={(e) => setNewItem({...newItem, content: e.target.value})}
-                        placeholder="Enter news item content"
-                        rows={3}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="date">Event Date</Label>
-                      <Input 
-                        id="date"
-                        type="date"
-                        value={newItem.date}
-                        onChange={(e) => setNewItem({...newItem, date: e.target.value})}
-                      />
                     </div>
                   </div>
-                  <DialogFooter>
-                    <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                      Cancel
-                    </Button>
-                    <Button onClick={handleCreate} style={{ backgroundColor: orgData.primaryColor }} className="text-white">
-                      Create
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
 
-            {/* News Feed Items */}
-            <div className="grid gap-4">
-              {newsFeedItems.map((item) => {
-                const TypeIcon = getTypeIcon(item.type);
-                return (
-                  <Card key={item.id} className="hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center space-x-3">
-                          <TypeIcon 
-                            className="h-5 w-5" 
-                            style={{ color: getPriorityColor(item.priority) }}
-                          />
-                          <div>
-                            <CardTitle className="text-lg">{item.title}</CardTitle>
-                            <div className="flex items-center space-x-2 mt-1">
-                              <Badge 
-                                variant="secondary"
-                                style={{ 
-                                  backgroundColor: `${getPriorityColor(item.priority)}20`,
-                                  color: getPriorityColor(item.priority)
-                                }}
-                              >
-                                {item.priority.toUpperCase()}
-                              </Badge>
-                              <Badge variant="outline">
-                                {item.type.replace('_', ' ').toUpperCase()}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm" onClick={() => handleEdit(item)}>
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm" onClick={() => handleDelete(item.id)}>
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground mb-3">{item.content}</p>
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <div className="flex items-center space-x-4">
-                          <span>Event Date: {new Date(item.date).toLocaleDateString()}</span>
-                          <span>Created: {new Date(item.createdAt).toLocaleDateString()}</span>
-                          <span>By: {item.author}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-      </div>
+                  <div className="flex space-x-2">
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(item)}>
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleDelete(item.id)}
+                      style={{ 
+                        borderColor: '#ef4444',
+                        color: '#ef4444' 
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
@@ -367,7 +440,7 @@ const OrganizationNewsFeedPage = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </OrganizationLayout>
+    </div>
   );
 };
 

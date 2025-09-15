@@ -7,6 +7,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useSmartSidebarDefault } from "@/hooks/useMobileDetection";
 import { GraduationCap, Zap } from "lucide-react";
 import SuperAdminLayout from "@/components/SuperAdminLayout";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { useLocation } from "react-router-dom";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -75,6 +77,7 @@ const getOrganizationData = (orgName: string): OrganizationData => {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const { user } = useAuth();
+  const location = useLocation();
   const shouldOpenByDefault = useSmartSidebarDefault();
 
   // Use Super Admin Layout for super admins
@@ -82,26 +85,33 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     return <SuperAdminLayout>{children}</SuperAdminLayout>;
   }
 
+  // For organization users, get organization data from URL
+  const orgData = getOrganizationDataFromPath(location.pathname);
+
   return (
-    <SidebarProvider defaultOpen={shouldOpenByDefault}>
-      <div className="min-h-screen flex w-full bg-background">
-        <AppSidebar />
-        
-        <div className="flex-1 flex flex-col min-w-0">
-          {user && (
-            <OrganizationHeader 
-              orgData={getOrganizationData(user.organization)}
-              stickyHeader={false}
-            />
-          )}
-          <DashboardHeader />
+    <>
+      {/* Organization Navigation Header */}
+      <OrganizationHeader 
+        orgData={orgData}
+        stickyHeader={true}
+      />
+      
+      <SidebarProvider defaultOpen={shouldOpenByDefault}>
+        {/* Main container with top padding to account for fixed header */}
+        <div className="min-h-screen bg-background flex flex-col pt-20">
           
-          <main className="flex-1 overflow-auto">
-            {children}
-          </main>
+          {/* Sidebar and Main Content container */}
+          <div className="flex flex-1 overflow-hidden">
+            <AppSidebar />
+            <main className="flex-1 overflow-y-auto bg-gradient-to-br from-primary/5 to-secondary/5">
+              <div className="h-full">
+                {children}
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </>
   );
 };
 

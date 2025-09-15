@@ -2,8 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useParams } from "react-router-dom";
-import { OrganizationLayout } from "@/components/OrganizationLayout";
+import { useParams, useLocation } from "react-router-dom";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   ClipboardList, 
   Search,
@@ -18,6 +18,8 @@ import {
 
 const OrganizationAssessmentsPage = () => {
   const { orgId } = useParams();
+  const location = useLocation();
+  const orgData = getOrganizationDataFromPath(location.pathname);
   
 
   const assessments = [
@@ -78,216 +80,154 @@ const OrganizationAssessmentsPage = () => {
   };
 
   return (
-    <OrganizationLayout 
-      orgId={orgId}
-      title="Assessments"
-    >
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-4">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">Assessments</h1>
-                <p className="text-muted-foreground">Manage quizzes, exams, and project assessments</p>
-              </div>
-              <Button style={{ backgroundColor: orgData.primaryColor }} className="text-white">
-                <Plus className="h-4 w-4 mr-2" />
-                Create Assessment
-              </Button>
+    <div className="p-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Assessments</h1>
+          <p className="text-muted-foreground">Manage quizzes, exams, and project assessments</p>
+        </div>
+        <Button style={{ backgroundColor: orgData.primaryColor }} className="text-white">
+          <Plus className="h-4 w-4 mr-2" />
+          Create Assessment
+        </Button>
+      </div>
+
+      {/* Quick Actions */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <span>Quick Actions</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => window.location.href = `/create-assessment`}
+            >
+              <Plus className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-sm">Create Assessment</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => window.location.href = `/${orgData.acronym}/courses`}
+            >
+              <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-sm">View Courses</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => window.location.href = `/${orgData.acronym}/students`}
+            >
+              <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-sm">View Students</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => window.location.href = `/${orgData.acronym}/analytics`}
+            >
+              <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-sm">View Results</span>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Search and Filters */}
+      <Card className="mb-6">
+        <CardContent className="pt-6">
+          <div className="flex items-center space-x-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input placeholder="Search assessments..." className="pl-9" />
             </div>
+            <Button variant="outline">Filter by Type</Button>
+            <Button variant="outline">Filter by Course</Button>
+          </div>
+        </CardContent>
+      </Card>
 
-            {/* Quick Actions */}
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <span>Quick Actions</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                  <Button 
-                    variant="outline" 
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/create-assessment`}
-                  >
-                    <Plus className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                    <span className="text-sm">Create Assessment</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/courses`}
-                  >
-                    <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                    <span className="text-sm">View Courses</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/students`}
-                  >
-                    <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                    <span className="text-sm">View Students</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/analytics`}
-                  >
-                    <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                    <span className="text-sm">View Results</span>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Stats Overview */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
-              <Card>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">
-                      Total Assessments
-                    </CardTitle>
+      {/* Assessments List */}
+      <Card>
+        <CardHeader>
+          <CardTitle>All Assessments</CardTitle>
+          <CardDescription>Manage and track assessment performance</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {assessments.map((assessment) => (
+              <div key={assessment.id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50">
+                <div className="flex items-start space-x-4 flex-1">
+                  <div className="p-2 rounded-lg" style={{ backgroundColor: `${orgData.primaryColor}15` }}>
                     <ClipboardList className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                   </div>
-                  <div className="text-3xl font-bold" style={{ color: orgData.primaryColor }}>
-                    127
-                  </div>
-                </CardHeader>
-              </Card>
-              
-              <Card>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">
-                      Total Attempts
-                    </CardTitle>
-                    <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                  </div>
-                  <div className="text-3xl font-bold" style={{ color: orgData.primaryColor }}>
-                    15,847
-                  </div>
-                </CardHeader>
-              </Card>
-              
-              <Card>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">
-                      Average Score
-                    </CardTitle>
-                    <CheckCircle className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                  </div>
-                  <div className="text-3xl font-bold" style={{ color: orgData.primaryColor }}>
-                    87%
-                  </div>
-                </CardHeader>
-              </Card>
-              
-              <Card>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">
-                      Pass Rate
-                    </CardTitle>
-                    <CheckCircle className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                  </div>
-                  <div className="text-3xl font-bold" style={{ color: orgData.primaryColor }}>
-                    92%
-                  </div>
-                </CardHeader>
-              </Card>
-            </div>
-
-            {/* Search and Filters */}
-            <Card className="mb-6">
-              <CardContent className="pt-6">
-                <div className="flex items-center space-x-4">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input placeholder="Search assessments..." className="pl-9" />
-                  </div>
-                  <Button variant="outline">Filter by Type</Button>
-                  <Button variant="outline">Filter by Course</Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Assessments List */}
-            <Card>
-              <CardHeader>
-                <CardTitle>All Assessments</CardTitle>
-                <CardDescription>Manage and track assessment performance</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {assessments.map((assessment) => (
-                    <div key={assessment.id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50">
-                      <div className="flex items-start space-x-4 flex-1">
-                        <div className="p-2 rounded-lg" style={{ backgroundColor: `${orgData.primaryColor}15` }}>
-                          <ClipboardList className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                        </div>
-                        
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h3 className="font-semibold">{assessment.title}</h3>
-                            <Badge className={getTypeColor(assessment.type)}>
-                              {assessment.type}
-                            </Badge>
-                            <Badge 
-                              variant={assessment.status === 'Active' ? 'default' : 'secondary'}
-                              className={assessment.status === 'Active' ? 'text-white' : ''}
-                              style={assessment.status === 'Active' ? { backgroundColor: orgData.primaryColor } : {}}
-                            >
-                              {assessment.status}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-2">{assessment.course}</p>
-                          <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                            <div className="flex items-center space-x-1">
-                              <FileText className="h-3 w-3" />
-                              <span>{assessment.questions} questions</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Clock className="h-3 w-3" />
-                              <span>{assessment.duration}</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Users className="h-3 w-3" />
-                              <span>{assessment.attempts} attempts</span>
-                            </div>
-                          </div>
-                        </div>
+                  
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <h3 className="font-semibold">{assessment.title}</h3>
+                      <Badge className={getTypeColor(assessment.type)}>
+                        {assessment.type}
+                      </Badge>
+                      <Badge 
+                        variant={assessment.status === 'Active' ? 'default' : 'secondary'}
+                        className={assessment.status === 'Active' ? 'text-white' : ''}
+                        style={assessment.status === 'Active' ? { backgroundColor: orgData.primaryColor } : {}}
+                      >
+                        {assessment.status}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">{assessment.course}</p>
+                    <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                      <div className="flex items-center space-x-1">
+                        <FileText className="h-3 w-3" />
+                        <span>{assessment.questions} questions</span>
                       </div>
-
-                      <div className="flex items-center space-x-6">
-                        <div className="text-center">
-                          <div className="text-lg font-bold" style={{ color: orgData.primaryColor }}>
-                            {assessment.avgScore}%
-                          </div>
-                          <div className="text-xs text-muted-foreground">Avg Score</div>
-                        </div>
-                        
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">
-                            View Results
-                          </Button>
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            style={{ 
-                              borderColor: orgData.primaryColor,
-                              color: orgData.primaryColor 
-                            }}
-                          >
-                            Edit
-                          </Button>
-                        </div>
+                      <div className="flex items-center space-x-1">
+                        <Clock className="h-3 w-3" />
+                        <span>{assessment.duration}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Users className="h-3 w-3" />
+                        <span>{assessment.attempts} attempts</span>
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </CardContent>
-        </Card>
-    </OrganizationLayout>
+
+                <div className="flex items-center space-x-6">
+                  <div className="text-center">
+                    <div className="text-lg font-bold" style={{ color: orgData.primaryColor }}>
+                      {assessment.avgScore}%
+                    </div>
+                    <div className="text-xs text-muted-foreground">Avg Score</div>
+                  </div>
+                  
+                  <div className="flex space-x-2">
+                    <Button variant="outline" size="sm">
+                      View Results
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      style={{ 
+                        borderColor: orgData.primaryColor,
+                        color: orgData.primaryColor 
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

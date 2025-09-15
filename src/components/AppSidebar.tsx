@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { useMobileDetection } from "@/hooks/useMobileDetection";
 
 import {
@@ -116,10 +117,28 @@ export function AppSidebar() {
   const isMobile = useMobileDetection();
   const { setOpenMobile } = useSidebar();
 
-  // Filter navigation items based on user role
-  const navigationItems = getAllNavigationItems().filter(item => 
-    user?.role ? item.roles.includes(user.role) : false
-  );
+  // Get organization context for non-super admin users
+  const orgData = user?.role !== 'super_admin' ? getOrganizationDataFromPath(location.pathname) : null;
+  const orgPrefix = orgData ? `/${orgData.acronym}` : '';
+
+  // Get navigation items with organization context
+  const getNavigationItems = () => {
+    const baseItems = getAllNavigationItems().filter(item => 
+      user?.role ? item.roles.includes(user.role) : false
+    );
+
+    // If not super admin, prefix URLs with organization
+    if (user?.role !== 'super_admin' && orgData) {
+      return baseItems.map(item => ({
+        ...item,
+        url: item.url === '/organizations' ? item.url : `${orgPrefix}${item.url}`
+      })).filter(item => item.url !== '/organizations'); // Remove organizations page for org users
+    }
+
+    return baseItems;
+  };
+
+  const navigationItems = getNavigationItems();
 
   // Group items by their group property
   const groupedItems = navigationItems.reduce((groups, item) => {
@@ -143,36 +162,56 @@ export function AppSidebar() {
     isActive ? "bg-primary text-primary-foreground font-medium" : "hover:bg-muted/50";
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r border-border/60 bg-background">
       <SidebarContent>
-        {/* Header with Logo and Toggle */}
-        <div className="p-4 border-b border-border/60">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 min-w-0 flex-1">
-              <div className="gradient-hero w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
-                <GraduationCap className="h-5 w-5 text-white" />
+        {/* Header Section */}
+        {user?.role === 'super_admin' ? (
+          // Super Admin Header with Algoristics branding
+          <div className="p-4 border-b border-border/60">
+            <div className="flex items-center space-x-3">
+              {/* Toggle button on the left */}
+              <div className="flex-shrink-0">
+                <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity" />
               </div>
-              <div className="group-data-[collapsible=icon]:hidden min-w-0">
-                <h1 className="text-lg font-bold text-foreground truncate">Algoristics</h1>
-                <p className="text-xs text-muted-foreground">Learning Management</p>
+              <div className="flex items-center space-x-3 min-w-0 flex-1">
+                <div className="gradient-hero w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <GraduationCap className="h-5 w-5 text-white" />
+                </div>
+                <div className="group-data-[collapsible=icon]:hidden min-w-0">
+                  <h1 className="text-lg font-bold text-foreground truncate">Algoristics</h1>
+                  <p className="text-xs text-muted-foreground">Learning Management</p>
+                </div>
               </div>
-            </div>
-            {/* Toggle button always visible */}
-            <div className="flex-shrink-0">
-              <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity" />
             </div>
           </div>
-        </div>
+        ) : (
+          // Organization users - empty header without branding
+          <div className="flex h-12 items-center px-4 border-b">
+            <div className="font-semibold text-foreground group-data-[collapsible=icon]:hidden">
+              
+            </div>
+          </div>
+        )}
 
         {/* Navigation Groups */}
-        {Object.entries(groupedItems).map(([groupName, items]) => {
+        {Object.entries(groupedItems).map(([groupName, items], index) => {
           const hasActiveItem = items.some(item => isActive(item.url));
           
           return (
             <SidebarGroup key={groupName}>
-              <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                {groupName}
-              </SidebarGroupLabel>
+              {/* Show toggle with Overview group label only for organization users */}
+              {groupName === "Overview" && user?.role !== 'super_admin' ? (
+                <div className="flex items-center space-x-2 py-3 px-3">
+                  <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity bg-transparent hover:bg-muted rounded-sm p-1" />
+                  <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    {groupName}
+                  </SidebarGroupLabel>
+                </div>
+              ) : (
+                <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  {groupName}
+                </SidebarGroupLabel>
+              )}
 
               <SidebarGroupContent>
                 <SidebarMenu>

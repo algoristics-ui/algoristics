@@ -76,7 +76,7 @@ export function OrganizationLayout({ children, orgId, title }: OrganizationLayou
             stickyHeader={true} 
           />
           
-          <main className="container mx-auto p-3 md:p-6">
+          <main className="container mx-auto p-3 md:p-6 pt-20">
             {title && <h2 className="text-2xl font-bold mb-6" style={{ color: orgData.primaryColor }}>{title}</h2>}
             {children}
           </main>

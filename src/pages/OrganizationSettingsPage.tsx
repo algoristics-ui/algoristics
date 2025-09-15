@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { useParams } from "react-router-dom";
-import { OrganizationLayout } from "@/components/OrganizationLayout";
+import { useParams, useLocation } from "react-router-dom";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   Settings, 
   Building,
@@ -14,18 +14,22 @@ import {
   Bell,
   Shield,
   Globe,
-  Save
+  Save,
+  Search,
+  Plus,
+  BookOpen,
+  BarChart3,
+  UserCheck
 } from "lucide-react";
 
 const OrganizationSettingsPage = () => {
   const { orgId } = useParams();
+  const location = useLocation();
+  const orgData = getOrganizationDataFromPath(location.pathname);
   
 
   return (
-    <OrganizationLayout 
-      orgId={orgId}
-      title="Settings"
-    >
+    <div className="p-6">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Settings</h1>
@@ -36,6 +40,65 @@ const OrganizationSettingsPage = () => {
                 Save Changes
               </Button>
             </div>
+
+            {/* Quick Actions */}
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <span>Quick Actions</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                  <Button 
+                    variant="outline" 
+                    className="h-20 flex flex-col items-center justify-center space-y-2"
+                    onClick={() => window.location.href = `/${orgData.acronym}/courses`}
+                  >
+                    <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+                    <span className="text-sm">Manage Courses</span>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="h-20 flex flex-col items-center justify-center space-y-2"
+                    onClick={() => window.location.href = `/${orgData.acronym}/instructors`}
+                  >
+                    <UserCheck className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+                    <span className="text-sm">Manage Users</span>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="h-20 flex flex-col items-center justify-center space-y-2"
+                    onClick={() => window.location.href = `/${orgData.acronym}/analytics`}
+                  >
+                    <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+                    <span className="text-sm">View Analytics</span>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="h-20 flex flex-col items-center justify-center space-y-2"
+                    onClick={() => window.location.href = `/${orgData.acronym}/reports`}
+                  >
+                    <Settings className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+                    <span className="text-sm">Advanced Settings</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Search and Filters */}
+            <Card className="mb-6">
+              <CardContent className="pt-6">
+                <div className="flex items-center space-x-4">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input placeholder="Search settings..." className="pl-9" />
+                  </div>
+                  <Button variant="outline">Filter by Category</Button>
+                  <Button variant="outline">Export Configuration</Button>
+                </div>
+              </CardContent>
+            </Card>
 
             <div className="space-y-6">
               {/* Organization Details */}
@@ -245,7 +308,7 @@ const OrganizationSettingsPage = () => {
                 </CardContent>
               </Card>
             </div>
-    </OrganizationLayout>
+    </div>
   );
 };
 

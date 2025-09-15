@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GraduationCap, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [organization, setOrganization] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   
@@ -23,6 +25,13 @@ const LoginPage = () => {
     e.preventDefault();
     setError("");
 
+    // Check if organization is required for non-super admin accounts
+    const isSuperAdmin = email === "admin@algoristicedu.com";
+    if (!isSuperAdmin && !organization) {
+      setError("Please select your organization");
+      return;
+    }
+
     if (!email || !password) {
       setError("Please fill in all fields");
       return;
@@ -33,19 +42,29 @@ const LoginPage = () => {
     if (success) {
       toast({
         title: "Welcome back!",
-        description: "Successfully logged into Algoristics",
+        description: "Successfully logged in",
       });
-      navigate("/dashboard");
+      
+      // Navigate based on user role and organization
+      if (isSuperAdmin) {
+        navigate("/dashboard");
+      } else {
+        // Find the organization acronym
+        const selectedAccount = demoAccounts.find(acc => acc.email === email);
+        const orgAcronym = selectedAccount?.acronym || organization.toLowerCase().replace(/\s+/g, '-');
+        navigate(`/${orgAcronym}/dashboard`);
+      }
     } else {
       setError("Invalid email or password");
     }
   };
 
   const demoAccounts = [
-    { email: "admin@algoristicedu.com", role: "Super Admin", org: "Algoristics" },
-    { email: "sarah@university.edu", role: "Organization Admin", org: "Stanford University" },
-    { email: "mike@techcorp.com", role: "Instructor", org: "TechCorp Training" },
-    { email: "emma@student.edu", role: "Learner", org: "Stanford University" },
+    { email: "admin@algoristicedu.com", role: "Super Admin", org: "Algoristics", acronym: "algoristics", requiresOrg: false },
+    { email: "sarah@university.edu", role: "Organization Admin", org: "Stanford University", acronym: "stanford", requiresOrg: true },
+    { email: "mike@techcorp.com", role: "Instructor", org: "TechCorp Training", acronym: "techcorp", requiresOrg: true },
+    { email: "emma@student.edu", role: "Learner", org: "Stanford University", acronym: "stanford", requiresOrg: true },
+    { email: "jane@citycollege.edu", role: "Learner", org: "City Community College", acronym: "citycollege", requiresOrg: true },
   ];
 
   return (
@@ -89,6 +108,24 @@ const LoginPage = () => {
                   className="transition-smooth"
                 />
               </div>
+
+              {/* Organization field - hidden for super admin */}
+              {email !== "admin@algoristicedu.com" && (
+                <div className="space-y-2">
+                  <Label htmlFor="organization">Organization</Label>
+                  <Select value={organization} onValueChange={setOrganization}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your organization" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Stanford University">Stanford University</SelectItem>
+                      <SelectItem value="TechCorp Training">TechCorp Training</SelectItem>
+                      <SelectItem value="City Community College">City Community College</SelectItem>
+                      <SelectItem value="Algoristics">Algoristics</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
@@ -152,6 +189,9 @@ const LoginPage = () => {
                 onClick={() => {
                   setEmail(account.email);
                   setPassword("algoristic123");
+                  if (account.requiresOrg) {
+                    setOrganization(account.org);
+                  }
                 }}
               >
                 <div>
@@ -159,9 +199,13 @@ const LoginPage = () => {
                   <div className="text-xs text-muted-foreground">{account.email}</div>
                   <div className="text-xs text-muted-foreground">{account.org}</div>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => {
+                <Button variant="ghost" size="sm" onClick={(e) => {
+                  e.stopPropagation();
                   setEmail(account.email);
                   setPassword("algoristic123");
+                  if (account.requiresOrg) {
+                    setOrganization(account.org);
+                  }
                 }}>
                   Use
                 </Button>

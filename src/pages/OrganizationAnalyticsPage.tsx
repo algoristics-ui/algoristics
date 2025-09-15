@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useParams } from "react-router-dom";
-import { OrganizationLayout } from "@/components/OrganizationLayout";
+import { useParams, useLocation } from "react-router-dom";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   BarChart3, 
   TrendingUp,
@@ -14,6 +14,8 @@ import {
 
 const OrganizationAnalyticsPage = () => {
   const { orgId } = useParams();
+  const location = useLocation();
+  const orgData = getOrganizationDataFromPath(location.pathname);
   
 
   const analyticsData = [
@@ -55,10 +57,7 @@ const OrganizationAnalyticsPage = () => {
   ];
 
   return (
-    <OrganizationLayout 
-      orgId={orgId}
-      title="Analytics"
-    >
+    <div className="p-6">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
@@ -196,7 +195,7 @@ const OrganizationAnalyticsPage = () => {
                 </CardContent>
               </Card>
         </div>
-    </OrganizationLayout>
+    </div>
   );
 };
 

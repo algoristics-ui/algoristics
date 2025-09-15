@@ -35,6 +35,8 @@ import OrganizationReportsPage from "./pages/OrganizationReportsPage";
 import OrganizationInstructorsPage from "./pages/OrganizationInstructorsPage";
 import OrganizationSettingsPage from "./pages/OrganizationSettingsPage";
 import OrganizationNewsFeedPage from "./pages/OrganizationNewsFeedPage";
+import OrganizationHomePage from "./pages/OrganizationHomePage";
+import OrganizationLoginPage from "./pages/OrganizationLoginPage";
 import NotFound from "./pages/NotFound";
 import RequestDemoPage from "./pages/RequestDemoPage";
 import WatchVideoPage from "./pages/WatchVideoPage";
@@ -64,6 +66,18 @@ const App = () => (
             <Route path="/watch-video" element={<WatchVideoPage />} />
             <Route path="/consultation" element={<ConsultationPage />} />
             <Route path="/get-started" element={<GetStartedPage />} />
+            
+            {/* Public Organization Home Pages */}
+            <Route path="/stanford" element={<OrganizationHomePage />} />
+            <Route path="/techcorp" element={<OrganizationHomePage />} />
+            <Route path="/algoristics" element={<OrganizationHomePage />} />
+            <Route path="/citycollege" element={<OrganizationHomePage />} />
+            
+            {/* Public Organization Login Pages */}
+            <Route path="/stanford/login" element={<OrganizationLoginPage />} />
+            <Route path="/techcorp/login" element={<OrganizationLoginPage />} />
+            <Route path="/algoristics/login" element={<OrganizationLoginPage />} />
+            <Route path="/citycollege/login" element={<OrganizationLoginPage />} />
             
             {/* Protected Dashboard Routes */}
             <Route path="/dashboard" element={
@@ -220,18 +234,34 @@ const App = () => (
               </ProtectedRoute>
             } />
 
-            {/* Organization Portal Routes */}
-            <Route path="/portal/1" element={<StanfordPortalPage />} />
-            <Route path="/portal/2" element={<TechCorpPortalPage />} />
-            <Route path="/portal/3" element={<CityCollegePortalPage />} />
-            <Route path="/portal/4" element={<CityCollegePortalPage />} />
-            <Route path="/portal/5" element={<TechCorpPortalPage />} />
-            <Route path="/portal/6" element={<CityCollegePortalPage />} />
-            <Route path="/portal/7" element={<TechCorpPortalPage />} />
-            <Route path="/portal/8" element={<TechCorpPortalPage />} />
-            <Route path="/portal/9" element={<StanfordPortalPage />} />
+            {/* Legacy Portal Routes - Redirect to new meaningful URLs */}
+            <Route path="/portal/1/*" element={<Navigate to="/stanford/dashboard" replace />} />
+            <Route path="/portal/2/*" element={<Navigate to="/techcorp/dashboard" replace />} />
+            <Route path="/portal/3/*" element={<Navigate to="/citycollege/dashboard" replace />} />
+            <Route path="/portal/4/*" element={<Navigate to="/citycollege/dashboard" replace />} />
+            <Route path="/portal/5/*" element={<Navigate to="/techcorp/dashboard" replace />} />
+            <Route path="/portal/6/*" element={<Navigate to="/citycollege/dashboard" replace />} />
+            <Route path="/portal/7/*" element={<Navigate to="/techcorp/dashboard" replace />} />
+            <Route path="/portal/8/*" element={<Navigate to="/techcorp/dashboard" replace />} />
+            <Route path="/portal/9/*" element={<Navigate to="/stanford/dashboard" replace />} />
 
-            {/* Organization Portal Sub-routes */}
+            {/* Legacy Portal Sub-routes - Redirect to new meaningful URLs */}
+            <Route path="/portal/1/courses" element={<Navigate to="/stanford/courses" replace />} />
+            <Route path="/portal/1/students" element={<Navigate to="/stanford/students" replace />} />
+            <Route path="/portal/1/analytics" element={<Navigate to="/stanford/analytics" replace />} />
+            <Route path="/portal/1/settings" element={<Navigate to="/stanford/settings" replace />} />
+            
+            <Route path="/portal/2/courses" element={<Navigate to="/techcorp/courses" replace />} />
+            <Route path="/portal/2/students" element={<Navigate to="/techcorp/students" replace />} />
+            <Route path="/portal/2/analytics" element={<Navigate to="/techcorp/analytics" replace />} />
+            <Route path="/portal/2/settings" element={<Navigate to="/techcorp/settings" replace />} />
+            
+            <Route path="/portal/3/courses" element={<Navigate to="/citycollege/courses" replace />} />
+            <Route path="/portal/3/students" element={<Navigate to="/citycollege/students" replace />} />
+            <Route path="/portal/3/analytics" element={<Navigate to="/citycollege/analytics" replace />} />
+            <Route path="/portal/3/settings" element={<Navigate to="/citycollege/settings" replace />} />
+
+            {/* Keep legacy routes for backward compatibility */}
             <Route path="/portal/:orgId/dashboard" element={<OrganizationDashboardPage />} />
             <Route path="/portal/:orgId/courses" element={<OrganizationCoursesPage />} />
             <Route path="/portal/:orgId/students" element={<OrganizationStudentsPage />} />
@@ -242,6 +272,303 @@ const App = () => (
             <Route path="/portal/:orgId/instructors" element={<OrganizationInstructorsPage />} />
             <Route path="/portal/:orgId/newsfeed" element={<OrganizationNewsFeedPage />} />
             <Route path="/portal/:orgId/settings" element={<OrganizationSettingsPage />} />
+
+            {/* Organization-based Routes with Meaningful Names */}
+            <Route path="/stanford/dashboard" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationDashboardPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/dashboard" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationDashboardPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/dashboard" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationDashboardPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/dashboard" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationDashboardPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Add other organization routes for different pages */}
+            <Route path="/stanford/courses" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationCoursesPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/courses" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationCoursesPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/courses" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationCoursesPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/courses" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationCoursesPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/stanford/students" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationStudentsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/students" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationStudentsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/students" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationStudentsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/students" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationStudentsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/stanford/analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAnalyticsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAnalyticsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAnalyticsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAnalyticsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Organization Assessments Routes */}
+            <Route path="/stanford/assessments" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAssessmentsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/assessments" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAssessmentsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/assessments" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAssessmentsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/assessments" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAssessmentsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/stanford/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationSettingsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationSettingsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationSettingsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationSettingsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Organization Reports Routes */}
+            <Route path="/stanford/reports" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationReportsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/reports" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationReportsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/reports" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationReportsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/reports" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationReportsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Organization Instructors Routes */}
+            <Route path="/stanford/instructors" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationInstructorsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/instructors" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationInstructorsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/instructors" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationInstructorsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/instructors" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationInstructorsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Organization Certificates Routes */}
+            <Route path="/stanford/certificates" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationCertificatesPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/certificates" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationCertificatesPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/certificates" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationCertificatesPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/certificates" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationCertificatesPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Organization News Feed Routes */}
+            <Route path="/stanford/newsfeed" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationNewsFeedPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/newsfeed" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationNewsFeedPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/newsfeed" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationNewsFeedPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/newsfeed" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationNewsFeedPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
 
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />

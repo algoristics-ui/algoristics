@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useParams } from "react-router-dom";
-import { OrganizationLayout } from "@/components/OrganizationLayout";
+import { useParams, useLocation } from "react-router-dom";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   Users, 
   Search,
@@ -18,6 +18,8 @@ import {
 
 const OrganizationStudentsPage = () => {
   const { orgId } = useParams();
+  const location = useLocation();
+  const orgData = getOrganizationDataFromPath(location.pathname);
 
   const students = [
     {
@@ -67,10 +69,7 @@ const OrganizationStudentsPage = () => {
   ];
 
   return (
-    <OrganizationLayout 
-      orgId={orgId}
-      title="Students"
-    >
+    <div className="p-6">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Students</h1>
@@ -102,7 +101,7 @@ const OrganizationStudentsPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/courses`}
+                    onClick={() => window.location.href = `/${orgData.acronym}/courses`}
                   >
                     <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-sm">View Courses</span>
@@ -110,7 +109,7 @@ const OrganizationStudentsPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/certificates`}
+                    onClick={() => window.location.href = `/${orgData.acronym}/certificates`}
                   >
                     <Award className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-sm">Certificates</span>
@@ -118,7 +117,7 @@ const OrganizationStudentsPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/analytics`}
+                    onClick={() => window.location.href = `/${orgData.acronym}/analytics`}
                   >
                     <TrendingUp className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-sm">Student Progress</span>
@@ -272,7 +271,7 @@ const OrganizationStudentsPage = () => {
                 </div>
               </CardContent>
         </Card>
-    </OrganizationLayout>
+    </div>
   );
 };
 

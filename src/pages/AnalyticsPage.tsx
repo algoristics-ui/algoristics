@@ -92,11 +92,11 @@ const AnalyticsPage = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/20 hover:text-white font-semibold w-full sm:w-auto">
+              <Button variant="outline" className="border-white/50 text-white bg-white/10 hover:bg-white/20 hover:text-white hover:border-white/70 font-semibold w-full sm:w-auto backdrop-blur-sm">
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Export Report
               </Button>
-              <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-6 md:px-8 py-3 w-full sm:w-auto">
+              <Button className="bg-white text-primary hover:bg-white/90 hover:text-primary font-semibold px-6 md:px-8 py-3 w-full sm:w-auto">
                 <BarChart3 className="w-4 h-4 mr-2" />
                 Generate Insights
               </Button>

@@ -2,6 +2,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { 
   Globe, 
   MapPin, 
@@ -11,24 +14,18 @@ import {
   CheckCircle,
   Timer,
   GraduationCap,
-  Zap
+  Zap,
+  HelpCircle,
+  LogOut,
+  User
 } from "lucide-react";
 
 interface OrganizationData {
   name: string;
-  logo: string;
-  headerImage: string;
   primaryColor: string;
   secondaryColor: string;
-  customUrl: string;
-  location: string;
-  subtitle?: string;
-  planType?: 'Enterprise' | 'Professional' | 'Trial';
-  additionalBadges?: Array<{
-    text: string;
-    icon: React.ComponentType<{ className?: string }>;
-    color: string;
-  }>;
+  acronym: string;
+  headerImage?: string;
 }
 
 interface OrganizationHeaderProps {
@@ -37,6 +34,9 @@ interface OrganizationHeaderProps {
 }
 
 const OrganizationHeader = ({ orgData, stickyHeader = false }: OrganizationHeaderProps) => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
   const getAcronym = (name: string) => {
     return name
       .split(' ')
@@ -46,148 +46,96 @@ const OrganizationHeader = ({ orgData, stickyHeader = false }: OrganizationHeade
       .slice(0, 3);
   };
 
-  const getPlanBadgeColor = (planType?: string) => {
-    switch (planType) {
-      case 'Enterprise':
-        return orgData.primaryColor;
-      case 'Professional':
-        return orgData.primaryColor;
-      case 'Trial':
-        return '#f59e0b';
-      default:
-        return orgData.primaryColor;
-    }
-  };
-
-  const getStatusBadges = () => {
-    const badges = [];
-    
-    if (orgData.planType) {
-      badges.push(
-        <Badge 
-          key="plan"
-          className="text-white px-3 py-1"
-          style={{ backgroundColor: getPlanBadgeColor(orgData.planType) }}
-        >
-          {orgData.planType} Plan
-        </Badge>
-      );
-    }
-
-    if (orgData.planType === 'Trial') {
-      badges.push(
-        <Badge key="trial" variant="outline" className="text-orange-700 border-orange-300">
-          <Timer className="h-3 w-3 mr-1" />
-          30 Days Remaining
-        </Badge>
-      );
-    } else {
-      badges.push(
-        <Badge key="active" variant="outline" className="text-green-700 border-green-300">
-          <CheckCircle className="h-3 w-3 mr-1" />
-          Active
-        </Badge>
-      );
-    }
-
-    if (orgData.additionalBadges) {
-      orgData.additionalBadges.forEach((badge, index) => {
-        badges.push(
-          <Badge key={`additional-${index}`} variant="outline" className={`text-${badge.color}-700 border-${badge.color}-300`}>
-            <badge.icon className="h-3 w-3 mr-1" />
-            {badge.text}
-          </Badge>
-        );
-      });
-    }
-
-    return badges;
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   return (
-    <>
-      {stickyHeader && (
-        <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
-          <div className="flex h-14 items-center px-4">
-            <h1 className="text-lg font-semibold">{orgData.name} Portal</h1>
+    <nav 
+      className="border-b fixed top-0 left-0 right-0 z-50 w-full overflow-hidden"
+      style={{
+        backgroundImage: orgData.headerImage 
+          ? `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(${orgData.headerImage})`
+          : `linear-gradient(135deg, ${orgData.primaryColor}, ${orgData.secondaryColor})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        height: '80px'
+      }}
+    >
+      <div className="container mx-auto px-6 flex items-center justify-between h-20">
+          {/* Organization Logo and Name */}
+          <div className="flex-shrink-0 flex items-center">
+            <div className="flex items-center space-x-3">
+              {/* Organization acronym badge */}
+              <div 
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+              >
+                {getAcronym(orgData.name)}
+              </div>
+              <div>
+                <h1 className="text-lg md:text-xl font-semibold text-white drop-shadow-md">{orgData.name}</h1>
+              </div>
+            </div>
           </div>
-        </header>
-      )}
-      
-      <div
-        className="h-48 relative"
-        style={{
-          backgroundImage: `url(${orgData.headerImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/40" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="container mx-auto px-3 md:px-6">
-            <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-              <Avatar className="h-16 w-16 md:h-20 md:w-20 border-4 border-white shadow-xl">
-                <AvatarImage src={orgData.logo} alt={orgData.name} />
-                <AvatarFallback 
-                  className="text-xl md:text-2xl font-bold text-white" 
-                  style={{ backgroundColor: orgData.primaryColor }}
-                >
-                  {getAcronym(orgData.name)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="text-white text-center md:text-left">
-                <h1 className="text-2xl md:text-4xl font-bold">{orgData.name}</h1>
-                <p className="text-lg md:text-xl opacity-90">
-                  {orgData.subtitle || 'Learning Management Portal'}
-                </p>
-                <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 mt-2 text-sm opacity-80">
-                  <div className="flex items-center space-x-1">
-                    <Globe className="h-4 w-4" />
-                    <span>{orgData.customUrl}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <MapPin className="h-4 w-4" />
-                    <span>{orgData.location}</span>
+
+          {/* User Actions */}
+          <div className="flex items-center space-x-3">
+            {/* Notifications */}
+            <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/20 hover:text-white">
+              <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                3
+              </span>
+            </Button>
+
+            {/* Help */}
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white">
+              <HelpCircle className="h-5 w-5" />
+            </Button>
+
+            {/* User Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full hover:bg-white/20">
+                  <Avatar className="h-8 w-8 ring-2 ring-white/20">
+                    <AvatarImage src="/placeholder-user.jpg" alt={user?.name || 'User'} />
+                    <AvatarFallback className="bg-white/90 text-gray-700">
+                      {user?.name?.charAt(0) || 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <div className="flex items-center justify-start gap-2 p-2">
+                  <div className="flex flex-col space-y-1 leading-none">
+                    <p className="font-medium">{user?.name || 'User'}</p>
+                    <p className="w-[200px] truncate text-sm text-muted-foreground">
+                      {user?.email}
+                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
-      </div>
-
-      <div className="container mx-auto px-3 md:px-6 -mt-12 relative z-10">
-        <Card className="mb-8 bg-white/95 backdrop-blur-sm shadow-xl border-0">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div className="flex flex-wrap items-center gap-2">
-                {getStatusBadges()}
-              </div>
-              <div className="flex items-center space-x-2">
-                <Button variant="outline" size="sm">
-                  <Bell className="h-4 w-4 mr-2" />
-                  {orgData.planType === 'Trial' ? 'Announcements' : 
-                   orgData.planType === 'Professional' ? 'Alerts' : 'Notifications'}
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Download className="h-4 w-4 mr-2" />
-                  {orgData.planType === 'Trial' ? 'Student Data' : 'Export Data'}
-                </Button>
-                <Button 
-                  size="sm" 
-                  className="text-white"
-                  style={{ backgroundColor: orgData.primaryColor }}
-                >
-                  <Settings className="h-4 w-4 mr-2" />
-                  {orgData.planType === 'Trial' ? 'Administration' : 
-                   orgData.planType === 'Professional' ? 'Manage' : 'Settings'}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </>
+    </nav>
   );
 };
 

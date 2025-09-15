@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { useParams } from "react-router-dom";
-import { OrganizationLayout } from "@/components/OrganizationLayout";
+import { useParams, useLocation } from "react-router-dom";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   Users, 
   BookOpen, 
@@ -21,12 +21,14 @@ import {
 
 const OrganizationDashboardPage = () => {
   const { orgId } = useParams();
+  const location = useLocation();
+  const orgData = getOrganizationDataFromPath(location.pathname);
 
   const dashboardStats = [
-    { title: "Active Students", value: "12,500", icon: Users, color: "#8C1515", change: "+8%" },
-    { title: "Total Courses", value: "120", icon: BookOpen, color: "#8C1515", change: "+12%" },
-    { title: "Completion Rate", value: "89%", icon: TrendingUp, color: "#8C1515", change: "+5%" },
-    { title: "Certificates Issued", value: "2,847", icon: Award, color: "#8C1515", change: "+15%" }
+    { title: "Active Students", value: "12,500", icon: Users, color: orgData.primaryColor, change: "+8%" },
+    { title: "Total Courses", value: "120", icon: BookOpen, color: orgData.primaryColor, change: "+12%" },
+    { title: "Completion Rate", value: "89%", icon: TrendingUp, color: orgData.primaryColor, change: "+5%" },
+    { title: "Certificates Issued", value: "2,847", icon: Award, color: orgData.primaryColor, change: "+15%" }
   ];
 
   const newsFeedItems = [
@@ -94,10 +96,7 @@ const OrganizationDashboardPage = () => {
   };
 
   return (
-    <OrganizationLayout 
-      orgId={orgId}
-      title="Home"
-    >
+    <div className="p-6">
       <div className="mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-foreground">Dashboard Overview</h1>
         <p className="text-muted-foreground">Stay updated with the latest announcements and course information</p>
@@ -175,7 +174,7 @@ const OrganizationDashboardPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-16 md:h-20 flex flex-col items-center justify-center space-y-1 md:space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/courses`}
+                    onClick={() => window.location.href = `/${orgData.acronym}/courses`}
                   >
                     <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-xs md:text-sm">View Courses</span>
@@ -183,7 +182,7 @@ const OrganizationDashboardPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-16 md:h-20 flex flex-col items-center justify-center space-y-1 md:space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/students`}
+                    onClick={() => window.location.href = `/${orgData.acronym}/students`}
                   >
                     <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-xs md:text-sm">Manage Students</span>
@@ -191,7 +190,7 @@ const OrganizationDashboardPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-16 md:h-20 flex flex-col items-center justify-center space-y-1 md:space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/assessments`}
+                    onClick={() => window.location.href = `/${orgData.acronym}/assessments`}
                   >
                     <ClipboardList className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-xs md:text-sm">Assessments</span>
@@ -199,7 +198,7 @@ const OrganizationDashboardPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-16 md:h-20 flex flex-col items-center justify-center space-y-1 md:space-y-2"
-                    onClick={() => window.location.href = `/portal/${orgId}/analytics`}
+                    onClick={() => window.location.href = `/${orgData.acronym}/analytics`}
                   >
                     <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-xs md:text-sm">View Analytics</span>
@@ -255,7 +254,7 @@ const OrganizationDashboardPage = () => {
                 ))}
               </CardContent>
             </Card>
-    </OrganizationLayout>
+    </div>
   );
 };
 
