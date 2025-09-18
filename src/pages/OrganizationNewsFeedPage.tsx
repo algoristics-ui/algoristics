@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   Megaphone,
@@ -27,6 +27,7 @@ import {
 const OrganizationNewsFeedPage = () => {
   const { orgId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const orgData = getOrganizationDataFromPath(location.pathname);
 
   const [newsFeedItems, setNewsFeedItems] = useState([
@@ -253,7 +254,7 @@ const OrganizationNewsFeedPage = () => {
             <Button 
               variant="outline" 
               className="h-20 flex flex-col items-center justify-center space-y-2"
-              onClick={() => window.location.href = `/${orgData.acronym}/courses`}
+              onClick={() => navigate(`/${orgData.acronym}/courses`)}
             >
               <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
               <span className="text-sm">View Courses</span>
@@ -261,7 +262,7 @@ const OrganizationNewsFeedPage = () => {
             <Button 
               variant="outline" 
               className="h-20 flex flex-col items-center justify-center space-y-2"
-              onClick={() => window.location.href = `/${orgData.acronym}/students`}
+              onClick={() => navigate(`/${orgData.acronym}/students`)}
             >
               <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
               <span className="text-sm">View Students</span>
@@ -269,7 +270,7 @@ const OrganizationNewsFeedPage = () => {
             <Button 
               variant="outline" 
               className="h-20 flex flex-col items-center justify-center space-y-2"
-              onClick={() => window.location.href = `/${orgData.acronym}/analytics`}
+              onClick={() => navigate(`/${orgData.acronym}/analytics`)}
             >
               <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
               <span className="text-sm">View Analytics</span>

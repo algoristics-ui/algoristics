@@ -37,7 +37,7 @@ const LoginPage = () => {
       return;
     }
 
-    const success = await login(email, password);
+    const success = await login(email, password, organization);
     
     if (success) {
       toast({
@@ -49,9 +49,15 @@ const LoginPage = () => {
       if (isSuperAdmin) {
         navigate("/dashboard");
       } else {
-        // Find the organization acronym
-        const selectedAccount = demoAccounts.find(acc => acc.email === email);
-        const orgAcronym = selectedAccount?.acronym || organization.toLowerCase().replace(/\s+/g, '-');
+        // Get organization acronym from mapping or find from demo accounts
+        let orgAcronym = organizationMapping[organization as keyof typeof organizationMapping];
+        
+        if (!orgAcronym) {
+          const selectedAccount = demoAccounts.find(acc => acc.email === email);
+          orgAcronym = selectedAccount?.acronym || organization.toLowerCase().replace(/\s+/g, '-');
+        }
+        
+        // Redirect to organization home page (dashboard)
         navigate(`/${orgAcronym}/dashboard`);
       }
     } else {
@@ -65,7 +71,16 @@ const LoginPage = () => {
     { email: "mike@techcorp.com", role: "Instructor", org: "TechCorp Training", acronym: "techcorp", requiresOrg: true },
     { email: "emma@student.edu", role: "Learner", org: "Stanford University", acronym: "stanford", requiresOrg: true },
     { email: "jane@citycollege.edu", role: "Learner", org: "City Community College", acronym: "citycollege", requiresOrg: true },
+    { email: "alex@consultant.com", role: "Instructor", org: "Any Organization", acronym: "multiple", requiresOrg: true },
   ];
+
+  // Organization mapping
+  const organizationMapping = {
+    "Stanford University": "stanford",
+    "TechCorp Training": "techcorp", 
+    "City Community College": "citycollege",
+    "Algoristics": "algoristics"
+  };
 
   return (
     <div className="min-h-screen gradient-subtle flex items-center justify-center p-6 pt-20">

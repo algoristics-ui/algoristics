@@ -21,12 +21,13 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const SuperAdminHeader = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, getOrganizationHomePath } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    const homePath = getOrganizationHomePath();
     logout();
-    navigate("/login");
+    navigate(homePath);
   };
 
   const getInitials = (name: string) => {

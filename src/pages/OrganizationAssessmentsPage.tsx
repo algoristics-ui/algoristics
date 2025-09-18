@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   ClipboardList, 
@@ -19,6 +19,7 @@ import {
 const OrganizationAssessmentsPage = () => {
   const { orgId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const orgData = getOrganizationDataFromPath(location.pathname);
   
 
@@ -104,7 +105,7 @@ const OrganizationAssessmentsPage = () => {
             <Button 
               variant="outline" 
               className="h-20 flex flex-col items-center justify-center space-y-2"
-              onClick={() => window.location.href = `/create-assessment`}
+              onClick={() => navigate(`/${orgData.acronym}/create-assessment`)}
             >
               <Plus className="h-5 w-5" style={{ color: orgData.primaryColor }} />
               <span className="text-sm">Create Assessment</span>
@@ -112,7 +113,7 @@ const OrganizationAssessmentsPage = () => {
             <Button 
               variant="outline" 
               className="h-20 flex flex-col items-center justify-center space-y-2"
-              onClick={() => window.location.href = `/${orgData.acronym}/courses`}
+              onClick={() => navigate(`/${orgData.acronym}/courses`)}
             >
               <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
               <span className="text-sm">View Courses</span>
@@ -120,7 +121,7 @@ const OrganizationAssessmentsPage = () => {
             <Button 
               variant="outline" 
               className="h-20 flex flex-col items-center justify-center space-y-2"
-              onClick={() => window.location.href = `/${orgData.acronym}/students`}
+              onClick={() => navigate(`/${orgData.acronym}/students`)}
             >
               <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
               <span className="text-sm">View Students</span>
@@ -128,7 +129,7 @@ const OrganizationAssessmentsPage = () => {
             <Button 
               variant="outline" 
               className="h-20 flex flex-col items-center justify-center space-y-2"
-              onClick={() => window.location.href = `/${orgData.acronym}/analytics`}
+              onClick={() => navigate(`/${orgData.acronym}/analytics`)}
             >
               <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
               <span className="text-sm">View Results</span>

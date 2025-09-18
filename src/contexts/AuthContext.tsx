@@ -12,8 +12,9 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string, organization?: string) => Promise<boolean>;
   logout: () => void;
+  getOrganizationHomePath: () => string;
   isAuthenticated: boolean;
   isLoading: boolean;
 }
@@ -50,6 +51,20 @@ const DUMMY_USERS: User[] = [
     role: 'learner',
     organization: 'Stanford University',
   },
+  {
+    id: '5',
+    name: 'Jane Smith',
+    email: 'jane@citycollege.edu',
+    role: 'learner',
+    organization: 'City Community College',
+  },
+  {
+    id: '6',
+    name: 'Alex Rodriguez',
+    email: 'alex@consultant.com',
+    role: 'instructor',
+    organization: 'Stanford University', // Can be changed via organization dropdown
+  },
 ];
 
 interface AuthProviderProps {
@@ -61,7 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { clearCache } = useUserCache();
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string, organization?: string): Promise<boolean> => {
     setIsLoading(true);
     
     // Simulate API call
@@ -71,8 +86,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const foundUser = DUMMY_USERS.find(u => u.email === email);
     
     if (foundUser && password === 'algoristic123') {
-      setUser(foundUser);
-      localStorage.setItem('auth_user', JSON.stringify(foundUser));
+      // For non-super admin users, validate organization if provided
+      if (foundUser.role !== 'super_admin' && organization) {
+        // Update user organization if it's provided via dropdown
+        const userWithOrg = { ...foundUser, organization };
+        setUser(userWithOrg);
+        localStorage.setItem('auth_user', JSON.stringify(userWithOrg));
+      } else {
+        setUser(foundUser);
+        localStorage.setItem('auth_user', JSON.stringify(foundUser));
+      }
       setIsLoading(false);
       return true;
     }
@@ -85,6 +108,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
     localStorage.removeItem('auth_user');
     clearCache(); // Clear user cache on logout
+  };
+
+  const getOrganizationHomePath = (): string => {
+    if (!user) return '/login';
+    
+    // Super admin goes to main login
+    if (user.role === 'super_admin') {
+      return '/login';
+    }
+
+    // Organization users go to their organization home page
+    const organizationMapping: Record<string, string> = {
+      'Stanford University': 'stanford',
+      'TechCorp Training': 'techcorp',
+      'City Community College': 'citycollege',
+      'Algoristics': 'algoristics'
+    };
+
+    const orgPath = organizationMapping[user.organization];
+    return orgPath ? `/${orgPath}` : '/login';
   };
 
   // Check for existing session on load
@@ -103,6 +146,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user,
     login,
     logout,
+    getOrganizationHomePath,
     isAuthenticated: !!user,
     isLoading,
   };

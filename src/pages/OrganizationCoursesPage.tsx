@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
 import { 
   BookOpen, 
@@ -18,6 +18,7 @@ import {
 const OrganizationCoursesPage = () => {
   const { orgId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const orgData = getOrganizationDataFromPath(location.pathname);
 
   const courses = [
@@ -70,7 +71,11 @@ const OrganizationCoursesPage = () => {
           <h1 className="text-3xl font-bold text-foreground">Courses</h1>
           <p className="text-muted-foreground">Manage your organization's course catalog</p>
         </div>
-              <Button style={{ backgroundColor: orgData.primaryColor }} className="text-white">
+              <Button 
+                style={{ backgroundColor: orgData.primaryColor }} 
+                className="text-white"
+                onClick={() => navigate(`/${orgData.acronym}/new-course`)}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Create Course
               </Button>
@@ -88,7 +93,7 @@ const OrganizationCoursesPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/new-course`}
+                    onClick={() => navigate(`/${orgData.acronym}/new-course`)}
                   >
                     <Plus className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-sm">Create Course</span>
@@ -96,7 +101,7 @@ const OrganizationCoursesPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/${orgData.acronym}/students`}
+                    onClick={() => navigate(`/${orgData.acronym}/students`)}
                   >
                     <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-sm">View Students</span>
@@ -104,7 +109,7 @@ const OrganizationCoursesPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/${orgData.acronym}/assessments`}
+                    onClick={() => navigate(`/${orgData.acronym}/create-assessment`)}
                   >
                     <ClipboardList className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-sm">Create Assessment</span>
@@ -112,7 +117,7 @@ const OrganizationCoursesPage = () => {
                   <Button 
                     variant="outline" 
                     className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => window.location.href = `/${orgData.acronym}/analytics`}
+                    onClick={() => navigate(`/${orgData.acronym}/analytics`)}
                   >
                     <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
                     <span className="text-sm">View Analytics</span>

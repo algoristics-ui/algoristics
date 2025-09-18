@@ -34,7 +34,7 @@ interface OrganizationHeaderProps {
 }
 
 const OrganizationHeader = ({ orgData, stickyHeader = false }: OrganizationHeaderProps) => {
-  const { user, logout } = useAuth();
+  const { user, logout, getOrganizationHomePath } = useAuth();
   const navigate = useNavigate();
 
   const getAcronym = (name: string) => {
@@ -47,8 +47,9 @@ const OrganizationHeader = ({ orgData, stickyHeader = false }: OrganizationHeade
   };
 
   const handleLogout = () => {
+    const homePath = getOrganizationHomePath();
     logout();
-    navigate('/login');
+    navigate(homePath);
   };
 
   return (

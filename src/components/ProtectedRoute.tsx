@@ -1,15 +1,22 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
-
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const location = useLocation();
 
   if (!isAuthenticated) {
+    // If this is an organization route, redirect to organization login
+    const orgData = getOrganizationDataFromPath(location.pathname);
+    if (orgData.acronym !== 'organization') {
+      return <Navigate to={`/${orgData.acronym}/login`} replace />;
+    }
+    // Otherwise redirect to main login
     return <Navigate to="/login" replace />;
   }
 

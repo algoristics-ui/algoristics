@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
@@ -28,6 +29,7 @@ const OrganizationLoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState("learner");
+  const [error, setError] = useState("");
 
   // Get role from URL params if provided
   useEffect(() => {
@@ -40,28 +42,27 @@ const OrganizationLoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
 
     try {
-      // Mock login for demonstration
-      const mockUser = {
-        id: "1",
-        name: "Demo User",
-        email: email,
-        role: selectedRole as "super_admin" | "org_admin" | "instructor" | "learner",
-        organization: orgData.name
-      };
-
-      await login(mockUser);
+      // Use the standard login function with organization
+      const success = await login(email, password, orgData.name);
       
-      // Redirect to appropriate dashboard based on role and organization
-      const orgPath = location.pathname.replace('/login', '');
-      if (selectedRole === 'org_admin' || selectedRole === 'instructor') {
-        navigate(`${orgPath}/dashboard`);
+      if (success) {
+        // Redirect to appropriate dashboard based on role and organization
+        const orgPath = location.pathname.replace('/login', '');
+        
+        if (selectedRole === 'learner') {
+          navigate(`${orgPath}/learner/dashboard`);
+        } else {
+          navigate(`${orgPath}/dashboard`);
+        }
       } else {
-        navigate(`${orgPath}/courses`); // Students go to courses
+        setError("Invalid email or password. Please check your credentials.");
       }
     } catch (error) {
       console.error('Login failed:', error);
+      setError("Login failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -162,6 +163,12 @@ const OrganizationLoginPage = () => {
 
               {/* Login Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -215,9 +222,25 @@ const OrganizationLoginPage = () => {
               <div className="mt-6 p-4 bg-muted/50 rounded-lg">
                 <h4 className="font-medium text-sm mb-2">Demo Credentials:</h4>
                 <div className="text-xs text-muted-foreground space-y-1">
-                  <p><strong>Student:</strong> student@{orgData.acronym}.edu / password</p>
-                  <p><strong>Instructor:</strong> instructor@{orgData.acronym}.edu / password</p>
-                  <p><strong>Admin:</strong> admin@{orgData.acronym}.edu / password</p>
+                  {orgData.acronym === 'stanford' && (
+                    <>
+                      <p><strong>Student:</strong> emma@student.edu / algoristic123</p>
+                      <p><strong>Admin:</strong> sarah@university.edu / algoristic123</p>
+                    </>
+                  )}
+                  {orgData.acronym === 'techcorp' && (
+                    <>
+                      <p><strong>Instructor:</strong> mike@techcorp.com / algoristic123</p>
+                      <p><strong>Multi-Org Instructor:</strong> alex@consultant.com / algoristic123</p>
+                    </>
+                  )}
+                  {orgData.acronym === 'citycollege' && (
+                    <>
+                      <p><strong>Student:</strong> jane@citycollege.edu / algoristic123</p>
+                      <p><strong>Multi-Org Instructor:</strong> alex@consultant.com / algoristic123</p>
+                    </>
+                  )}
+                  <p className="text-muted-foreground/80 mt-2">All accounts use password: <code>algoristic123</code></p>
                 </div>
               </div>
 

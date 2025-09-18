@@ -21,17 +21,40 @@ import {
   ChevronDown
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { getOrganizationDataFromPath } from "@/utils/organizationData";
 
 const DashboardHeader = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, getOrganizationHomePath } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get organization context for non-super admin users
+  const orgData = user?.role !== 'super_admin' ? getOrganizationDataFromPath(location.pathname) : null;
+  const orgPrefix = orgData ? `/${orgData.acronym}` : '';
 
   const handleLogout = () => {
+    const homePath = getOrganizationHomePath();
     logout();
-    navigate("/login");
+    navigate(homePath);
+  };
+
+  const handleProfileClick = () => {
+    if (user?.role === 'super_admin') {
+      navigate('/profile');
+    } else {
+      navigate(`${orgPrefix}/settings`); // Organization users go to organization settings
+    }
+  };
+
+  const handleSettingsClick = () => {
+    if (user?.role === 'super_admin') {
+      navigate('/settings');
+    } else {
+      navigate(`${orgPrefix}/settings`);
+    }
   };
 
   const getInitials = (name: string) => {
@@ -111,11 +134,11 @@ const DashboardHeader = () => {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/profile')}>
+              <DropdownMenuItem onClick={handleProfileClick}>
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/settings')}>
+              <DropdownMenuItem onClick={handleSettingsClick}>
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
               </DropdownMenuItem>
