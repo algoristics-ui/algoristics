@@ -17,6 +17,7 @@ interface AuthContextType {
   getOrganizationHomePath: () => string;
   isAuthenticated: boolean;
   isLoading: boolean;
+  restoreSession: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -116,6 +117,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasInitialized, setHasInitialized] = useState(false);
   const { clearCache } = useUserCache();
 
   const login = async (email: string, password: string, organization?: string): Promise<boolean> => {
@@ -172,17 +174,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return orgPath ? `/${orgPath}` : '/login';
   };
 
-  // Check for existing session on load
-  React.useEffect(() => {
+  // Only restore session when explicitly needed (not on public pages)
+  const restoreSession = () => {
+    if (!hasInitialized) {
+      setHasInitialized(true);
+    }
+    
     const savedUser = localStorage.getItem('auth_user');
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+        return true;
       } catch (error) {
         localStorage.removeItem('auth_user');
+        return false;
       }
     }
-  }, []);
+    return false;
+  };
 
   const value: AuthContextType = {
     user,
@@ -191,6 +201,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     getOrganizationHomePath,
     isAuthenticated: !!user,
     isLoading,
+    restoreSession,
   };
 
   return (

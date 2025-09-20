@@ -1,14 +1,22 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { useEffect } from "react";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, restoreSession } = useAuth();
   const location = useLocation();
+
+  // Try to restore session when accessing protected route
+  useEffect(() => {
+    if (!isAuthenticated) {
+      restoreSession();
+    }
+  }, [isAuthenticated, restoreSession]);
 
   if (!isAuthenticated) {
     // If this is an organization route, redirect to organization login

@@ -58,6 +58,13 @@ const Navigation = () => {
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                {user.role === 'super_admin' && (
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                    <User className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </DropdownMenuItem>
+                )}
+                {user.role === 'super_admin' && <DropdownMenuSeparator />}
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout
