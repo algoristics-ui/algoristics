@@ -1,15 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { GraduationCap, Menu, X } from "lucide-react";
+import { GraduationCap, Menu, X, User, LogOut } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import SuperAdminSidebar from "./SuperAdminSidebar";
 
 const Navigation = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -34,9 +42,33 @@ const Navigation = () => {
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center space-x-3">
-          <Button variant="ghost" size="sm" onClick={() => navigate('/login')}>
-            Sign In
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+                  <User className="h-4 w-4" />
+                  <span>{user.email?.split('@')[0] || 'User'}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem disabled>
+                  <div className="flex flex-col">
+                    <span className="font-medium">{user.email}</span>
+                    <span className="text-xs text-muted-foreground capitalize">{user.role?.replace('_', ' ')}</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button variant="ghost" size="sm" onClick={() => navigate('/login')}>
+              Sign In
+            </Button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -68,16 +100,36 @@ const Navigation = () => {
             
             {/* Mobile CTA Buttons */}
             <div className="pt-4 border-t space-y-3">
-              <Button 
-                variant="ghost" 
-                className="w-full justify-start" 
-                onClick={() => {
-                  navigate('/login');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                Sign In
-              </Button>
+              {user ? (
+                <>
+                  <div className="px-3 py-2 text-sm">
+                    <div className="font-medium">{user.email}</div>
+                    <div className="text-xs text-muted-foreground capitalize">{user.role?.replace('_', ' ')}</div>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start" 
+                    onClick={() => {
+                      handleLogout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start" 
+                  onClick={() => {
+                    navigate('/login');
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Sign In
+                </Button>
+              )}
             </div>
           </div>
         </div>

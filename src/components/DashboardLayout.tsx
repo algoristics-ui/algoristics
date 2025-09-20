@@ -97,13 +97,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       />
       
       <SidebarProvider defaultOpen={shouldOpenByDefault}>
-        {/* Main container with top padding to account for fixed header */}
-        <div className="min-h-screen bg-background flex flex-col pt-20">
+        {/* Main container without top padding - handled by sidebar and main content */}
+        <div className="min-h-screen bg-background flex flex-col">
           
           {/* Sidebar and Main Content container */}
           <div className="flex flex-1 overflow-hidden">
             <AppSidebar />
-            <main className="flex-1 overflow-y-auto bg-gradient-to-br from-primary/5 to-secondary/5">
+            <main className="flex-1 overflow-y-auto bg-gradient-to-br from-primary/5 to-secondary/5 pt-20">
               <div className="h-full">
                 {children}
               </div>

@@ -57,6 +57,7 @@ const LearnerCoursesPage = () => {
   });
   const [sortBy, setSortBy] = useState("relevance");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
   const [bookmarkedCourses, setBookmarkedCourses] = useState<number[]>([1, 3, 5]);
 
   // Sample courses data
@@ -603,7 +604,7 @@ const LearnerCoursesPage = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20 lg:pb-0">
-      <div className="container mx-auto px-4 sm:px-6 py-6 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl lg:text-3xl font-bold mb-2">My Learning</h1>
@@ -626,8 +627,17 @@ const LearnerCoursesPage = () => {
               />
             </div>
 
-            {/* Desktop Filters */}
+            {/* Desktop Controls */}
             <div className="hidden lg:flex items-center space-x-2">
+              <Button
+                variant={showFilters ? "default" : "outline"}
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Filters
+              </Button>
+
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -731,21 +741,9 @@ const LearnerCoursesPage = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Sidebar Filters (Desktop) */}
-          <div className="hidden lg:block lg:col-span-3">
-            <Card className="sticky top-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Filters</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <FilterPanel />
-              </CardContent>
-            </Card>
-          </div>
-
+        <div className={`grid gap-8 ${showFilters ? 'grid-cols-1 lg:grid-cols-12' : 'grid-cols-1'}`}>
           {/* Course Grid */}
-          <div className="lg:col-span-9">
+          <div className={showFilters ? 'lg:col-span-9' : 'col-span-1'}>
             <div className="flex items-center justify-between mb-6">
               <p className="text-sm text-muted-foreground">
                 Showing {filteredCourses.length} courses
@@ -801,6 +799,29 @@ const LearnerCoursesPage = () => {
               </div>
             )}
           </div>
+
+          {/* Right Sidebar Filters (Desktop) */}
+          {showFilters && (
+            <div className="hidden lg:block lg:col-span-3">
+              <Card className="sticky top-6">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center justify-between">
+                    Filters
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowFilters(false)}
+                    >
+                      ×
+                    </Button>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <FilterPanel />
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
       

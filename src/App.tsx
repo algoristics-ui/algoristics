@@ -38,12 +38,21 @@ import OrganizationSettingsPage from "./pages/OrganizationSettingsPage";
 import OrganizationNewsFeedPage from "./pages/OrganizationNewsFeedPage";
 import OrganizationHomePage from "./pages/OrganizationHomePage";
 import OrganizationLoginPage from "./pages/OrganizationLoginPage";
+import OrganizationDetailPage from "./pages/OrganizationDetailPage";
+import OrganizationEditPage from "./pages/OrganizationEditPage";
+import OrganizationAdminSettingsPage from "./pages/OrganizationAdminSettingsPage";
+import InstructorProfilePage from "./pages/InstructorProfilePage";
+import InstructorCourseViewPage from "./pages/InstructorCourseViewPage";
+import InstructorCourseEditPage from "./pages/InstructorCourseEditPage";
+import InstructorCourseSettingsPage from "./pages/InstructorCourseSettingsPage";
+import InstructorCourseAnalyticsPage from "./pages/InstructorCourseAnalyticsPage";
 import LearnerDashboardPage from "./pages/LearnerDashboardPage";
 import LearnerCoursesPage from "./pages/LearnerCoursesPage";
 import LearnerAssessmentsPage from "./pages/LearnerAssessmentsPage";
 import LearnerPathsPage from "./pages/LearnerPathsPage";
 import LearnerAnalyticsPage from "./pages/LearnerAnalyticsPage";
 import EnhancedLearnerDashboard from "./pages/EnhancedLearnerDashboard";
+import LearnerCertificatesPage from "./pages/LearnerCertificatesPage";
 import NotFound from "./pages/NotFound";
 import RequestDemoPage from "./pages/RequestDemoPage";
 import WatchVideoPage from "./pages/WatchVideoPage";
@@ -148,6 +157,31 @@ const App = () => (
               <ProtectedRoute>
                 <DashboardLayout>
                   <OrganizationsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            
+            {/* Super Admin Organization Management Routes */}
+            <Route path="/super-admin/organizations/:orgId" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationDetailPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/super-admin/organizations/:orgId/edit" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationEditPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/super-admin/organizations/:orgId/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <OrganizationAdminSettingsPage />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
@@ -457,6 +491,157 @@ const App = () => (
               </ProtectedRoute>
             } />
 
+            {/* Instructor Profile Routes */}
+            <Route path="/stanford/profile" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorProfilePage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/profile" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorProfilePage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/profile" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorProfilePage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/profile" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorProfilePage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Instructor Course Routes */}
+            {/* Stanford Instructor Course Routes */}
+            <Route path="/stanford/courses/:courseId" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseViewPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/stanford/courses/:courseId/edit" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseEditPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/stanford/courses/:courseId/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseSettingsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/stanford/courses/:courseId/analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseAnalyticsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* TechCorp Instructor Course Routes */}
+            <Route path="/techcorp/courses/:courseId" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseViewPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/courses/:courseId/edit" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseEditPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/courses/:courseId/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseSettingsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/techcorp/courses/:courseId/analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseAnalyticsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Algoristics Instructor Course Routes */}
+            <Route path="/algoristics/courses/:courseId" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseViewPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/courses/:courseId/edit" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseEditPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/courses/:courseId/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseSettingsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/algoristics/courses/:courseId/analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseAnalyticsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* City College Instructor Course Routes */}
+            <Route path="/citycollege/courses/:courseId" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseViewPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/courses/:courseId/edit" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseEditPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/courses/:courseId/settings" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseSettingsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/citycollege/courses/:courseId/analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <InstructorCourseAnalyticsPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+
             {/* Organization Reports Routes */}
             <Route path="/stanford/reports" element={
               <ProtectedRoute>
@@ -520,30 +705,30 @@ const App = () => (
             {/* Organization Certificates Routes */}
             <Route path="/stanford/certificates" element={
               <ProtectedRoute>
-                <LearnerLayout>
+                <DashboardLayout>
                   <OrganizationCertificatesPage />
-                </LearnerLayout>
+                </DashboardLayout>
               </ProtectedRoute>
             } />
             <Route path="/techcorp/certificates" element={
               <ProtectedRoute>
-                <LearnerLayout>
+                <DashboardLayout>
                   <OrganizationCertificatesPage />
-                </LearnerLayout>
+                </DashboardLayout>
               </ProtectedRoute>
             } />
             <Route path="/algoristics/certificates" element={
               <ProtectedRoute>
-                <LearnerLayout>
+                <DashboardLayout>
                   <OrganizationCertificatesPage />
-                </LearnerLayout>
+                </DashboardLayout>
               </ProtectedRoute>
             } />
             <Route path="/citycollege/certificates" element={
               <ProtectedRoute>
-                <LearnerLayout>
+                <DashboardLayout>
                   <OrganizationCertificatesPage />
-                </LearnerLayout>
+                </DashboardLayout>
               </ProtectedRoute>
             } />
 
@@ -762,7 +947,7 @@ const App = () => (
             <Route path="/stanford/learner/dashboard" element={
               <ProtectedRoute>
                 <LearnerLayout>
-                  <LearnerDashboardPage />
+                  <EnhancedLearnerDashboard />
                 </LearnerLayout>
               </ProtectedRoute>
             } />
@@ -799,7 +984,7 @@ const App = () => (
             <Route path="/techcorp/learner/dashboard" element={
               <ProtectedRoute>
                 <LearnerLayout>
-                  <LearnerDashboardPage />
+                  <EnhancedLearnerDashboard />
                 </LearnerLayout>
               </ProtectedRoute>
             } />
@@ -836,7 +1021,7 @@ const App = () => (
             <Route path="/algoristics/learner/dashboard" element={
               <ProtectedRoute>
                 <LearnerLayout>
-                  <LearnerDashboardPage />
+                  <EnhancedLearnerDashboard />
                 </LearnerLayout>
               </ProtectedRoute>
             } />
@@ -873,7 +1058,7 @@ const App = () => (
             <Route path="/citycollege/learner/dashboard" element={
               <ProtectedRoute>
                 <LearnerLayout>
-                  <LearnerDashboardPage />
+                  <EnhancedLearnerDashboard />
                 </LearnerLayout>
               </ProtectedRoute>
             } />
@@ -906,95 +1091,37 @@ const App = () => (
               </ProtectedRoute>
             } />
 
-            {/* Learner Certificates Routes - using existing certificates page for now */}
+            {/* Learner Certificates Routes - learner-focused certificates page */}
             <Route path="/stanford/learner/certificates" element={
               <ProtectedRoute>
                 <LearnerLayout>
-                  <OrganizationCertificatesPage />
+                  <LearnerCertificatesPage />
                 </LearnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/techcorp/learner/certificates" element={
               <ProtectedRoute>
                 <LearnerLayout>
-                  <OrganizationCertificatesPage />
+                  <LearnerCertificatesPage />
                 </LearnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/algoristics/learner/certificates" element={
               <ProtectedRoute>
                 <LearnerLayout>
-                  <OrganizationCertificatesPage />
+                  <LearnerCertificatesPage />
                 </LearnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/citycollege/learner/certificates" element={
               <ProtectedRoute>
                 <LearnerLayout>
-                  <OrganizationCertificatesPage />
+                  <LearnerCertificatesPage />
                 </LearnerLayout>
               </ProtectedRoute>
             } />
 
-            {/* Learner Settings Routes - using existing settings page for now */}
-            <Route path="/stanford/learner/settings" element={
-              <ProtectedRoute>
-                <LearnerLayout>
-                  <SettingsPage />
-                </LearnerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/techcorp/learner/settings" element={
-              <ProtectedRoute>
-                <LearnerLayout>
-                  <SettingsPage />
-                </LearnerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/algoristics/learner/settings" element={
-              <ProtectedRoute>
-                <LearnerLayout>
-                  <SettingsPage />
-                </LearnerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/citycollege/learner/settings" element={
-              <ProtectedRoute>
-                <LearnerLayout>
-                  <SettingsPage />
-                </LearnerLayout>
-              </ProtectedRoute>
-            } />
 
-            {/* Enhanced Learner Dashboard Routes - Complete Enterprise LMS */}
-            <Route path="/stanford/learner/enhanced" element={
-              <ProtectedRoute>
-                <LearnerLayout>
-                  <EnhancedLearnerDashboard />
-                </LearnerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/techcorp/learner/enhanced" element={
-              <ProtectedRoute>
-                <LearnerLayout>
-                  <EnhancedLearnerDashboard />
-                </LearnerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/algoristics/learner/enhanced" element={
-              <ProtectedRoute>
-                <LearnerLayout>
-                  <EnhancedLearnerDashboard />
-                </LearnerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/citycollege/learner/enhanced" element={
-              <ProtectedRoute>
-                <LearnerLayout>
-                  <EnhancedLearnerDashboard />
-                </LearnerLayout>
-              </ProtectedRoute>
-            } />
 
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />

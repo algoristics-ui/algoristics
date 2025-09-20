@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { useAuth } from "@/contexts/AuthContext";
+import InstructorCoursesPage from "./InstructorCoursesPage";
 import { 
   BookOpen, 
   Search,
@@ -16,10 +18,16 @@ import {
 } from "lucide-react";
 
 const OrganizationCoursesPage = () => {
+  const { user } = useAuth();
   const { orgId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const orgData = getOrganizationDataFromPath(location.pathname);
+
+  // If user is an instructor, show the instructor-specific courses page
+  if (user?.role === 'instructor') {
+    return <InstructorCoursesPage />;
+  }
 
   const courses = [
     {

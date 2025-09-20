@@ -495,7 +495,7 @@ const LearnerPathsPage = () => {
   if (selectedPath) {
     return (
       <div className="min-h-screen bg-background pb-20 lg:pb-0">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-5xl">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-6 lg:pb-8 max-w-5xl">
           {/* Back Button */}
           <Button 
             variant="ghost" 
@@ -514,7 +514,7 @@ const LearnerPathsPage = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20 lg:pb-0">
-      <div className="container mx-auto px-4 sm:px-6 py-6 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl lg:text-3xl font-bold mb-2">Learning Paths</h1>

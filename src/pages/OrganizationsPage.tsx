@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,20 +33,16 @@ import {
 } from "lucide-react";
 
 const OrganizationsPage_bkp = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
 
-  // Mock data for organizations with enhanced branding details
+  // Organizations with actual working routes and data
   const organizations = [
-    // Enterprise Organizations
     {
       id: "1",
       name: "Stanford University",
       type: "University",
-      logo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1562774053-701939374585?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
       industry: "Higher Education",
       status: "Active",
       subscription: "Enterprise",
@@ -57,9 +53,6 @@ const OrganizationsPage_bkp = () => {
       contactName: "Dr. Sarah Wilson",
       contactEmail: "admin@stanford.edu",
       contactPhone: "+1 (650) 723-2300",
-      website: "https://stanford.edu",
-      customUrl: "stanford.learningplatform.com",
-      lastActive: "2024-01-10",
       primaryColor: "#8C1515",
       secondaryColor: "#B1040E",
       completionRate: 89,
@@ -69,156 +62,8 @@ const OrganizationsPage_bkp = () => {
     },
     {
       id: "2",
-      name: "Global Bank Corp",
-      type: "Corporate",
-      logo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
-      industry: "Financial Services",
-      status: "Active",
-      subscription: "Enterprise",
-      students: 8750,
-      instructors: 125,
-      courses: 85,
-      joinedDate: "2022-11-08",
-      contactName: "Jennifer Kim",
-      contactEmail: "learning@globalbank.com",
-      contactPhone: "+1 (212) 555-0123",
-      website: "https://globalbank.com",
-      customUrl: "globalbank.learningplatform.com",
-      lastActive: "2024-01-11",
-      primaryColor: "#1B365D",
-      secondaryColor: "#2D5A87",
-      completionRate: 94,
-      totalRevenue: 22750,
-      growth: 8,
-      location: "New York, NY"
-    },
-    {
-      id: "3",
-      name: "MediCore Healthcare",
-      type: "Healthcare",
-      logo: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
-      industry: "Healthcare",
-      status: "Active",
-      subscription: "Enterprise",
-      students: 6250,
-      instructors: 95,
-      courses: 110,
-      joinedDate: "2023-05-12",
-      contactName: "Dr. Robert Chen",
-      contactEmail: "training@medicore.com",
-      contactPhone: "+1 (312) 555-0198",
-      website: "https://medicore.com",
-      customUrl: "medicore.learningplatform.com",
-      lastActive: "2024-01-09",
-      primaryColor: "#0D7377",
-      secondaryColor: "#14A085",
-      completionRate: 87,
-      totalRevenue: 18900,
-      growth: 15,
-      location: "Chicago, IL"
-    },
-    
-    // Trial Organizations
-    {
-      id: "4",
-      name: "City Community College",
-      type: "College",
-      logo: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9d1?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
-      industry: "Education",
-      status: "Trial",
-      subscription: "Trial",
-      students: 2400,
-      instructors: 120,
-      courses: 65,
-      joinedDate: "2024-01-05",
-      contactName: "Dr. Lisa Martinez",
-      contactEmail: "admin@citycc.edu",
-      contactPhone: "+1 (555) 987-6543",
-      website: "https://citycc.edu",
-      customUrl: "citycc.learningplatform.com",
-      lastActive: "2024-01-08",
-      primaryColor: "#228B22",
-      secondaryColor: "#32CD32",
-      completionRate: 76,
-      totalRevenue: 0,
-      growth: 45,
-      location: "Los Angeles, CA"
-    },
-    {
-      id: "5",
-      name: "StartUp Academy",
-      type: "Corporate",
-      logo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
-      industry: "Technology",
-      status: "Trial",
-      subscription: "Trial",
-      students: 350,
-      instructors: 15,
-      courses: 25,
-      joinedDate: "2024-01-12",
-      contactName: "Alex Rodriguez",
-      contactEmail: "learning@startupacademy.com",
-      contactPhone: "+1 (415) 555-0167",
-      website: "https://startupacademy.com",
-      customUrl: "startup.learningplatform.com",
-      lastActive: "2024-01-11",
-      primaryColor: "#FF6B35",
-      secondaryColor: "#F7931E",
-      completionRate: 82,
-      totalRevenue: 0,
-      growth: 67,
-      location: "Austin, TX"
-    },
-    {
-      id: "6",
-      name: "Regional Hospital Network",
-      type: "Healthcare",
-      logo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
-      industry: "Healthcare",
-      status: "Trial",
-      subscription: "Trial",
-      students: 1850,
-      instructors: 45,
-      courses: 38,
-      joinedDate: "2023-12-18",
-      contactName: "Dr. Maria Santos",
-      contactEmail: "education@regionalhospital.org",
-      contactPhone: "+1 (503) 555-0142",
-      website: "https://regionalhospital.org",
-      customUrl: "rhn.learningplatform.com",
-      lastActive: "2024-01-10",
-      primaryColor: "#2E8B57",
-      secondaryColor: "#3CB371",
-      completionRate: 69,
-      totalRevenue: 0,
-      growth: 38,
-      location: "Portland, OR"
-    },
-
-    // New Partners (recently joined)
-    {
-      id: "7",
       name: "TechCorp Training",
       type: "Corporate",
-      logo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
       industry: "Technology",
       status: "Active",
       subscription: "Professional",
@@ -229,9 +74,6 @@ const OrganizationsPage_bkp = () => {
       contactName: "Mike Johnson",
       contactEmail: "training@techcorp.com",
       contactPhone: "+1 (555) 123-4567",
-      website: "https://techcorp.com",
-      customUrl: "techcorp.learningplatform.com",
-      lastActive: "2024-01-09",
       primaryColor: "#0066CC",
       secondaryColor: "#004499",
       completionRate: 92,
@@ -240,60 +82,46 @@ const OrganizationsPage_bkp = () => {
       location: "San Francisco, CA"
     },
     {
-      id: "8",
-      name: "Future Manufacturing",
-      type: "Manufacturing",
-      logo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
-      industry: "Manufacturing",
-      status: "Active",
-      subscription: "Professional",
-      students: 1200,
-      instructors: 35,
-      courses: 42,
-      joinedDate: "2023-12-28",
-      contactName: "David Thompson",
-      contactEmail: "hr@futuremanufacturing.com",
-      contactPhone: "+1 (216) 555-0189",
-      website: "https://futuremanufacturing.com",
-      customUrl: "future.learningplatform.com",
-      lastActive: "2024-01-11",
-      primaryColor: "#B8860B",
-      secondaryColor: "#DAA520",
-      completionRate: 85,
-      totalRevenue: 6750,
-      growth: 22,
-      location: "Cleveland, OH"
+      id: "3",
+      name: "City Community College",
+      type: "College",
+      industry: "Education",
+      status: "Trial",
+      subscription: "Trial",
+      students: 2400,
+      instructors: 120,
+      courses: 65,
+      joinedDate: "2024-01-05",
+      contactName: "Dr. Lisa Martinez",
+      contactEmail: "admin@citycc.edu",
+      contactPhone: "+1 (555) 987-6543",
+      primaryColor: "#228B22",
+      secondaryColor: "#32CD32",
+      completionRate: 76,
+      totalRevenue: 0,
+      growth: 45,
+      location: "Los Angeles, CA"
     },
     {
-      id: "9",
-      name: "Creative Arts Institute",
-      type: "Educational",
-      logo: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=100&h=100&fit=crop&crop=face",
-      headerImage: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=1200&h=300&fit=crop",
-      backgroundImage: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=1920&h=1080&fit=crop",
-      footerLogo: "/placeholder.svg",
-      industry: "Arts & Design",
+      id: "4",
+      name: "Algoristics",
+      type: "Educational Technology",
+      industry: "Education Technology",
       status: "Active",
-      subscription: "Academic",
-      students: 680,
-      instructors: 28,
-      courses: 55,
-      joinedDate: "2024-01-08",
-      contactName: "Isabella Rodriguez",
-      contactEmail: "admin@creativearts.edu",
-      contactPhone: "+1 (305) 555-0134",
-      website: "https://creativearts.edu",
-      customUrl: "arts.learningplatform.com",
-      lastActive: "2024-01-11",
-      primaryColor: "#8A2BE2",
-      secondaryColor: "#9370DB",
-      completionRate: 91,
-      totalRevenue: 4250,
-      growth: 35,
-      location: "Miami, FL"
+      subscription: "Enterprise",
+      students: 5200,
+      instructors: 75,
+      courses: 85,
+      joinedDate: "2023-08-20",
+      contactName: "John Admin",
+      contactEmail: "admin@algoristics.com",
+      contactPhone: "+1 (555) 234-5678",
+      primaryColor: "#3B82F6",
+      secondaryColor: "#1D4ED8",
+      completionRate: 88,
+      totalRevenue: 12450,
+      growth: 25,
+      location: "San Jose, CA"
     }
   ];
 
@@ -320,6 +148,18 @@ const OrganizationsPage_bkp = () => {
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
+
+  const getInternalOrgUrl = (orgName: string) => {
+    const orgMapping: Record<string, string> = {
+      "Stanford University": "/stanford",
+      "TechCorp Training": "/techcorp", 
+      "City Community College": "/citycollege",
+      "Algoristics": "/algoristics"
+    };
+    
+    return orgMapping[orgName] || `/org/${orgName.toLowerCase().replace(/\s+/g, '-')}`;
+  };
+
 
   const filteredOrganizations = organizations.filter(org => {
     const matchesSearch = org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -434,14 +274,22 @@ const OrganizationsPage_bkp = () => {
                   <Users className="h-4 w-4 text-muted-foreground" />
                   <span className="font-medium">{org.contactName}</span>
                 </div>
-                <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                  <div className="flex items-center space-x-1">
-                    <Mail className="h-3 w-3" />
-                    <span>{org.contactEmail}</span>
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                    <div className="flex items-center space-x-1">
+                      <Mail className="h-3 w-3" />
+                      <span>{org.contactEmail}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Phone className="h-3 w-3" />
+                      <span>{org.contactPhone}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Phone className="h-3 w-3" />
-                    <span>{org.contactPhone}</span>
+                  <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                    <Globe className="h-3 w-3" />
+                    <Link to={getInternalOrgUrl(org.name)} className="hover:text-primary">
+                      Website
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -454,15 +302,15 @@ const OrganizationsPage_bkp = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate(`/super-admin/organizations/${org.id}`)}>
                       <Eye className="mr-2 h-4 w-4" />
                       View Details
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate(`/super-admin/organizations/${org.id}/edit`)}>
                       <Edit className="mr-2 h-4 w-4" />
                       Edit Organization
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate(`/super-admin/organizations/${org.id}/settings`)}>
                       <Settings className="mr-2 h-4 w-4" />
                       Manage Settings
                     </DropdownMenuItem>
@@ -505,7 +353,7 @@ const OrganizationsPage_bkp = () => {
                     <Building2 className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">Total Organizations</h3>
-                  <div className="text-2xl font-bold text-white mb-2">48</div>
+                  <div className="text-2xl font-bold text-white mb-2">{organizations.length}</div>
                   <Badge className="bg-gradient-to-r from-green-400/30 to-emerald-400/30 text-green-100 border-green-300/50 font-medium">
                     Active
                   </Badge>
@@ -517,7 +365,7 @@ const OrganizationsPage_bkp = () => {
                     <Users className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">Active Students</h3>
-                  <div className="text-2xl font-bold text-white mb-2">12,847</div>
+                  <div className="text-2xl font-bold text-white mb-2">{organizations.reduce((total, org) => total + org.students, 0).toLocaleString()}</div>
                   <Badge className="bg-gradient-to-r from-blue-400/30 to-cyan-400/30 text-blue-100 border-blue-300/50 font-medium">
                     Growing
                   </Badge>

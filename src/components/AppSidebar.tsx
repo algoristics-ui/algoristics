@@ -10,7 +10,9 @@ import {
   Settings,
   GraduationCap,
   UserCheck,
-  Megaphone
+  Megaphone,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -29,6 +31,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const getAllNavigationItems = () => [
   {
@@ -39,25 +42,57 @@ const getAllNavigationItems = () => [
     roles: ["super_admin", "org_admin", "instructor", "learner"]
   },
   {
+    title: "My Courses",
+    url: "/courses",
+    icon: BookOpen,
+    group: "Teaching",
+    roles: ["instructor"],
+    instructorOnly: true
+  },
+  {
     title: "Courses",
     url: "/courses",
     icon: BookOpen,
     group: "Learning",
-    roles: ["super_admin", "org_admin", "instructor", "learner"]
+    roles: ["super_admin", "org_admin", "learner"]
+  },
+  {
+    title: "My Students",
+    url: "/students",
+    icon: Users,
+    group: "Teaching",
+    roles: ["instructor"],
+    instructorOnly: true
+  },
+  {
+    title: "My Assessments",
+    url: "/assessments",
+    icon: ClipboardList,
+    group: "Teaching",
+    roles: ["instructor"],
+    instructorOnly: true
+  },
+  {
+    title: "Course Analytics",
+    url: "/analytics",
+    icon: BarChart3,
+    group: "Teaching",
+    roles: ["instructor"],
+    instructorOnly: true
   },
   {
     title: "Assessments",
     url: "/assessments",
     icon: ClipboardList,
     group: "Learning",
-    roles: ["super_admin", "org_admin", "instructor"]
+    roles: ["super_admin", "org_admin"]
   },
   {
     title: "Analytics",
     url: "/analytics",
     icon: BarChart3,
     group: "Insights",
-    roles: ["super_admin", "org_admin", "instructor"]
+    roles: ["super_admin", "org_admin"]
   },
   {
     title: "Reports",
@@ -71,7 +106,7 @@ const getAllNavigationItems = () => [
     url: "/students",
     icon: Users,
     group: "Management",
-    roles: ["super_admin", "org_admin", "instructor"]
+    roles: ["super_admin", "org_admin"]
   },
   {
     title: "Instructors",
@@ -102,11 +137,19 @@ const getAllNavigationItems = () => [
     roles: ["super_admin", "org_admin", "instructor", "learner"]
   },
   {
+    title: "Profile Settings",
+    url: "/profile",
+    icon: Settings,
+    group: "Personal",
+    roles: ["instructor"],
+    instructorOnly: true
+  },
+  {
     title: "Settings",
     url: "/settings",
     icon: Settings,
     group: "Configuration",
-    roles: ["super_admin", "org_admin", "instructor", "learner"]
+    roles: ["super_admin", "org_admin", "learner"]
   },
 ];
 
@@ -162,80 +205,89 @@ export function AppSidebar() {
     isActive ? "bg-primary text-primary-foreground font-medium" : "hover:bg-muted/50";
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border/60 bg-background">
-      <SidebarContent>
-        {/* Header Section */}
-        {user?.role === 'super_admin' ? (
-          // Super Admin Header with Algoristics branding
-          <div className="p-4 border-b border-border/60">
-            <div className="flex items-center space-x-3">
-              {/* Toggle button on the left */}
-              <div className="flex-shrink-0">
-                <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity" />
-              </div>
-              <div className="flex items-center space-x-3 min-w-0 flex-1">
-                <div className="gradient-hero w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <GraduationCap className="h-5 w-5 text-white" />
+    <TooltipProvider>
+      <Sidebar collapsible="icon" className="border-r border-border/60 bg-background">
+        <SidebarContent className="pt-20">
+          {/* Header Section */}
+          {user?.role === 'super_admin' ? (
+            // Super Admin Header with Algoristics branding
+            <div className="p-4 border-b border-border/60">
+              <div className="flex items-center justify-between">
+                {/* When collapsed: show toggle button centered */}
+                <div className="hidden group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full">
+                  <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity" />
                 </div>
-                <div className="group-data-[collapsible=icon]:hidden min-w-0">
-                  <h1 className="text-lg font-bold text-foreground truncate">Algoristics</h1>
-                  <p className="text-xs text-muted-foreground">Learning Management</p>
+                
+                {/* When expanded: show branding and toggle button */}
+                <div className="flex items-center justify-between w-full group-data-[collapsible=icon]:hidden">
+                  <div className="flex items-center space-x-3">
+                    <div className="gradient-hero w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <GraduationCap className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="min-w-0">
+                      <h1 className="text-lg font-bold text-foreground truncate">Algoristics</h1>
+                      <p className="text-xs text-muted-foreground">Learning Management</p>
+                    </div>
+                  </div>
+                  <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity" />
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          // Organization users - empty header without branding
-          <div className="flex h-12 items-center px-4 border-b">
-            <div className="font-semibold text-foreground group-data-[collapsible=icon]:hidden">
+          ) : (
+            // Organization Admin/Instructor Header - simple label
+            <div className="flex items-center justify-between p-4 border-b border-border/60">
+              {/* When collapsed: show toggle button centered */}
+              <div className="hidden group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full">
+                <SidebarTrigger />
+              </div>
               
+              {/* When expanded: show simple role label and toggle button */}
+              <div className="flex items-center justify-between w-full group-data-[collapsible=icon]:hidden">
+                <span className="font-semibold text-lg">
+                  {user?.role === 'instructor' ? 'Instructor' : 'Admin'}
+                </span>
+                <SidebarTrigger />
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Navigation Groups */}
-        {Object.entries(groupedItems).map(([groupName, items], index) => {
-          const hasActiveItem = items.some(item => isActive(item.url));
-          
-          return (
-            <SidebarGroup key={groupName}>
-              {/* Show toggle with Overview group label only for organization users */}
-              {groupName === "Overview" && user?.role !== 'super_admin' ? (
-                <div className="flex items-center space-x-2 py-3 px-3">
-                  <SidebarTrigger className="h-5 w-5 opacity-70 hover:opacity-100 transition-opacity bg-transparent hover:bg-muted rounded-sm p-1" />
-                  <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    {groupName}
-                  </SidebarGroupLabel>
-                </div>
-              ) : (
+          {/* Navigation Groups */}
+          {Object.entries(groupedItems).map(([groupName, items], index) => {
+            const hasActiveItem = items.some(item => isActive(item.url));
+            
+            return (
+              <SidebarGroup key={groupName}>
                 <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   {groupName}
                 </SidebarGroupLabel>
-              )}
 
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
-                        <NavLink 
-                          to={item.url} 
-                          end 
-                          className={({ isActive }) => getNavCls({ isActive })}
-                          title={item.title}
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {items.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton 
+                          asChild
+                          tooltip={item.title}
                         >
-                          <item.icon className="h-4 w-4 flex-shrink-0" />
-                          <span className="group-data-[collapsible=icon]:hidden ml-3">{item.title}</span>
-                        </NavLink>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          );
-        })}
-      </SidebarContent>
-    </Sidebar>
+                          <NavLink 
+                            to={item.url} 
+                            end 
+                            className={({ isActive }) => getNavCls({ isActive })}
+                            title={item.title}
+                          >
+                            <item.icon className="h-4 w-4 flex-shrink-0" />
+                            <span className="group-data-[collapsible=icon]:hidden ml-3">{item.title}</span>
+                          </NavLink>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            );
+          })}
+        </SidebarContent>
+      </Sidebar>
+    </TooltipProvider>
   );
 }

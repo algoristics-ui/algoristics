@@ -51,14 +51,19 @@ const LoginPage = () => {
       } else {
         // Get organization acronym from mapping or find from demo accounts
         let orgAcronym = organizationMapping[organization as keyof typeof organizationMapping];
+        const selectedAccount = demoAccounts.find(acc => acc.email === email);
         
         if (!orgAcronym) {
-          const selectedAccount = demoAccounts.find(acc => acc.email === email);
           orgAcronym = selectedAccount?.acronym || organization.toLowerCase().replace(/\s+/g, '-');
         }
         
-        // Redirect to organization home page (dashboard)
-        navigate(`/${orgAcronym}/dashboard`);
+        // Redirect based on user role
+        if (selectedAccount?.role === "Learner") {
+          navigate(`/${orgAcronym}/learner/dashboard`);
+        } else {
+          // Admin/Instructor goes to organization dashboard
+          navigate(`/${orgAcronym}/dashboard`);
+        }
       }
     } else {
       setError("Invalid email or password");

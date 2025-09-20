@@ -29,7 +29,7 @@ const LearnerLayout = ({ children }: LearnerLayoutProps) => {
         <LearnerSidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
           <OrganizationHeader orgData={orgData} />
-          <main className="flex-1 overflow-auto bg-background">
+          <main className="flex-1 overflow-auto bg-background pt-20">
             {children}
           </main>
         </div>

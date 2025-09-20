@@ -261,7 +261,7 @@ const LearnerDashboardPage = () => {
         </div>
       )}
 
-      <div className="container mx-auto px-4 sm:px-6 py-6 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-7xl">
         {/* Welcome Section */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

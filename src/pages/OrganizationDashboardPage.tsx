@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { useAuth } from "@/contexts/AuthContext";
 import { 
   Users, 
   BookOpen, 
@@ -23,62 +24,134 @@ const OrganizationDashboardPage = () => {
   const { orgId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const orgData = getOrganizationDataFromPath(location.pathname);
 
-  const dashboardStats = [
-    { title: "Active Students", value: "12,500", icon: Users, color: orgData.primaryColor, change: "+8%" },
-    { title: "Total Courses", value: "120", icon: BookOpen, color: orgData.primaryColor, change: "+12%" },
-    { title: "Completion Rate", value: "89%", icon: TrendingUp, color: orgData.primaryColor, change: "+5%" },
-    { title: "Certificates Issued", value: "2,847", icon: Award, color: orgData.primaryColor, change: "+15%" }
-  ];
-
-  const newsFeedItems = [
-    {
-      id: 1,
-      type: "due_date",
-      title: "Course Completion Due",
-      content: "Complete 'Data Science Fundamentals' by March 15th to maintain your certification progress.",
-      priority: "high",
-      date: "2024-03-15",
-      icon: AlertCircle
-    },
-    {
-      id: 2,
-      type: "new_course",
-      title: "New Course Available",
-      content: "Advanced Machine Learning course is now available. Enroll today to enhance your AI skills.",
-      priority: "medium",
-      date: "2024-03-10",
-      icon: BookOpen
-    },
-    {
-      id: 3,
-      type: "assessment",
-      title: "Assessment Reminder",
-      content: "Midterm assessment for 'Cloud Computing' opens tomorrow. Prepare and schedule your exam.",
-      priority: "high",
-      date: "2024-03-12",
-      icon: ClipboardList
-    },
-    {
-      id: 4,
-      type: "announcement",
-      title: "Spring Break Schedule",
-      content: "University will be closed from March 25-29. All online courses remain accessible during this period.",
-      priority: "low",
-      date: "2024-03-25",
-      icon: Megaphone
-    },
-    {
-      id: 5,
-      type: "new_course",
-      title: "Cybersecurity Fundamentals",
-      content: "New cybersecurity course launching next week. Limited spots available, register now!",
-      priority: "medium",
-      date: "2024-03-18",
-      icon: BookOpen
+  // Role-based dashboard stats
+  const getStatsForRole = () => {
+    if (user?.role === 'instructor') {
+      return [
+        { title: "My Students", value: "248", icon: Users, color: orgData.primaryColor, change: "+5%" },
+        { title: "My Courses", value: "6", icon: BookOpen, color: orgData.primaryColor, change: "+1%" },
+        { title: "Avg Completion", value: "92%", icon: TrendingUp, color: orgData.primaryColor, change: "+7%" },
+        { title: "Certificates Earned", value: "189", icon: Award, color: orgData.primaryColor, change: "+12%" }
+      ];
     }
-  ];
+    
+    // Default admin stats
+    return [
+      { title: "Active Students", value: "12,500", icon: Users, color: orgData.primaryColor, change: "+8%" },
+      { title: "Total Courses", value: "120", icon: BookOpen, color: orgData.primaryColor, change: "+12%" },
+      { title: "Completion Rate", value: "89%", icon: TrendingUp, color: orgData.primaryColor, change: "+5%" },
+      { title: "Certificates Issued", value: "2,847", icon: Award, color: orgData.primaryColor, change: "+15%" }
+    ];
+  };
+
+  const dashboardStats = getStatsForRole();
+
+  // Role-based news feed items
+  const getNewsFeedForRole = () => {
+    if (user?.role === 'instructor') {
+      return [
+        {
+          id: 1,
+          type: "student_submission",
+          title: "New Assignment Submissions",
+          content: "15 students have submitted their assignments for 'Advanced JavaScript'. Review and grade when ready.",
+          priority: "high",
+          date: "2024-03-15",
+          icon: ClipboardList
+        },
+        {
+          id: 2,
+          type: "course_update",
+          title: "Course Material Update",
+          content: "Update your course materials for the upcoming semester. Deadline is March 20th.",
+          priority: "medium",
+          date: "2024-03-20",
+          icon: BookOpen
+        },
+        {
+          id: 3,
+          type: "student_progress",
+          title: "Student Performance Alert",
+          content: "3 students in your 'Data Structures' course are falling behind. Consider reaching out for support.",
+          priority: "high",
+          date: "2024-03-12",
+          icon: AlertCircle
+        },
+        {
+          id: 4,
+          type: "announcement",
+          title: "Faculty Meeting",
+          content: "Monthly faculty meeting scheduled for March 22nd at 2 PM. Agenda includes curriculum updates.",
+          priority: "medium",
+          date: "2024-03-22",
+          icon: Megaphone
+        },
+        {
+          id: 5,
+          type: "certification",
+          title: "Professional Development",
+          content: "New teaching certification workshop available. Register now to enhance your instructional skills.",
+          priority: "low",
+          date: "2024-03-25",
+          icon: Award
+        }
+      ];
+    }
+    
+    // Default admin news feed
+    return [
+      {
+        id: 1,
+        type: "due_date",
+        title: "Course Completion Due",
+        content: "Complete 'Data Science Fundamentals' by March 15th to maintain your certification progress.",
+        priority: "high",
+        date: "2024-03-15",
+        icon: AlertCircle
+      },
+      {
+        id: 2,
+        type: "new_course",
+        title: "New Course Available",
+        content: "Advanced Machine Learning course is now available. Enroll today to enhance your AI skills.",
+        priority: "medium",
+        date: "2024-03-10",
+        icon: BookOpen
+      },
+      {
+        id: 3,
+        type: "assessment",
+        title: "Assessment Reminder",
+        content: "Midterm assessment for 'Cloud Computing' opens tomorrow. Prepare and schedule your exam.",
+        priority: "high",
+        date: "2024-03-12",
+        icon: ClipboardList
+      },
+      {
+        id: 4,
+        type: "announcement",
+        title: "Spring Break Schedule",
+        content: "University will be closed from March 25-29. All online courses remain accessible during this period.",
+        priority: "low",
+        date: "2024-03-25",
+        icon: Megaphone
+      },
+      {
+        id: 5,
+        type: "new_course",
+        title: "Cybersecurity Fundamentals",
+        content: "New cybersecurity course launching next week. Limited spots available, register now!",
+        priority: "medium",
+        date: "2024-03-18",
+        icon: BookOpen
+      }
+    ];
+  };
+
+  const newsFeedItems = getNewsFeedForRole();
 
   const recentActivities = [
     { action: "New course 'Advanced Machine Learning' published", time: "2 hours ago", type: "course" },
@@ -96,11 +169,28 @@ const OrganizationDashboardPage = () => {
     }
   };
 
+  // Role-based header content
+  const getHeaderContent = () => {
+    if (user?.role === 'instructor') {
+      return {
+        title: "Instructor Dashboard",
+        subtitle: "Manage your courses and track student progress"
+      };
+    }
+    
+    return {
+      title: "Dashboard Overview", 
+      subtitle: "Stay updated with the latest announcements and course information"
+    };
+  };
+
+  const headerContent = getHeaderContent();
+
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Dashboard Overview</h1>
-        <p className="text-muted-foreground">Stay updated with the latest announcements and course information</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">{headerContent.title}</h1>
+        <p className="text-muted-foreground">{headerContent.subtitle}</p>
       </div>
 
             {/* News Feed Carousel */}

@@ -65,6 +65,48 @@ const DUMMY_USERS: User[] = [
     role: 'instructor',
     organization: 'Stanford University', // Can be changed via organization dropdown
   },
+  {
+    id: '7',
+    name: 'Prof. Johnson',
+    email: 'prof.johnson@stanford.edu',
+    role: 'instructor',
+    organization: 'Stanford University',
+  },
+  {
+    id: '8',
+    name: 'Training Staff',
+    email: 'trainee@techcorp.com',
+    role: 'learner',
+    organization: 'TechCorp Training',
+  },
+  {
+    id: '9',
+    name: 'College Teacher',
+    email: 'teacher@citycollege.edu',
+    role: 'instructor',
+    organization: 'City Community College',
+  },
+  {
+    id: '10',
+    name: 'Algoristics Learner',
+    email: 'learner@algoristics.com',
+    role: 'learner',
+    organization: 'Algoristics',
+  },
+  {
+    id: '11',
+    name: 'Algoristics Instructor',
+    email: 'instructor@algoristics.com',
+    role: 'instructor',
+    organization: 'Algoristics',
+  },
+  {
+    id: '12',
+    name: 'Algoristics Admin',
+    email: 'admin@algoristics.com',
+    role: 'org_admin',
+    organization: 'Algoristics',
+  },
 ];
 
 interface AuthProviderProps {

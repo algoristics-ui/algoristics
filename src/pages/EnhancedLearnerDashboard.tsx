@@ -14,6 +14,7 @@ import AssessmentHistory from "@/components/learner/AssessmentHistory";
 import RecommendationEngine from "@/components/learner/RecommendationEngine";
 import AcademicCenter from "@/components/learner/AcademicCenter";
 import SocialLearning from "@/components/learner/SocialLearning";
+import GamificationHub from "@/components/learner/GamificationHub";
 
 import { 
   BookOpen, 
@@ -76,34 +77,34 @@ const EnhancedLearnerDashboard = () => {
   // Quick action items based on AI recommendations and compliance
   const quickActions = [
     {
-      title: "Complete Overdue Safety Training",
-      description: "High priority compliance requirement",
+      title: "Safety Training Overdue",
+      description: "High priority",
       urgency: "high",
-      action: "Start Training",
+      action: "Start",
       icon: Shield,
       color: "red"
     },
     {
       title: "Join React Study Group",
-      description: "Recommended based on your learning goals",
+      description: "Recommended for you",
       urgency: "medium",
-      action: "Join Group",
+      action: "Join",
       icon: Users,
       color: "blue"
     },
     {
-      title: "Take ML Practice Test",
-      description: "Prepare for upcoming assessment",
+      title: "ML Practice Test",
+      description: "Assessment prep",
       urgency: "medium",
-      action: "Start Test",
+      action: "Start",
       icon: Trophy,
       color: "green"
     },
     {
-      title: "Review AI Recommendations",
-      description: "3 new personalized course suggestions",
+      title: "AI Recommendations",
+      description: "3 new suggestions",
       urgency: "low",
-      action: "View All",
+      action: "View",
       icon: Brain,
       color: "purple"
     }
@@ -120,37 +121,39 @@ const EnhancedLearnerDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20 lg:pb-0">
-      <div className="container mx-auto px-4 sm:px-6 py-6 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-7xl" role="main" aria-label="Learner Dashboard">
         {/* Enhanced Welcome Section */}
-        <div className="mb-8">
+        <header className="mb-8" role="banner">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-foreground">
-                Welcome back, {user?.email?.split('@')[0] || 'Learner'}! 👋
+              <h1 className="text-2xl lg:text-3xl font-bold text-foreground" id="dashboard-title">
+                Welcome back, {user?.email?.split('@')[0] || 'Learner'}!
               </h1>
-              <p className="text-muted-foreground mt-1">
-                You're on a {enhancedStats.currentStreak}-day learning streak! Keep it up.
+              <p className="text-muted-foreground mt-1" aria-describedby="dashboard-title">
+                {enhancedStats.currentStreak}-day streak
               </p>
             </div>
             <div className="flex items-center space-x-3">
-              <Button variant="outline" size="sm">
-                <Bell className="w-4 h-4 mr-2" />
-                <Badge variant="destructive" className="ml-1 px-1 text-xs">3</Badge>
+              <Button variant="outline" size="sm" aria-label="Notifications: 3 unread notifications">
+                <Bell className="w-4 h-4 mr-2" aria-hidden="true" />
+                <Badge variant="destructive" className="ml-1 px-1 text-xs" aria-label="3 notifications">3</Badge>
               </Button>
-              <Button variant="outline" size="sm">
-                <Calendar className="w-4 h-4 mr-2" />
+              <Button variant="outline" size="sm" aria-label="View learning schedule">
+                <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
                 Schedule
               </Button>
             </div>
           </div>
-        </div>
+        </header>
 
         {/* Enhanced Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4 mb-8">
-          <Card className="hover:shadow-md transition-shadow">
+        <section className="mb-8" aria-labelledby="stats-heading">
+          <h2 id="stats-heading" className="sr-only">Learning Statistics</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+          <Card className="hover:shadow-md transition-shadow" role="region" aria-label="Courses in progress statistics">
             <CardContent className="p-3 md:p-4">
               <div className="flex items-center space-x-2">
-                <BookOpen className="h-4 w-4" style={{ color: orgData.primaryColor }} />
+                <BookOpen className="h-4 w-4" style={{ color: orgData.primaryColor }} aria-hidden="true" />
                 <div>
                   <div className="text-lg md:text-xl font-bold" style={{ color: orgData.primaryColor }}>
                     {enhancedStats.coursesInProgress}
@@ -161,10 +164,10 @@ const EnhancedLearnerDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-md transition-shadow">
+          <Card className="hover:shadow-md transition-shadow" role="region" aria-label="Completed courses statistics">
             <CardContent className="p-3 md:p-4">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
+                <CheckCircle className="h-4 w-4 text-green-600" aria-hidden="true" />
                 <div>
                   <div className="text-lg md:text-xl font-bold text-green-600">
                     {enhancedStats.coursesCompleted}
@@ -230,29 +233,37 @@ const EnhancedLearnerDashboard = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+          </div>
+        </section>
 
         {/* Quick Actions Alert Cards */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold mb-4">Action Items</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <section className="mb-8" aria-labelledby="action-items-heading">
+          <h2 id="action-items-heading" className="text-lg font-semibold mb-4">Action Items</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="list">
             {quickActions.map((action, index) => (
               <Card 
                 key={index} 
+                role="listitem"
                 className={`border-2 ${getUrgencyColor(action.urgency)} hover:shadow-md transition-shadow cursor-pointer`}
+                aria-label={`${action.urgency} priority: ${action.title}`}
               >
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-3">
                       <div className="p-2 rounded-lg bg-white">
-                        <action.icon className="h-4 w-4" />
+                        <action.icon className="h-4 w-4" aria-hidden="true" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-sm">{action.title}</h3>
                         <p className="text-xs text-muted-foreground mt-1">{action.description}</p>
                       </div>
                     </div>
-                    <Button size="sm" variant="outline" className="text-xs">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="text-xs"
+                      aria-label={`${action.action} for ${action.title}`}
+                    >
                       {action.action}
                     </Button>
                   </div>
@@ -260,17 +271,20 @@ const EnhancedLearnerDashboard = () => {
               </Card>
             ))}
           </div>
-        </div>
+        </section>
 
         {/* Comprehensive Learning Hub */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+        <section aria-labelledby="learning-hub-heading">
+          <h2 id="learning-hub-heading" className="sr-only">Learning Hub Navigation</h2>
+          <Tabs defaultValue="overview" className="space-y-6" aria-label="Learning hub sections">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="compliance">Compliance</TabsTrigger>
             <TabsTrigger value="recommendations">AI Insights</TabsTrigger>
             <TabsTrigger value="academic">Academic</TabsTrigger>
             <TabsTrigger value="social">Social</TabsTrigger>
             <TabsTrigger value="assessments">Assessments</TabsTrigger>
+            <TabsTrigger value="gamification">Achievements</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -286,8 +300,8 @@ const EnhancedLearnerDashboard = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-semibold">Frontend Developer → Senior Frontend Developer</div>
-                      <div className="text-sm text-muted-foreground">6-12 months to achieve</div>
+                      <div className="font-semibold">Frontend → Senior Frontend</div>
+                      <div className="text-sm text-muted-foreground">6-12 months</div>
                     </div>
                     <div className="text-right">
                       <div className="text-2xl font-bold" style={{ color: orgData.primaryColor }}>
@@ -298,8 +312,8 @@ const EnhancedLearnerDashboard = () => {
                   </div>
                   <Progress value={enhancedStats.careerProgress} className="h-3" />
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>2 skills remaining</span>
-                    <span>15-25% salary increase potential</span>
+                    <span>2 skills left</span>
+                    <span>15-25% increase</span>
                   </div>
                 </div>
               </CardContent>
@@ -385,7 +399,12 @@ const EnhancedLearnerDashboard = () => {
           <TabsContent value="assessments">
             <AssessmentHistory />
           </TabsContent>
-        </Tabs>
+
+          <TabsContent value="gamification">
+            <GamificationHub />
+          </TabsContent>
+          </Tabs>
+        </section>
       </div>
 
       {/* Mobile Bottom Navigation */}

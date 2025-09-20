@@ -225,11 +225,13 @@ const OrganizationLoginPage = () => {
                   {orgData.acronym === 'stanford' && (
                     <>
                       <p><strong>Student:</strong> emma@student.edu / algoristic123</p>
+                      <p><strong>Instructor:</strong> prof.johnson@stanford.edu / algoristic123</p>
                       <p><strong>Admin:</strong> sarah@university.edu / algoristic123</p>
                     </>
                   )}
                   {orgData.acronym === 'techcorp' && (
                     <>
+                      <p><strong>Student:</strong> trainee@techcorp.com / algoristic123</p>
                       <p><strong>Instructor:</strong> mike@techcorp.com / algoristic123</p>
                       <p><strong>Multi-Org Instructor:</strong> alex@consultant.com / algoristic123</p>
                     </>
@@ -237,7 +239,15 @@ const OrganizationLoginPage = () => {
                   {orgData.acronym === 'citycollege' && (
                     <>
                       <p><strong>Student:</strong> jane@citycollege.edu / algoristic123</p>
+                      <p><strong>Instructor:</strong> teacher@citycollege.edu / algoristic123</p>
                       <p><strong>Multi-Org Instructor:</strong> alex@consultant.com / algoristic123</p>
+                    </>
+                  )}
+                  {orgData.acronym === 'algoristics' && (
+                    <>
+                      <p><strong>Student:</strong> learner@algoristics.com / algoristic123</p>
+                      <p><strong>Instructor:</strong> instructor@algoristics.com / algoristic123</p>
+                      <p><strong>Admin:</strong> admin@algoristics.com / algoristic123</p>
                     </>
                   )}
                   <p className="text-muted-foreground/80 mt-2">All accounts use password: <code>algoristic123</code></p>

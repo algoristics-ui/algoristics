@@ -4,10 +4,11 @@ import {
   BookOpen, 
   BarChart3, 
   ClipboardList,
-  Settings,
   GraduationCap,
   Map,
-  Award
+  Award,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,56 +27,44 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const getLearnerNavigationItems = () => [
   {
     title: "Dashboard",
     url: "/learner/dashboard",
     icon: Home,
-    group: "Overview",
-    description: "Your learning overview"
+    group: "Overview"
   },
   {
     title: "My Courses",
     url: "/learner/courses",
     icon: BookOpen,
-    group: "Learning",
-    description: "Browse and manage your courses"
+    group: "Learning"
   },
   {
     title: "Learning Paths",
     url: "/learner/paths",
     icon: Map,
-    group: "Learning",
-    description: "Follow structured learning journeys"
+    group: "Learning"
   },
   {
     title: "Assessments",
     url: "/learner/assessments",
     icon: ClipboardList,
-    group: "Learning",
-    description: "Take tests and quizzes"
+    group: "Learning"
   },
   {
     title: "My Analytics",
     url: "/learner/analytics",
     icon: BarChart3,
-    group: "Progress",
-    description: "Track your learning progress"
+    group: "Progress"
   },
   {
     title: "Certificates",
     url: "/learner/certificates",
     icon: Award,
-    group: "Achievements",
-    description: "View your earned certificates"
-  },
-  {
-    title: "Settings",
-    url: "/learner/settings",
-    icon: Settings,
-    group: "Account",
-    description: "Manage your profile and preferences"
+    group: "Achievements"
   }
 ];
 
@@ -84,7 +73,7 @@ export function LearnerSidebar() {
   const currentPath = location.pathname;
   const { user } = useAuth();
   const isMobile = useMobileDetection();
-  const { setOpenMobile } = useSidebar();
+  const { setOpenMobile, state, toggleSidebar, open, setOpen } = useSidebar();
 
   // Get organization context
   const orgData = getOrganizationDataFromPath(location.pathname);
@@ -119,22 +108,27 @@ export function LearnerSidebar() {
   };
 
   return (
-    <Sidebar>
-      <SidebarContent>
-        <div className="flex items-center justify-between p-4">
-          <div className="flex items-center space-x-2">
-            <GraduationCap 
-              className="h-6 w-6" 
-              style={{ color: orgData?.primaryColor || '#000' }} 
-            />
-            <span className="font-semibold text-lg">Student Portal</span>
+    <TooltipProvider>
+      <Sidebar collapsible="icon">
+        <SidebarContent className="pt-20">
+          <div className="flex items-center justify-between p-4">
+            {/* When collapsed: show toggle button centered */}
+            <div className="hidden group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full">
+              <SidebarTrigger className="hidden lg:block" />
+              <SidebarTrigger className="lg:hidden" />
+            </div>
+            
+            {/* When expanded: show title and toggle button */}
+            <div className="flex items-center justify-between w-full group-data-[collapsible=icon]:hidden">
+              <span className="font-semibold text-lg">Student Portal</span>
+              <SidebarTrigger className="hidden lg:block" />
+              <SidebarTrigger className="lg:hidden" />
+            </div>
           </div>
-          <SidebarTrigger className="lg:hidden" />
-        </div>
 
         {Object.entries(groupedItems).map(([groupName, items]) => (
           <SidebarGroup key={groupName}>
-            <SidebarGroupLabel className="px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            <SidebarGroupLabel className="px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider group-data-[collapsible=icon]:hidden">
               {groupName}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -149,6 +143,7 @@ export function LearnerSidebar() {
                         asChild 
                         isActive={isActive}
                         className="group relative"
+                        tooltip={item.title}
                       >
                         <NavLink 
                           to={item.url} 
@@ -156,12 +151,7 @@ export function LearnerSidebar() {
                           className="flex items-center space-x-3 px-3 py-2 rounded-md transition-colors"
                         >
                           <item.icon className="h-4 w-4 flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium">{item.title}</div>
-                            <div className="text-xs text-muted-foreground line-clamp-1">
-                              {item.description}
-                            </div>
-                          </div>
+                          <span className="text-sm font-medium group-data-[collapsible=icon]:hidden">{item.title}</span>
                         </NavLink>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -174,10 +164,10 @@ export function LearnerSidebar() {
 
         {/* Quick Stats Section */}
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          <SidebarGroupLabel className="px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider group-data-[collapsible=icon]:hidden">
             Quick Stats
           </SidebarGroupLabel>
-          <SidebarGroupContent>
+          <SidebarGroupContent className="group-data-[collapsible=icon]:hidden">
             <div className="px-4 py-3 space-y-3">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-muted-foreground">Courses in Progress</span>
@@ -196,5 +186,6 @@ export function LearnerSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
+    </TooltipProvider>
   );
 }

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { useAuth } from "@/contexts/AuthContext";
 import { 
   Award, 
   Search,
@@ -17,49 +18,122 @@ import {
 } from "lucide-react";
 
 const OrganizationCertificatesPage = () => {
+  const { user } = useAuth();
   const { orgId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const orgData = getOrganizationDataFromPath(location.pathname);
 
-  const certificates = [
-    {
-      id: 1,
-      studentName: "Sarah Chen",
-      courseName: "Introduction to Computer Science",
-      issueDate: "2024-01-15",
-      certificateId: "CERT-CS-001-2024",
-      status: "Issued",
-      downloadUrl: "#"
-    },
-    {
-      id: 2,
-      studentName: "Michael Rodriguez",
-      courseName: "Data Science Fundamentals",
-      issueDate: "2024-02-03",
-      certificateId: "CERT-DS-002-2024",
-      status: "Issued",
-      downloadUrl: "#"
-    },
-    {
-      id: 3,
-      studentName: "Emily Johnson",
-      courseName: "Advanced Machine Learning",
-      issueDate: "2024-02-20",
-      certificateId: "CERT-ML-003-2024",
-      status: "Issued",
-      downloadUrl: "#"
-    },
-    {
-      id: 4,
-      studentName: "David Kim",
-      courseName: "Web Development Bootcamp",
-      issueDate: "2024-03-10",
-      certificateId: "CERT-WD-004-2024",
-      status: "Processing",
-      downloadUrl: "#"
+  // Role-based certificate data
+  const getCertificatesForRole = () => {
+    if (user?.role === 'instructor') {
+      // Instructor sees only certificates from their courses
+      return [
+        {
+          id: 1,
+          studentName: "Sarah Chen",
+          courseName: "Advanced JavaScript Fundamentals",
+          issueDate: "2024-01-15",
+          certificateId: "CERT-JS-001-2024",
+          status: "Issued",
+          downloadUrl: "#",
+          instructor: user?.name || "Prof. Johnson",
+          grade: "A+",
+          completionDate: "2024-01-10"
+        },
+        {
+          id: 2,
+          studentName: "Michael Rodriguez", 
+          courseName: "Data Structures & Algorithms",
+          issueDate: "2024-02-03",
+          certificateId: "CERT-DS-002-2024",
+          status: "Issued",
+          downloadUrl: "#",
+          instructor: user?.name || "Prof. Johnson",
+          grade: "A",
+          completionDate: "2024-01-28"
+        },
+        {
+          id: 3,
+          studentName: "Emily Johnson",
+          courseName: "Advanced JavaScript Fundamentals",
+          issueDate: "2024-02-20",
+          certificateId: "CERT-JS-003-2024",
+          status: "Processing",
+          downloadUrl: "#",
+          instructor: user?.name || "Prof. Johnson",
+          grade: "A-",
+          completionDate: "2024-02-15"
+        }
+      ];
     }
-  ];
+    
+    // Admin sees all certificates organization-wide
+    return [
+      {
+        id: 1,
+        studentName: "Sarah Chen",
+        courseName: "Introduction to Computer Science",
+        issueDate: "2024-01-15",
+        certificateId: "CERT-CS-001-2024",
+        status: "Issued",
+        downloadUrl: "#",
+        instructor: "Prof. Johnson",
+        grade: "A+",
+        completionDate: "2024-01-10"
+      },
+      {
+        id: 2,
+        studentName: "Michael Rodriguez",
+        courseName: "Data Science Fundamentals",
+        issueDate: "2024-02-03",
+        certificateId: "CERT-DS-002-2024",
+        status: "Issued",
+        downloadUrl: "#",
+        instructor: "Dr. Sarah Wang",
+        grade: "A",
+        completionDate: "2024-01-28"
+      },
+      {
+        id: 3,
+        studentName: "Emily Johnson",
+        courseName: "Advanced Machine Learning",
+        issueDate: "2024-02-20",
+        certificateId: "CERT-ML-003-2024",
+        status: "Issued",
+        downloadUrl: "#",
+        instructor: "Prof. Lisa Wang",
+        grade: "B+",
+        completionDate: "2024-02-15"
+      },
+      {
+        id: 4,
+        studentName: "David Kim",
+        courseName: "Web Development Bootcamp",
+        issueDate: "2024-03-10",
+        certificateId: "CERT-WD-004-2024",
+        status: "Processing",
+        downloadUrl: "#",
+        instructor: "Alex Rodriguez",
+        grade: "A-",
+        completionDate: "2024-03-05"
+      },
+      {
+        id: 5,
+        studentName: "Lisa Thompson",
+        courseName: "Database Design Principles",
+        issueDate: "2024-03-15",
+        certificateId: "CERT-DB-005-2024", 
+        status: "Issued",
+        downloadUrl: "#",
+        instructor: "Prof. Michael Chen",
+        grade: "A",
+        completionDate: "2024-03-10"
+      }
+    ];
+  };
+
+  const certificates = getCertificatesForRole();
 
   return (
     <div className="p-6">
