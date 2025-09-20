@@ -1,6 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   TrendingUp, 
   Users, 
@@ -9,10 +12,126 @@ import {
   BarChart3,
   PieChart,
   Activity,
-  Target
+  Target,
+  Brain,
+  Sparkles,
+  CheckCircle,
+  TrendingDown,
+  AlertTriangle,
+  Lightbulb,
+  X
 } from "lucide-react";
 
 const AnalyticsPage = () => {
+  const navigate = useNavigate();
+  const [isInsightsDialogOpen, setIsInsightsDialogOpen] = useState(false);
+
+  const handleExportReport = () => {
+    // Create CSV data
+    const csvData = `
+Platform Analytics Report
+Generated: ${new Date().toLocaleDateString()}
+
+Key Metrics:
+Total Learners,2847
+Course Completion,87.3%
+Engagement Score,94.1
+Knowledge Retention,76.4%
+
+Course Performance:
+Course Name,Students,Completion Rate,Satisfaction
+React Development,145,92%,4.8
+Data Science,267,87%,4.9
+Machine Learning,89,76%,4.7
+Cloud Computing,198,94%,4.6
+Cybersecurity,134,89%,4.8
+
+Assessment Performance:
+Assessment Type,Count,Average Score
+Multiple Choice,1247,82.4%
+Coding Challenges,456,78.9%
+Essay Questions,234,84.2%
+Project Reviews,123,86.7%
+    `.trim();
+
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `platform-analytics-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
+  const handleGenerateInsights = () => {
+    setIsInsightsDialogOpen(true);
+  };
+
+  const insightsData = {
+    performanceHighlights: [
+      {
+        icon: TrendingUp,
+        title: "Course Completion Above Average",
+        description: "Course completion rates are 12% above industry average",
+        status: "positive"
+      },
+      {
+        icon: Activity,
+        title: "Peak Learning Hours",
+        description: "Peak learning hours (2-4 PM) show highest engagement",
+        status: "positive"
+      },
+      {
+        icon: Users,
+        title: "Mobile Learning Adoption",
+        description: "Mobile learning adoption at 64% indicates strong accessibility",
+        status: "positive"
+      }
+    ],
+    recommendations: [
+      {
+        icon: Lightbulb,
+        title: "Mobile-First Experience",
+        description: "Optimize content for mobile-first experience to increase engagement",
+        priority: "high"
+      },
+      {
+        icon: PieChart,
+        title: "Shorter Video Segments",
+        description: "Create shorter video segments (5-7 min optimal) for better retention",
+        priority: "medium"
+      },
+      {
+        icon: CheckCircle,
+        title: "Interactive Assessments",
+        description: "Implement interactive assessments for higher engagement",
+        priority: "high"
+      }
+    ],
+    growthOpportunities: [
+      {
+        icon: AlertTriangle,
+        title: "Weekend Study Support",
+        description: "Weekend study support could improve completion rates",
+        impact: "medium"
+      },
+      {
+        icon: TrendingDown,
+        title: "Advanced Coding Challenges",
+        description: "Advanced coding challenges show room for improvement",
+        impact: "high"
+      },
+      {
+        icon: Brain,
+        title: "Knowledge Retention Strategies",
+        description: "Knowledge retention strategies needed for long-term success",
+        impact: "high"
+      }
+    ]
+  };
+
   const keyMetrics = [
     {
       title: "Total Learners",
@@ -20,7 +139,8 @@ const AnalyticsPage = () => {
       change: "+18%",
       changeType: "positive" as const,
       icon: Users,
-      description: "Active enrolled students"
+      description: "Active enrolled students",
+      link: "/users"
     },
     {
       title: "Course Completion",
@@ -28,7 +148,8 @@ const AnalyticsPage = () => {
       change: "+5.2%",
       changeType: "positive" as const,
       icon: Award,
-      description: "Average completion rate"
+      description: "Average completion rate",
+      link: "/courses"
     },
     {
       title: "Engagement Score",
@@ -36,7 +157,8 @@ const AnalyticsPage = () => {
       change: "+2.8%",
       changeType: "positive" as const,
       icon: Activity,
-      description: "Learning engagement index"
+      description: "Learning engagement index",
+      link: "/reports"
     },
     {
       title: "Knowledge Retention",
@@ -44,7 +166,8 @@ const AnalyticsPage = () => {
       change: "-1.2%",
       changeType: "negative" as const,
       icon: Target,
-      description: "Long-term retention rate"
+      description: "Long-term retention rate",
+      link: "/reports"
     }
   ];
 
@@ -92,11 +215,18 @@ const AnalyticsPage = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
-              <Button variant="outline" className="border-white/50 text-white bg-white/10 hover:bg-white/20 hover:text-white hover:border-white/70 font-semibold w-full sm:w-auto backdrop-blur-sm">
+              <Button 
+                variant="outline" 
+                onClick={handleExportReport}
+                className="border-white/50 text-white bg-white/10 hover:bg-white/20 hover:text-white hover:border-white/70 font-semibold w-full sm:w-auto backdrop-blur-sm"
+              >
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Export Report
               </Button>
-              <Button className="bg-white text-primary hover:bg-white/90 hover:text-primary font-semibold px-6 md:px-8 py-3 w-full sm:w-auto">
+              <Button 
+                onClick={handleGenerateInsights}
+                className="bg-white text-primary hover:bg-white/90 hover:text-primary font-semibold px-6 md:px-8 py-3 w-full sm:w-auto"
+              >
                 <BarChart3 className="w-4 h-4 mr-2" />
                 Generate Insights
               </Button>
@@ -111,7 +241,11 @@ const AnalyticsPage = () => {
             {/* Key Metrics */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {keyMetrics.map((metric, index) => (
-                  <Card key={index} className="gradient-card border-0 shadow-soft hover:shadow-medium transition-smooth">
+                  <Card 
+                    key={index} 
+                    className="gradient-card border-0 shadow-soft hover:shadow-medium transition-smooth cursor-pointer" 
+                    onClick={() => navigate(metric.link)}
+                  >
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium text-muted-foreground">
                         {metric.title}
@@ -190,7 +324,12 @@ const AnalyticsPage = () => {
                     {coursePerformance.slice(0, 5).map((course, index) => (
                       <div key={index} className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <h4 className="font-medium text-sm">{course.name}</h4>
+                          <button 
+                            onClick={() => navigate('/courses')}
+                            className="font-medium text-sm text-left hover:text-primary transition-colors cursor-pointer"
+                          >
+                            {course.name}
+                          </button>
                           <Badge variant="outline" className="text-xs">
                             {course.completion}%
                           </Badge>
@@ -309,6 +448,133 @@ const AnalyticsPage = () => {
           </div> {/* Close max-w-6xl */}
         </div> {/* Close container */}
       </div> {/* Close py-16 section */}
+
+      {/* AI Insights Dialog */}
+      <Dialog open={isInsightsDialogOpen} onOpenChange={setIsInsightsDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader className="border-b pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+                <Brain className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <DialogTitle className="text-xl font-bold flex items-center gap-2">
+                  AI-Generated Insights
+                  <Sparkles className="w-5 h-5 text-primary" />
+                </DialogTitle>
+                <DialogDescription className="text-muted-foreground">
+                  Generated on {new Date().toLocaleDateString()} • Analysis based on platform data
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+
+          <div className="py-6 space-y-8">
+            {/* Performance Highlights */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-600" />
+                <h3 className="text-lg font-semibold text-green-600">Performance Highlights</h3>
+              </div>
+              <div className="grid md:grid-cols-1 gap-4">
+                {insightsData.performanceHighlights.map((highlight, index) => (
+                  <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-green-50 border border-green-200">
+                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                      <highlight.icon className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-green-800">{highlight.title}</h4>
+                      <p className="text-sm text-green-700 mt-1">{highlight.description}</p>
+                    </div>
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recommendations */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Lightbulb className="w-5 h-5 text-blue-600" />
+                <h3 className="text-lg font-semibold text-blue-600">Recommendations</h3>
+              </div>
+              <div className="grid md:grid-cols-1 gap-4">
+                {insightsData.recommendations.map((recommendation, index) => (
+                  <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-blue-50 border border-blue-200">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                      <recommendation.icon className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-medium text-blue-800">{recommendation.title}</h4>
+                        <Badge 
+                          className={`text-xs ${
+                            recommendation.priority === 'high' 
+                              ? 'bg-red-100 text-red-700 border-red-200' 
+                              : 'bg-yellow-100 text-yellow-700 border-yellow-200'
+                          }`}
+                        >
+                          {recommendation.priority} priority
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-blue-700 mt-1">{recommendation.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Growth Opportunities */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Target className="w-5 h-5 text-purple-600" />
+                <h3 className="text-lg font-semibold text-purple-600">Growth Opportunities</h3>
+              </div>
+              <div className="grid md:grid-cols-1 gap-4">
+                {insightsData.growthOpportunities.map((opportunity, index) => (
+                  <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-purple-50 border border-purple-200">
+                    <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                      <opportunity.icon className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-medium text-purple-800">{opportunity.title}</h4>
+                        <Badge 
+                          className={`text-xs ${
+                            opportunity.impact === 'high' 
+                              ? 'bg-red-100 text-red-700 border-red-200' 
+                              : 'bg-orange-100 text-orange-700 border-orange-200'
+                          }`}
+                        >
+                          {opportunity.impact} impact
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-purple-700 mt-1">{opportunity.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter className="border-t pt-4">
+            <div className="flex items-center justify-between w-full">
+              <div className="text-xs text-muted-foreground">
+                Insights powered by AI analysis of your platform data
+              </div>
+              <div className="flex gap-3">
+                <Button variant="outline" onClick={() => setIsInsightsDialogOpen(false)}>
+                  Close
+                </Button>
+                <Button onClick={handleExportReport}>
+                  <TrendingUp className="w-4 h-4 mr-2" />
+                  Export Report
+                </Button>
+              </div>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div> 
   );
 };
