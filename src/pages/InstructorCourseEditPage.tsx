@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { OrganizationHeader } from "@/components/OrganizationHeader";
+import InstructorMobileBottomNav from "@/components/responsive/InstructorMobileBottomNav";
 import { 
   ArrowLeft,
   Save,
@@ -77,39 +79,41 @@ const InstructorCourseEditPage = () => {
   const basePath = location.pathname.replace(`/${courseId}/edit`, '');
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-6xl">
+    <div className="w-full overflow-x-hidden">
+      <OrganizationHeader orgData={orgData} />
+      <div className="container mx-auto px-4 sm:px-6 pb-20 md:pb-6 max-w-6xl" style={{ paddingTop: '80px' }}>
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <Button 
           variant="ghost" 
           onClick={() => navigate(`${location.pathname.replace('/edit', '')}`)}
-          className="mb-4"
+          className="mb-4 text-sm"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
           Back to Course
         </Button>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
           <div>
-            <h1 className="text-2xl lg:text-3xl font-bold mb-2">Edit Course</h1>
-            <p className="text-muted-foreground">Update your course content and settings</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">Edit Course</h1>
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground">Update your course content and settings</p>
           </div>
           <Button 
             onClick={handleSave}
             style={{ backgroundColor: orgData.primaryColor }} 
-            className="text-white"
+            className="text-white w-full sm:w-auto text-sm"
           >
-            <Save className="w-4 h-4 mr-2" />
+            <Save className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
             Save Changes
           </Button>
         </div>
       </div>
 
-      <Tabs defaultValue="basic" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="basic">Basic Info</TabsTrigger>
-          <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
-          <TabsTrigger value="enrollment">Enrollment</TabsTrigger>
+      <Tabs defaultValue="basic" className="space-y-4 sm:space-y-6">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+          <TabsTrigger value="basic" className="text-xs sm:text-sm">Basic Info</TabsTrigger>
+          <TabsTrigger value="content" className="text-xs sm:text-sm">Content</TabsTrigger>
+          <TabsTrigger value="settings" className="text-xs sm:text-sm">Settings</TabsTrigger>
+          <TabsTrigger value="enrollment" className="text-xs sm:text-sm">Enrollment</TabsTrigger>
         </TabsList>
 
         {/* Basic Information */}
@@ -434,6 +438,10 @@ const InstructorCourseEditPage = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      </div>
+      
+      {/* Mobile Bottom Navigation */}
+      <InstructorMobileBottomNav currentPage="courses" />
     </div>
   );
 };

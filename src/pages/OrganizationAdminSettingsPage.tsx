@@ -22,6 +22,7 @@ import {
   Lock,
   Zap
 } from "lucide-react";
+import Navigation from "@/components/Navigation";
 
 const OrganizationAdminSettingsPage = () => {
   const { orgId } = useParams();
@@ -87,7 +88,9 @@ const OrganizationAdminSettingsPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-6xl">
+    <div className="w-full overflow-x-hidden">
+      <Navigation />
+      <div className="container mx-auto px-4 sm:px-6 pb-6 pt-20 max-w-6xl">
       {/* Header */}
       <div className="mb-8">
         <Button 
@@ -99,23 +102,23 @@ const OrganizationAdminSettingsPage = () => {
           Back to Organization Details
         </Button>
         
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between space-y-4 lg:space-y-0">
           <div className="flex items-center space-x-4">
-            <Avatar className="w-16 h-16">
+            <Avatar className="w-12 h-12 sm:w-16 sm:h-16">
               <AvatarFallback 
-                className="text-white text-xl font-bold"
+                className="text-white text-lg sm:text-xl font-bold"
                 style={{ backgroundColor: organization.primaryColor }}
               >
                 {organization.name.split(' ').map(n => n[0]).join('').toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Organization Settings</h1>
-              <p className="text-muted-foreground">Manage platform configuration and security settings</p>
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold mb-2">Organization Settings</h1>
+              <p className="text-muted-foreground text-sm sm:text-base">Manage platform configuration and security settings</p>
             </div>
           </div>
           
-          <Button onClick={handleSave} className="bg-primary hover:bg-primary/90">
+          <Button onClick={handleSave} className="bg-primary hover:bg-primary/90 w-full sm:w-auto">
             <Save className="w-4 h-4 mr-2" />
             Save All Changes
           </Button>
@@ -123,12 +126,12 @@ const OrganizationAdminSettingsPage = () => {
       </div>
 
       <Tabs defaultValue="security" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="platform">Platform</TabsTrigger>
-          <TabsTrigger value="advanced">Advanced</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 h-auto">
+          <TabsTrigger value="security" className="text-xs sm:text-sm">Security</TabsTrigger>
+          <TabsTrigger value="users" className="text-xs sm:text-sm">Users</TabsTrigger>
+          <TabsTrigger value="notifications" className="text-xs sm:text-sm">Notifications</TabsTrigger>
+          <TabsTrigger value="platform" className="text-xs sm:text-sm">Platform</TabsTrigger>
+          <TabsTrigger value="advanced" className="text-xs sm:text-sm">Advanced</TabsTrigger>
         </TabsList>
 
         {/* Security Settings */}
@@ -142,8 +145,8 @@ const OrganizationAdminSettingsPage = () => {
               <CardDescription>Configure authentication and security policies</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Require Two-Factor Authentication</Label>
                   <p className="text-sm text-muted-foreground">Force all users to enable 2FA</p>
                 </div>
@@ -153,8 +156,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>SSO Only Access</Label>
                   <p className="text-sm text-muted-foreground">Disable password-based login</p>
                 </div>
@@ -216,8 +219,8 @@ const OrganizationAdminSettingsPage = () => {
               <CardDescription>Configure user registration and management policies</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Allow Self Registration</Label>
                   <p className="text-sm text-muted-foreground">Users can register without admin approval</p>
                 </div>
@@ -227,8 +230,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Auto-approve New Users</Label>
                   <p className="text-sm text-muted-foreground">Automatically approve user registrations</p>
                 </div>
@@ -280,8 +283,8 @@ const OrganizationAdminSettingsPage = () => {
               <CardDescription>Configure notification preferences and alerts</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Email Notifications</Label>
                   <p className="text-sm text-muted-foreground">Send important updates via email</p>
                 </div>
@@ -291,8 +294,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Push Notifications</Label>
                   <p className="text-sm text-muted-foreground">Send real-time push notifications</p>
                 </div>
@@ -302,8 +305,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Weekly Reports</Label>
                   <p className="text-sm text-muted-foreground">Send weekly usage and progress reports</p>
                 </div>
@@ -313,8 +316,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>System Alerts</Label>
                   <p className="text-sm text-muted-foreground">Critical system notifications and alerts</p>
                 </div>
@@ -338,8 +341,8 @@ const OrganizationAdminSettingsPage = () => {
               <CardDescription>Enable or disable platform features and capabilities</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Public Courses</Label>
                   <p className="text-sm text-muted-foreground">Allow courses to be publicly accessible</p>
                 </div>
@@ -349,8 +352,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Certificates</Label>
                   <p className="text-sm text-muted-foreground">Enable certificate generation</p>
                 </div>
@@ -360,8 +363,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Badges & Achievements</Label>
                   <p className="text-sm text-muted-foreground">Enable gamification features</p>
                 </div>
@@ -371,8 +374,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Discussion Forums</Label>
                   <p className="text-sm text-muted-foreground">Enable course discussions and forums</p>
                 </div>
@@ -382,8 +385,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Assessments & Quizzes</Label>
                   <p className="text-sm text-muted-foreground">Enable assessment creation and grading</p>
                 </div>
@@ -407,8 +410,8 @@ const OrganizationAdminSettingsPage = () => {
               <CardDescription>Configure data retention and privacy settings</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Allow Data Export</Label>
                   <p className="text-sm text-muted-foreground">Users can export their data</p>
                 </div>
@@ -418,8 +421,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Cookie Consent Required</Label>
                   <p className="text-sm text-muted-foreground">Show cookie consent banner</p>
                 </div>
@@ -429,8 +432,8 @@ const OrganizationAdminSettingsPage = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="space-y-0.5 flex-1">
                   <Label>Analytics Tracking</Label>
                   <p className="text-sm text-muted-foreground">Enable usage analytics and tracking</p>
                 </div>
@@ -478,23 +481,23 @@ const OrganizationAdminSettingsPage = () => {
                 </AlertDescription>
               </Alert>
               
-              <div className="flex items-center justify-between pt-4">
-                <div className="space-y-1">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 space-y-3 sm:space-y-0">
+                <div className="space-y-1 flex-1">
                   <p className="font-medium">Suspend Organization</p>
                   <p className="text-sm text-muted-foreground">Temporarily disable access to the platform</p>
                 </div>
-                <Button variant="outline" onClick={handleSuspendOrganization} className="border-orange-300 text-orange-700 hover:bg-orange-50">
+                <Button variant="outline" onClick={handleSuspendOrganization} className="border-orange-300 text-orange-700 hover:bg-orange-50 w-full sm:w-auto">
                   <Lock className="w-4 h-4 mr-2" />
                   Suspend
                 </Button>
               </div>
               
-              <div className="flex items-center justify-between pt-4 border-t border-red-200">
-                <div className="space-y-1">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-red-200 space-y-3 sm:space-y-0">
+                <div className="space-y-1 flex-1">
                   <p className="font-medium">Delete Organization</p>
                   <p className="text-sm text-muted-foreground">Permanently remove all data and access</p>
                 </div>
-                <Button variant="destructive" onClick={handleDeleteOrganization}>
+                <Button variant="destructive" onClick={handleDeleteOrganization} className="w-full sm:w-auto">
                   <Trash2 className="w-4 h-4 mr-2" />
                   Delete
                 </Button>
@@ -503,6 +506,7 @@ const OrganizationAdminSettingsPage = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 };

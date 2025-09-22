@@ -20,6 +20,7 @@ import {
   MessageSquare,
   Filter
 } from "lucide-react";
+import Navigation from "@/components/Navigation";
 
 const InstructorsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -114,21 +115,23 @@ const InstructorsPage = () => {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="w-full overflow-x-hidden">
+      <Navigation />
+      <div className="container mx-auto px-4 sm:px-6 pb-6 pt-20 max-w-6xl space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Instructors</h1>
-          <p className="text-muted-foreground">Manage teaching staff and course assignments</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Instructors</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">Manage teaching staff and course assignments</p>
         </div>
-        <Button className="gradient-hero text-white">
+        <Button className="gradient-hero text-white w-full sm:w-auto">
           <UserPlus className="h-4 w-4 mr-2" />
           Add Instructor
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <Card>
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
@@ -168,8 +171,8 @@ const InstructorsPage = () => {
       </div>
 
       {/* Filters and Search */}
-      <div className="flex items-center space-x-4">
-        <div className="relative flex-1 max-w-sm">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+        <div className="relative flex-1 max-w-full sm:max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             placeholder="Search instructors..."
@@ -179,7 +182,7 @@ const InstructorsPage = () => {
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-40">
+          <SelectTrigger className="w-full sm:w-40">
             <Filter className="h-4 w-4 mr-2" />
             <SelectValue />
           </SelectTrigger>
@@ -206,71 +209,75 @@ const InstructorsPage = () => {
             {filteredInstructors.map((instructor) => (
               <Card key={instructor.id} className="hover:shadow-md transition-shadow">
                 <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center space-x-4">
-                      <Avatar className="h-12 w-12">
+                  <div className="flex flex-col space-y-4">
+                    <div className="flex items-start space-x-4">
+                      <Avatar className="h-12 w-12 flex-shrink-0">
                         <AvatarImage src={instructor.avatar} />
                         <AvatarFallback>{getInitials(instructor.name)}</AvatarFallback>
                       </Avatar>
-                      <div>
-                        <CardTitle className="text-lg">{instructor.name}</CardTitle>
-                        <CardDescription>{instructor.department} • {instructor.specialization}</CardDescription>
-                        <div className="flex items-center space-x-4 mt-2 text-sm text-muted-foreground">
-                          <span className="flex items-center">
-                            <Mail className="h-3 w-3 mr-1" />
-                            {instructor.email}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-2 sm:space-y-0">
+                          <div className="min-w-0">
+                            <CardTitle className="text-lg truncate">{instructor.name}</CardTitle>
+                            <CardDescription className="truncate">{instructor.department} • {instructor.specialization}</CardDescription>
+                          </div>
+                          <div className="flex items-center space-x-2 flex-shrink-0">
+                            <div className="flex items-center space-x-1">
+                              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                              <span className="font-medium">{instructor.rating}</span>
+                            </div>
+                            <Badge className={getStatusColor(instructor.status)}>
+                              {instructor.status}
+                            </Badge>
+                          </div>
+                        </div>
+                        <div className="flex flex-col space-y-1 mt-2 text-sm text-muted-foreground">
+                          <span className="flex items-center min-w-0">
+                            <Mail className="h-3 w-3 mr-1 flex-shrink-0" />
+                            <span className="truncate">{instructor.email}</span>
                           </span>
-                          <span className="flex items-center">
-                            <Phone className="h-3 w-3 mr-1" />
-                            {instructor.phone}
+                          <span className="flex items-center min-w-0">
+                            <Phone className="h-3 w-3 mr-1 flex-shrink-0" />
+                            <span className="truncate">{instructor.phone}</span>
                           </span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-medium">{instructor.rating}</span>
-                      </div>
-                      <Badge className={getStatusColor(instructor.status)}>
-                        {instructor.status}
-                      </Badge>
-                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
-                    <div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 text-sm">
+                    <div className="min-w-0">
                       <span className="text-muted-foreground">Active Courses: </span>
                       <span className="font-medium">{instructor.activeCourses}</span>
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <span className="text-muted-foreground">Students: </span>
                       <span className="font-medium">{instructor.totalStudents}</span>
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <span className="text-muted-foreground">Experience: </span>
                       <span className="font-medium">{instructor.experience}</span>
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <span className="text-muted-foreground">Completed Courses: </span>
                       <span className="font-medium">{instructor.completedCourses}</span>
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <span className="text-muted-foreground">Joined: </span>
                       <span className="font-medium">{instructor.joinDate}</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-end space-x-2 mt-4">
-                    <Button variant="outline" size="sm">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-end space-y-2 sm:space-y-0 sm:space-x-2 mt-4">
+                    <Button variant="outline" size="sm" className="w-full sm:w-auto">
                       <MessageSquare className="h-4 w-4 mr-2" />
                       Message
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="w-full sm:w-auto">
                       <BookOpen className="h-4 w-4 mr-2" />
                       View Courses
                     </Button>
-                    <Button size="sm">Manage</Button>
+                    <Button size="sm" className="w-full sm:w-auto">Manage</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -296,6 +303,7 @@ const InstructorsPage = () => {
           </div>
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 };

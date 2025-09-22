@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useScrollNavigation } from "@/hooks/useScrollNavigation";
+import Navigation from "@/components/Navigation";
 
 const SuperAdminDashboard = () => {
   const { user } = useAuth();
@@ -157,21 +158,22 @@ const SuperAdminDashboard = () => {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-hidden">
+      <Navigation />
       {/* <div style={{ background: '#ffeaea', color: '#b10000', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 'bold', textAlign: 'center' }}>
         [SuperAdminDashboard] Test: This component is rendering!
       </div> */}
       {/* Hero Section - Matching main page */}
-      <section className="relative py-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
+      <section className="relative pt-24 pb-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/30 to-slate-900/60" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
         
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-6xl mx-auto">
             {/* Platform Health & Status Cards */}
-            <div className="text-center mb-8 pt-8 px-4">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+            <div className="text-center mb-8 pt-8 px-2 sm:px-4">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                 Platform Health & Status
               </h2>
               <p className="text-base md:text-lg text-white/95 max-w-2xl mx-auto drop-shadow-sm">
@@ -179,9 +181,9 @@ const SuperAdminDashboard = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {systemMetrics.map((metric, index) => (
-                <Card key={index} className="p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
+                <Card key={index} className="p-4 sm:p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
                   <div className="text-center">
                     <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-white/20 to-white/30 flex items-center justify-center shadow-lg">
                       <metric.icon className="w-8 h-8 text-white" />
@@ -202,17 +204,17 @@ const SuperAdminDashboard = () => {
       </section>
 
       {/* Organizations Section */}
-      <section className="py-16 -mt-8 relative z-10">
-        <div className="container mx-auto px-6">
+      <section className="py-8 md:py-16 -mt-8 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto space-y-8">
 
             {/* Organizations Overview */}
             <div>
-            <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
-              <div className="flex items-center justify-between mb-8">
+            <Card className="p-4 sm:p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 space-y-3 md:space-y-0">
                 <div>
                   <h2 className="text-2xl font-bold text-foreground mb-2">Top Organizations</h2>
-                  <p className="text-muted-foreground">Highest performing organizations this month</p>
+                  <p className="text-base text-muted-foreground">Highest performing organizations this month</p>
                 </div>
                 <Button 
                   variant="outline" 
@@ -225,26 +227,29 @@ const SuperAdminDashboard = () => {
               </div>
               <div className="space-y-4">
                 {recentOrganizations.map((org, index) => (
-                  <div key={index} className="flex items-center justify-between p-6 rounded-2xl bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 hover:from-primary/10 hover:to-secondary/10 transition-all duration-300 border border-border/10">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
-                        <Building2 className="w-7 h-7 text-white" />
+                  <div key={index} className="flex items-center p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 hover:from-primary/10 hover:to-secondary/10 transition-all duration-300 border border-border/10">
+                    <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <Building2 className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
                       </div>
-                      <div>
-                        <h3 className="font-bold text-foreground text-lg">{org.name}</h3>
-                        <p className="text-sm text-muted-foreground">{org.type}</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-3 mb-1">
+                          <h3 className="font-bold text-foreground text-base sm:text-lg truncate">{org.name}</h3>
+                          <div className="flex items-center space-x-2 flex-wrap">
+                            <Badge className="bg-blue-600 text-white border-blue-700 font-semibold text-xs">
+                              {org.plan}
+                            </Badge>
+                            <span className="text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded-full border border-green-200">
+                              {org.growth}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 text-xs sm:text-sm text-muted-foreground">
+                          <span className="truncate">{org.type}</span>
+                          <span className="hidden sm:inline">•</span>
+                          <span className="font-medium">{org.users} users</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="text-right space-y-2">
-                      <div className="flex items-center space-x-3">
-                        <Badge className="bg-blue-600 text-white border-blue-700 font-semibold">
-                          {org.plan}
-                        </Badge>
-                        <span className="text-sm font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full border border-green-200">
-                          {org.growth}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground font-medium">{org.users} users</p>
                     </div>
                   </div>
                 ))}

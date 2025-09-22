@@ -143,16 +143,16 @@ const OrganizationNewsFeedPage = () => {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-4">
+    <div className="px-4 sm:px-6 py-4 sm:py-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 sm:mb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">News Feed</h1>
-          <p className="text-muted-foreground">Create and manage announcements for your organization</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">News Feed</h1>
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground">Create and manage announcements for your organization</p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button style={{ backgroundColor: orgData.primaryColor }} className="text-white">
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Create News Item
             </Button>
           </DialogTrigger>
@@ -223,10 +223,10 @@ const OrganizationNewsFeedPage = () => {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+              <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)} className="text-xs sm:text-sm">
                 Cancel
               </Button>
-              <Button onClick={handleCreate} style={{ backgroundColor: orgData.primaryColor }} className="text-white">
+              <Button onClick={handleCreate} style={{ backgroundColor: orgData.primaryColor }} className="text-white text-xs sm:text-sm">
                 Create
               </Button>
             </DialogFooter>
@@ -235,67 +235,67 @@ const OrganizationNewsFeedPage = () => {
       </div>
 
       {/* Quick Actions */}
-      <Card className="mb-6">
-        <CardHeader>
+      <Card className="mb-4 sm:mb-6">
+        <CardHeader className="px-4 sm:px-6">
           <CardTitle className="flex items-center space-x-2">
             <span>Quick Actions</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
             <Button 
               variant="outline" 
-              className="h-20 flex flex-col items-center justify-center space-y-2"
+              className="h-14 sm:h-16 md:h-20 flex flex-col items-center justify-center space-y-2"
               onClick={() => setIsCreateDialogOpen(true)}
             >
-              <Plus className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-              <span className="text-sm">Create News</span>
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-xs sm:text-sm">Create News</span>
             </Button>
             <Button 
               variant="outline" 
-              className="h-20 flex flex-col items-center justify-center space-y-2"
+              className="h-14 sm:h-16 md:h-20 flex flex-col items-center justify-center space-y-2"
               onClick={() => navigate(`/${orgData.acronym}/courses`)}
             >
-              <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-              <span className="text-sm">View Courses</span>
+              <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-xs sm:text-sm">View Courses</span>
             </Button>
             <Button 
               variant="outline" 
-              className="h-20 flex flex-col items-center justify-center space-y-2"
+              className="h-14 sm:h-16 md:h-20 flex flex-col items-center justify-center space-y-2"
               onClick={() => navigate(`/${orgData.acronym}/students`)}
             >
-              <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-              <span className="text-sm">View Students</span>
+              <Users className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-xs sm:text-sm">View Students</span>
             </Button>
             <Button 
               variant="outline" 
-              className="h-20 flex flex-col items-center justify-center space-y-2"
+              className="h-14 sm:h-16 md:h-20 flex flex-col items-center justify-center space-y-2"
               onClick={() => navigate(`/${orgData.acronym}/analytics`)}
             >
-              <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-              <span className="text-sm">View Analytics</span>
+              <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
+              <span className="text-xs sm:text-sm">View Analytics</span>
             </Button>
           </div>
         </CardContent>
       </Card>
 
       {/* Search and Filters */}
-      <Card className="mb-6">
-        <CardContent className="pt-6">
+      <Card className="mb-4 sm:mb-6">
+        <CardContent className="px-4 sm:px-6 py-4 sm:py-6">
           <div className="flex items-center space-x-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
               <Input placeholder="Search news items..." className="pl-9" />
             </div>
-            <Button variant="outline">Filter by Type</Button>
-            <Button variant="outline">Filter by Priority</Button>
+            <Button variant="outline" className="text-xs sm:text-sm">Filter by Type</Button>
+            <Button variant="outline" className="text-xs sm:text-sm">Filter by Priority</Button>
           </div>
         </CardContent>
       </Card>
 
       {/* News Feed Items */}
       <Card>
-        <CardHeader>
+        <CardHeader className="px-4 sm:px-6">
           <CardTitle>All News Items</CardTitle>
           <CardDescription>Manage announcements and news for your organization</CardDescription>
         </CardHeader>
@@ -304,15 +304,15 @@ const OrganizationNewsFeedPage = () => {
             {newsFeedItems.map((item) => {
               const TypeIcon = getTypeIcon(item.type);
               return (
-                <div key={item.id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50">
+                <div key={item.id} className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6 border border-border rounded-lg hover:bg-muted/50">
                   <div className="flex items-start space-x-4 flex-1">
                     <div className="p-2 rounded-lg" style={{ backgroundColor: `${getPriorityColor(item.priority)}15` }}>
-                      <TypeIcon className="h-5 w-5" style={{ color: getPriorityColor(item.priority) }} />
+                      <TypeIcon className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: getPriorityColor(item.priority) }} />
                     </div>
                     
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
-                        <h3 className="font-semibold">{item.title}</h3>
+                        <h3 className="text-sm sm:text-base font-semibold">{item.title}</h3>
                         <Badge 
                           variant="secondary"
                           style={{ 
@@ -326,10 +326,10 @@ const OrganizationNewsFeedPage = () => {
                           {item.type.replace('_', ' ').toUpperCase()}
                         </Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-2">{item.content}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{item.content}</p>
                       <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                         <div className="flex items-center space-x-1">
-                          <Calendar className="h-3 w-3" />
+                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
                           <span>Event: {new Date(item.date).toLocaleDateString()}</span>
                         </div>
                         <span>Created: {new Date(item.createdAt).toLocaleDateString()}</span>
@@ -339,8 +339,8 @@ const OrganizationNewsFeedPage = () => {
                   </div>
 
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(item)}>
-                      <Edit className="h-4 w-4 mr-2" />
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(item)} className="text-xs sm:text-sm">
+                      <Edit className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                       Edit
                     </Button>
                     <Button 
@@ -352,7 +352,7 @@ const OrganizationNewsFeedPage = () => {
                         color: '#ef4444' 
                       }}
                     >
-                      <Trash2 className="h-4 w-4 mr-2" />
+                      <Trash2 className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                       Delete
                     </Button>
                   </div>
@@ -432,10 +432,10 @@ const OrganizationNewsFeedPage = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} className="text-xs sm:text-sm">
               Cancel
             </Button>
-            <Button onClick={handleUpdate} style={{ backgroundColor: orgData.primaryColor }} className="text-white">
+            <Button onClick={handleUpdate} style={{ backgroundColor: orgData.primaryColor }} className="text-white text-xs sm:text-sm">
               Update
             </Button>
           </DialogFooter>

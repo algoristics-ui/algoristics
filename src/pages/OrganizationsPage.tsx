@@ -31,6 +31,7 @@ import {
   Edit,
   Settings
 } from "lucide-react";
+import Navigation from "@/components/Navigation";
 
 const OrganizationsPage_bkp = () => {
   const navigate = useNavigate();
@@ -205,62 +206,62 @@ const OrganizationsPage_bkp = () => {
   // Component to render organization cards
   const renderOrganizationCard = (org: any) => (
     <Card key={org.id} className="hover:shadow-lg transition-all duration-300 border border-border">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between">
+      <CardContent className="p-4 sm:p-6">
+        <div className="w-full">
           {/* Organization Info */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xl font-bold text-foreground truncate">{org.name}</h3>
-              <div className="flex items-center space-x-2">
-                <Badge variant="secondary" className="ml-2">
+          <div className="w-full">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 space-y-2 sm:space-y-0">
+              <h3 className="text-lg sm:text-xl font-bold text-foreground truncate">{org.name}</h3>
+              <div className="flex items-center space-x-2 flex-wrap">
+                <Badge variant="secondary" className="text-xs">
                   {org.subscription || org.planType}
                 </Badge>
                 <Badge 
                   variant={org.status === 'Active' ? 'default' : org.status === 'Trial' ? 'secondary' : 'destructive'}
-                  className="font-medium"
+                  className="font-medium text-xs"
                 >
                   {org.status}
                 </Badge>
               </div>
             </div>
             
-            <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
-              <div className="flex items-center">
-                <Building2 className="mr-1 h-4 w-4" />
-                {org.industry || org.type}
+            <div className="flex flex-col space-y-1 text-xs sm:text-sm text-muted-foreground mb-3">
+              <div className="flex items-center min-w-0">
+                <Building2 className="mr-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="truncate">{org.industry || org.type}</span>
               </div>
-              <div className="flex items-center">
-                <MapPin className="mr-1 h-4 w-4" />
-                {org.location}
+              <div className="flex items-center min-w-0">
+                <MapPin className="mr-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="truncate">{org.location}</span>
               </div>
-              <div className="flex items-center">
-                <Calendar className="mr-1 h-4 w-4" />
-                Joined {new Date(org.joinedDate || org.joinDate).toLocaleDateString()}
+              <div className="flex items-center min-w-0">
+                <Calendar className="mr-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="truncate">Joined {new Date(org.joinedDate || org.joinDate).toLocaleDateString()}</span>
               </div>
             </div>
 
             {/* Metrics */}
-            <div className="grid grid-cols-4 gap-4 mb-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-4">
+              <div className="text-center min-w-0">
+                <div className="text-base sm:text-xl lg:text-2xl font-bold text-foreground truncate">
                   {org.students?.toLocaleString() || org.users}
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">Students</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">
+              <div className="text-center min-w-0">
+                <div className="text-base sm:text-xl lg:text-2xl font-bold text-foreground truncate">
                   {org.instructors}
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">Instructors</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">
+              <div className="text-center min-w-0">
+                <div className="text-base sm:text-xl lg:text-2xl font-bold text-foreground truncate">
                   {org.courses}
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">Courses</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">
+              <div className="text-center min-w-0">
+                <div className="text-base sm:text-xl lg:text-2xl font-bold text-foreground truncate">
                   {org.completionRate || org.engagement}%
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">Completion</div>
@@ -268,33 +269,33 @@ const OrganizationsPage_bkp = () => {
             </div>
 
             {/* Contact Info */}
-            <div className="flex items-center justify-between pt-4 border-t border-border">
-              <div className="space-y-1">
+            <div className="flex flex-col pt-4 border-t border-border space-y-3">
+              <div className="space-y-2 min-w-0 w-full">
                 <div className="flex items-center space-x-2 text-sm">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">{org.contactName}</span>
+                  <Users className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  <span className="font-medium truncate">{org.contactName}</span>
                 </div>
                 <div className="space-y-1">
-                  <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                    <div className="flex items-center space-x-1">
-                      <Mail className="h-3 w-3" />
-                      <span>{org.contactEmail}</span>
+                  <div className="flex flex-col space-y-1 text-xs text-muted-foreground">
+                    <div className="flex items-center space-x-1 min-w-0">
+                      <Mail className="h-3 w-3 flex-shrink-0" />
+                      <span className="truncate">{org.contactEmail}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Phone className="h-3 w-3" />
-                      <span>{org.contactPhone}</span>
+                    <div className="flex items-center space-x-1 min-w-0">
+                      <Phone className="h-3 w-3 flex-shrink-0" />
+                      <span className="truncate">{org.contactPhone}</span>
                     </div>
                   </div>
                   <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                    <Globe className="h-3 w-3" />
-                    <Link to={getInternalOrgUrl(org.name)} className="hover:text-primary">
+                    <Globe className="h-3 w-3 flex-shrink-0" />
+                    <Link to={getInternalOrgUrl(org.name)} className="hover:text-primary truncate">
                       Website
                     </Link>
                   </div>
                 </div>
               </div>
               
-              <div className="flex items-center space-x-2">
+              <div className="flex justify-end">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm">
@@ -325,19 +326,20 @@ const OrganizationsPage_bkp = () => {
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-hidden">
+      <Navigation />
       {/* Hero Section - Matching main page */}
-      <section className="relative py-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
+      <section className="relative pt-24 pb-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/30 to-slate-900/60" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
         
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           
           
             {/* Organizations Management */}
-            <div className="text-center mb-8 pt-8 px-4">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+            <div className="text-center mb-6 md:mb-8 pt-4 md:pt-8 px-2 md:px-4">
+              <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 drop-shadow-lg">
                 Organizations Management
               </h2>
               <p className="text-base md:text-lg text-white/95 max-w-2xl mx-auto drop-shadow-sm">
@@ -346,8 +348,8 @@ const OrganizationsPage_bkp = () => {
             </div>
             
             {/* Platform Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <Card className="p-4 sm:p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
                 <div className="text-center">
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-white/20 to-white/30 flex items-center justify-center shadow-lg">
                     <Building2 className="w-8 h-8 text-white" />
@@ -359,7 +361,7 @@ const OrganizationsPage_bkp = () => {
                   </Badge>
                 </div>
               </Card>
-              <Card className="p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
+              <Card className="p-4 sm:p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
                 <div className="text-center">
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-white/20 to-white/30 flex items-center justify-center shadow-lg">
                     <Users className="w-8 h-8 text-white" />
@@ -371,7 +373,7 @@ const OrganizationsPage_bkp = () => {
                   </Badge>
                 </div>
               </Card>
-              <Card className="p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
+              <Card className="p-4 sm:p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
                 <div className="text-center">
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-white/20 to-white/30 flex items-center justify-center shadow-lg">
                     <TrendingUp className="w-8 h-8 text-white" />
@@ -383,7 +385,7 @@ const OrganizationsPage_bkp = () => {
                   </Badge>
                 </div>
               </Card>
-              <Card className="p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
+              <Card className="p-4 sm:p-6 glass bg-white/10 border-white/20 backdrop-blur-sm shadow-elegant hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
                 <div className="text-center">
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-white/20 to-white/30 flex items-center justify-center shadow-lg">
                     <BookOpen className="w-8 h-8 text-white" />
@@ -402,7 +404,7 @@ const OrganizationsPage_bkp = () => {
 
       {/* Organizations Section */}
       <div className="py-16 -mt-8 relative z-10">
-        <div className="container mx-auto px-6 space-y-8">
+        <div className="container mx-auto px-4 sm:px-6 space-y-8">
 
           {/* Organizations Overview */}
           {/* <div> */}
@@ -446,7 +448,7 @@ const OrganizationsPage_bkp = () => {
               </Card> */}
 
               <TabsContent value="all" className="space-y-4">
-                <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+                <Card className="p-4 sm:p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h2 className="text-2xl font-bold text-foreground mb-2">All Organizations</h2>
@@ -475,7 +477,7 @@ const OrganizationsPage_bkp = () => {
               </TabsContent>
 
               <TabsContent value="enterprise" className="space-y-4">
-                <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+                <Card className="p-4 sm:p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h2 className="text-2xl font-bold text-foreground mb-2">Enterprise Organizations</h2>
@@ -492,7 +494,7 @@ const OrganizationsPage_bkp = () => {
               </TabsContent>
 
               <TabsContent value="trial" className="space-y-4">
-                <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+                <Card className="p-4 sm:p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h2 className="text-2xl font-bold text-foreground mb-2">Trial Organizations</h2>
@@ -509,7 +511,7 @@ const OrganizationsPage_bkp = () => {
               </TabsContent>
 
               <TabsContent value="new" className="space-y-4">
-                <Card className="p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
+                <Card className="p-4 sm:p-6 md:p-8 glass bg-background/90 backdrop-blur-sm border border-border/20 shadow-elegant hover:shadow-2xl transition-all duration-300">
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h2 className="text-2xl font-bold text-foreground mb-2">New Partners</h2>

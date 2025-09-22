@@ -22,6 +22,7 @@ import {
   Trash2,
   Save
 } from "lucide-react";
+import Navigation from "@/components/Navigation";
 
 const GlobalUsersPage = () => {
   // State management for organization admins
@@ -223,16 +224,17 @@ const GlobalUsersPage = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-hidden">
+      <Navigation />
       {/* Hero Section */}
-      <section className="relative py-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
+      <section className="relative pt-24 pb-12 bg-gradient-to-br from-primary via-primary/95 to-primary/90 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/30 to-slate-900/60" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
         
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8 pt-8 px-4">
+            <div className="text-center mb-8 pt-8 px-2 sm:px-4">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                 Organization Admins
               </h1>
@@ -241,7 +243,7 @@ const GlobalUsersPage = () => {
               </p>
             </div>
             
-            <div className="flex justify-center px-4">
+            <div className="flex justify-center px-2 sm:px-4">
               <Button 
                 onClick={() => setIsAddDialogOpen(true)}
                 className="bg-white text-primary hover:bg-white/90 font-semibold px-6 md:px-8 py-3 w-full sm:w-auto shadow-lg"
@@ -255,14 +257,14 @@ const GlobalUsersPage = () => {
       </section>
 
       <div className="py-16 -mt-8 relative z-10">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto space-y-8">
 
               {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {userStats.map((stat, index) => (
                   <Card key={index} className="shadow-elegant hover:shadow-2xl transition-all duration-300">
-                    <CardContent className="p-6">
+                    <CardContent className="p-4 sm:p-6">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
@@ -311,38 +313,40 @@ const GlobalUsersPage = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {filteredAdmins.map((admin) => (
-                      <div key={admin.id} className="flex items-center justify-between p-6 rounded-xl bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 hover:from-primary/10 hover:to-secondary/10 transition-all duration-300 border border-border/10">
-                        <div className="flex items-center space-x-6">
-                          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white font-semibold text-lg">
+                      <div key={admin.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6 rounded-xl bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 hover:from-primary/10 hover:to-secondary/10 transition-all duration-300 border border-border/10 space-y-4 sm:space-y-0">
+                        <div className="flex items-center space-x-4 sm:space-x-6 flex-1 min-w-0">
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white font-semibold text-base sm:text-lg flex-shrink-0">
                             {admin.name.split(' ').map(n => n[0]).join('')}
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="font-semibold text-foreground text-lg">{admin.name}</h3>
-                              {getRoleBadge(admin.role)}
-                              {getStatusBadge(admin.status)}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                              <h3 className="font-semibold text-foreground text-base sm:text-lg truncate">{admin.name}</h3>
+                              <div className="flex items-center gap-2 flex-wrap">
+                                {getRoleBadge(admin.role)}
+                                {getStatusBadge(admin.status)}
+                              </div>
                             </div>
-                            <div className="flex items-center gap-6 text-sm text-muted-foreground mb-2">
-                              <span className="flex items-center gap-1">
-                                <Mail className="w-3 h-3" />
-                                {admin.email}
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-xs sm:text-sm text-muted-foreground mb-2">
+                              <span className="flex items-center gap-1 min-w-0">
+                                <Mail className="w-3 h-3 flex-shrink-0" />
+                                <span className="truncate">{admin.email}</span>
                               </span>
-                              <span className="flex items-center gap-1">
-                                <Building2 className="w-3 h-3" />
-                                {admin.organization}
+                              <span className="flex items-center gap-1 min-w-0">
+                                <Building2 className="w-3 h-3 flex-shrink-0" />
+                                <span className="truncate">{admin.organization}</span>
                               </span>
                             </div>
-                            <div className="flex items-center gap-6 text-xs text-muted-foreground">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6 text-xs text-muted-foreground">
                               <span>{admin.totalUsers.toLocaleString()} users managed</span>
                               <span>{admin.totalCourses} courses</span>
                               <span>Joined: {admin.joinDate}</span>
                             </div>
                           </div>
                         </div>
-                        <div className="text-right space-y-2">
-                          <div className="space-y-1">
-                            <p className="text-sm text-muted-foreground">Last login: {admin.lastLogin}</p>
-                            <div className="flex gap-1 flex-wrap justify-end">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                          <div className="space-y-2 flex-1 sm:flex-initial">
+                            <p className="text-xs sm:text-sm text-muted-foreground">Last login: {admin.lastLogin}</p>
+                            <div className="flex gap-1 flex-wrap justify-start sm:justify-end">
                               {admin.permissions.slice(0, 2).map((permission, index) => (
                                 <Badge key={index} variant="outline" className="text-xs">
                                   {permission}
@@ -357,7 +361,7 @@ const GlobalUsersPage = () => {
                           </div>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm">
+                              <Button variant="ghost" size="sm" className="self-start sm:self-center">
                                 <MoreHorizontal className="w-4 h-4" />
                               </Button>
                             </DropdownMenuTrigger>

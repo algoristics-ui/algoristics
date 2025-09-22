@@ -73,6 +73,42 @@ const OrganizationLoginPage = () => {
     navigate(orgPath);
   };
 
+  // Function to handle demo credential click
+  const handleDemoCredentialClick = (demoEmail: string, demoPassword: string, role: string) => {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+    setSelectedRole(role);
+    setError(""); // Clear any existing errors
+  };
+
+  // Get demo credentials for current organization
+  const getDemoCredentials = () => {
+    const credentials = {
+      stanford: {
+        learner: { email: 'emma@student.edu', password: 'algoristic123', role: 'learner' },
+        instructor: { email: 'prof.johnson@stanford.edu', password: 'algoristic123', role: 'instructor' },
+        org_admin: { email: 'sarah@university.edu', password: 'algoristic123', role: 'org_admin' }
+      },
+      techcorp: {
+        learner: { email: 'trainee@techcorp.com', password: 'algoristic123', role: 'learner' },
+        instructor: { email: 'mike@techcorp.com', password: 'algoristic123', role: 'instructor' },
+        org_admin: { email: 'alex@consultant.com', password: 'algoristic123', role: 'instructor' } // Multi-Org Instructor
+      },
+      citycollege: {
+        learner: { email: 'jane@citycollege.edu', password: 'algoristic123', role: 'learner' },
+        instructor: { email: 'teacher@citycollege.edu', password: 'algoristic123', role: 'instructor' },
+        org_admin: { email: 'alex@consultant.com', password: 'algoristic123', role: 'instructor' } // Multi-Org Instructor
+      },
+      algoristics: {
+        learner: { email: 'learner@algoristics.com', password: 'algoristic123', role: 'learner' },
+        instructor: { email: 'instructor@algoristics.com', password: 'algoristic123', role: 'instructor' },
+        org_admin: { email: 'admin@algoristics.com', password: 'algoristic123', role: 'org_admin' }
+      }
+    };
+
+    return credentials[orgData.acronym as keyof typeof credentials] || credentials.algoristics;
+  };
+
   const roleConfig = {
     learner: {
       title: "Student Login",
@@ -100,7 +136,7 @@ const OrganizationLoginPage = () => {
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header 
-        className="py-6 px-6 text-white"
+        className="py-4 sm:py-6 px-4 sm:px-6 text-white"
         style={{
           background: `linear-gradient(135deg, ${orgData.primaryColor}, ${orgData.secondaryColor})`
         }}
@@ -109,55 +145,56 @@ const OrganizationLoginPage = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center text-white mr-4"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-white mr-3 sm:mr-4"
                 style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
               >
                 {orgData.name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().slice(0, 3)}
               </div>
               <div>
-                <h1 className="text-2xl font-bold">{orgData.name}</h1>
-                <p className="text-white/80 text-sm">Learning Management Platform</p>
+                <h1 className="text-lg sm:text-2xl font-bold">{orgData.name}</h1>
+                <p className="text-white/80 text-xs sm:text-sm hidden sm:block">Learning Management Platform</p>
               </div>
             </div>
             
             <Button 
               variant="ghost" 
-              className="text-white hover:bg-white/20 hover:text-white font-medium bg-black/20 backdrop-blur-sm border border-white/30"
+              className="text-white hover:bg-white/20 hover:text-white font-medium bg-black/20 backdrop-blur-sm border border-white/30 text-xs sm:text-sm px-2 sm:px-4"
               onClick={goBack}
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              <ArrowLeft className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Back to Home</span>
+              <span className="sm:hidden">Back</span>
             </Button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-muted/30">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 py-6 sm:py-12 bg-muted/30">
+        <div className="w-full max-w-md mx-auto">
           <Card className="shadow-lg">
-            <CardHeader className="text-center">
+            <CardHeader className="text-center px-4 sm:px-6">
               <div className="flex justify-center mb-4">
                 <div 
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center"
+                  className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center"
                   style={{ backgroundColor: `${currentConfig.color}15` }}
                 >
-                  <currentConfig.icon className="h-8 w-8" style={{ color: currentConfig.color }} />
+                  <currentConfig.icon className="h-6 w-6 sm:h-8 sm:w-8" style={{ color: currentConfig.color }} />
                 </div>
               </div>
-              <CardTitle className="text-2xl">{currentConfig.title}</CardTitle>
-              <CardDescription className="text-base">
+              <CardTitle className="text-xl sm:text-2xl">{currentConfig.title}</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
                 {currentConfig.description}
               </CardDescription>
             </CardHeader>
             
-            <CardContent>
+            <CardContent className="px-4 sm:px-6">
               {/* Role Selection Tabs */}
               <Tabs value={selectedRole} onValueChange={setSelectedRole} className="mb-6">
                 <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="learner" className="text-xs">Student</TabsTrigger>
-                  <TabsTrigger value="instructor" className="text-xs">Instructor</TabsTrigger>
-                  <TabsTrigger value="org_admin" className="text-xs">Admin</TabsTrigger>
+                  <TabsTrigger value="learner" className="text-xs sm:text-sm">Student</TabsTrigger>
+                  <TabsTrigger value="instructor" className="text-xs sm:text-sm">Instructor</TabsTrigger>
+                  <TabsTrigger value="org_admin" className="text-xs sm:text-sm">Admin</TabsTrigger>
                 </TabsList>
               </Tabs>
 
@@ -219,39 +256,60 @@ const OrganizationLoginPage = () => {
               </form>
 
               {/* Demo Credentials */}
-              <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                <h4 className="font-medium text-sm mb-2">Demo Credentials:</h4>
-                <div className="text-xs text-muted-foreground space-y-1">
-                  {orgData.acronym === 'stanford' && (
-                    <>
-                      <p><strong>Student:</strong> emma@student.edu / algoristic123</p>
-                      <p><strong>Instructor:</strong> prof.johnson@stanford.edu / algoristic123</p>
-                      <p><strong>Admin:</strong> sarah@university.edu / algoristic123</p>
-                    </>
-                  )}
-                  {orgData.acronym === 'techcorp' && (
-                    <>
-                      <p><strong>Student:</strong> trainee@techcorp.com / algoristic123</p>
-                      <p><strong>Instructor:</strong> mike@techcorp.com / algoristic123</p>
-                      <p><strong>Multi-Org Instructor:</strong> alex@consultant.com / algoristic123</p>
-                    </>
-                  )}
-                  {orgData.acronym === 'citycollege' && (
-                    <>
-                      <p><strong>Student:</strong> jane@citycollege.edu / algoristic123</p>
-                      <p><strong>Instructor:</strong> teacher@citycollege.edu / algoristic123</p>
-                      <p><strong>Multi-Org Instructor:</strong> alex@consultant.com / algoristic123</p>
-                    </>
-                  )}
-                  {orgData.acronym === 'algoristics' && (
-                    <>
-                      <p><strong>Student:</strong> learner@algoristics.com / algoristic123</p>
-                      <p><strong>Instructor:</strong> instructor@algoristics.com / algoristic123</p>
-                      <p><strong>Admin:</strong> admin@algoristics.com / algoristic123</p>
-                    </>
-                  )}
-                  <p className="text-muted-foreground/80 mt-2">All accounts use password: <code>algoristic123</code></p>
+              <div className="mt-6 p-3 sm:p-4 bg-muted/50 rounded-lg">
+                <h4 className="font-medium text-xs sm:text-sm mb-3">Demo Credentials (Click to Auto-Fill):</h4>
+                <div className="space-y-2">
+                  {(() => {
+                    const demoCredentials = getDemoCredentials();
+                    return (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleDemoCredentialClick(
+                            demoCredentials.learner.email,
+                            demoCredentials.learner.password,
+                            demoCredentials.learner.role
+                          )}
+                          className="w-full p-2 text-left text-xs bg-white/50 hover:bg-white/70 border border-border/50 rounded-md transition-colors duration-200 hover:border-primary/50"
+                        >
+                          <span className="font-medium text-primary">Student:</span>
+                          <span className="ml-1 sm:ml-2 text-muted-foreground break-all">{demoCredentials.learner.email}</span>
+                        </button>
+                        
+                        <button
+                          type="button"
+                          onClick={() => handleDemoCredentialClick(
+                            demoCredentials.instructor.email,
+                            demoCredentials.instructor.password,
+                            demoCredentials.instructor.role
+                          )}
+                          className="w-full p-2 text-left text-xs bg-white/50 hover:bg-white/70 border border-border/50 rounded-md transition-colors duration-200 hover:border-primary/50"
+                        >
+                          <span className="font-medium text-primary">Instructor:</span>
+                          <span className="ml-1 sm:ml-2 text-muted-foreground break-all">{demoCredentials.instructor.email}</span>
+                        </button>
+                        
+                        <button
+                          type="button"
+                          onClick={() => handleDemoCredentialClick(
+                            demoCredentials.org_admin.email,
+                            demoCredentials.org_admin.password,
+                            demoCredentials.org_admin.role
+                          )}
+                          className="w-full p-2 text-left text-xs bg-white/50 hover:bg-white/70 border border-border/50 rounded-md transition-colors duration-200 hover:border-primary/50"
+                        >
+                          <span className="font-medium text-primary">
+                            {orgData.acronym === 'techcorp' || orgData.acronym === 'citycollege' ? 'Multi-Org Instructor:' : 'Admin:'}
+                          </span>
+                          <span className="ml-1 sm:ml-2 text-muted-foreground break-all">{demoCredentials.org_admin.email}</span>
+                        </button>
+                      </>
+                    );
+                  })()}
                 </div>
+                <p className="text-muted-foreground/80 mt-3 text-xs">
+                  💡 Click any credential above to auto-fill the form. All accounts use password: <code className="bg-white/50 px-1 rounded">algoristic123</code>
+                </p>
               </div>
 
               {/* Links */}

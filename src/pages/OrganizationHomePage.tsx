@@ -58,7 +58,7 @@ const OrganizationHomePage = () => {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section 
-        className="relative py-24 px-6 text-center text-white overflow-hidden"
+        className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6 text-center text-white overflow-hidden"
         style={{
           backgroundImage: orgData.headerImage 
             ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(${orgData.headerImage})`
@@ -76,12 +76,12 @@ const OrganizationHomePage = () => {
             >
               {orgData.name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().slice(0, 3)}
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold">
               {orgData.name}
             </h1>
           </div>
           
-          <p className="text-xl md:text-2xl mb-8 text-white/90">
+          <p className="text-sm sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-white/90">
             Transform your learning journey with our comprehensive educational platform
           </p>
           
@@ -91,7 +91,7 @@ const OrganizationHomePage = () => {
               className="bg-white text-gray-900 hover:bg-white/90 px-8 py-3 text-lg font-medium shadow-lg"
               onClick={() => handleRoleLogin('learner')}
             >
-              <Users className="mr-2 h-5 w-5" />
+              <Users className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
               Student Login
             </Button>
             <Button 
@@ -100,7 +100,7 @@ const OrganizationHomePage = () => {
               className="border-white/80 bg-white/10 backdrop-blur-sm text-white hover:bg-white hover:text-gray-900 px-8 py-3 text-lg font-medium shadow-lg"
               onClick={() => handleRoleLogin('instructor')}
             >
-              <GraduationCap className="mr-2 h-5 w-5" />
+              <GraduationCap className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
               Instructor Login
             </Button>
           </div>
@@ -112,14 +112,14 @@ const OrganizationHomePage = () => {
               onClick={() => handleRoleLogin('org_admin')}
             >
               Organization Admin Access
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-6 bg-muted/30">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -129,13 +129,13 @@ const OrganizationHomePage = () => {
                     className="w-12 h-12 rounded-lg flex items-center justify-center"
                     style={{ backgroundColor: `${orgData.primaryColor}15` }}
                   >
-                    <stat.icon className="h-6 w-6" style={{ color: orgData.primaryColor }} />
+                    <stat.icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" style={{ color: orgData.primaryColor }} />
                   </div>
                 </div>
-                <div className="text-3xl font-bold" style={{ color: orgData.primaryColor }}>
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: orgData.primaryColor }}>
                   {stat.value}
                 </div>
-                <div className="text-muted-foreground text-sm">
+                <div className="text-muted-foreground text-xs sm:text-sm">
                   {stat.label}
                 </div>
               </div>
@@ -145,13 +145,13 @@ const OrganizationHomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-6">
+      <section className="py-16 sm:py-20 px-4 sm:px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
               Why Choose Our Platform?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
               Discover the features that make our learning management system the preferred choice for students and educators.
             </p>
           </div>
@@ -165,13 +165,13 @@ const OrganizationHomePage = () => {
                       className="w-12 h-12 rounded-lg flex items-center justify-center"
                       style={{ backgroundColor: `${orgData.primaryColor}15` }}
                     >
-                      <feature.icon className="h-6 w-6" style={{ color: orgData.primaryColor }} />
+                      <feature.icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" style={{ color: orgData.primaryColor }} />
                     </div>
                   </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                  <CardTitle className="text-sm sm:text-base md:text-lg">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <p className="text-xs sm:text-sm md:text-base text-muted-foreground">{feature.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -181,16 +181,16 @@ const OrganizationHomePage = () => {
 
       {/* CTA Section */}
       <section 
-        className="py-20 px-6 text-center text-white"
+        className="py-16 sm:py-20 px-4 sm:px-6 text-center text-white"
         style={{
           background: `linear-gradient(135deg, ${orgData.primaryColor}, ${orgData.secondaryColor})`
         }}
       >
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
             Ready to Start Learning?
           </h2>
-          <p className="text-xl mb-8 text-white/90">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 text-white/90">
             Join thousands of students and professionals advancing their careers through our platform.
           </p>
           
@@ -201,7 +201,7 @@ const OrganizationHomePage = () => {
               onClick={() => handleRoleLogin('learner')}
             >
               Get Started as Student
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
             <Button 
               size="lg" 
@@ -210,14 +210,14 @@ const OrganizationHomePage = () => {
               onClick={() => handleRoleLogin('instructor')}
             >
               Join as Instructor
-              <GraduationCap className="ml-2 h-5 w-5" />
+              <GraduationCap className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t">
+      <footer className="py-8 sm:py-12 px-4 sm:px-6 border-t">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
@@ -228,12 +228,12 @@ const OrganizationHomePage = () => {
                 {orgData.name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().slice(0, 3)}
               </div>
               <div>
-                <h3 className="font-semibold">{orgData.name}</h3>
-                <p className="text-sm text-muted-foreground">Learning Management Platform</p>
+                <h3 className="text-sm sm:text-base font-semibold">{orgData.name}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">Learning Management Platform</p>
               </div>
             </div>
             
-            <div className="flex space-x-6 text-sm text-muted-foreground">
+            <div className="flex space-x-4 sm:space-x-6 text-xs sm:text-sm text-muted-foreground">
               <a href="#" className="hover:text-foreground">Privacy Policy</a>
               <a href="#" className="hover:text-foreground">Terms of Service</a>
               <a href="#" className="hover:text-foreground">Contact Support</a>

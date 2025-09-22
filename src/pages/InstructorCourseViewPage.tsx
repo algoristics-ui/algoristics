@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { OrganizationHeader } from "@/components/OrganizationHeader";
+import InstructorMobileBottomNav from "@/components/responsive/InstructorMobileBottomNav";
 import { 
   BookOpen, 
   Users, 
@@ -73,38 +75,41 @@ const InstructorCourseViewPage = () => {
   const basePath = location.pathname.replace(`/${courseId}`, '');
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-7xl">
+    <div className="w-full overflow-x-hidden">
+      <OrganizationHeader orgData={orgData} />
+      <div className="container mx-auto px-4 sm:px-6 pb-20 md:pb-6 max-w-7xl" style={{ paddingTop: '80px' }}>
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <div>
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+          <div className="min-w-0">
             <Button 
               variant="ghost" 
               onClick={() => navigate(basePath)}
-              className="mb-4"
+              className="mb-4 text-sm"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
               Back to Courses
             </Button>
-            <h1 className="text-2xl lg:text-3xl font-bold mb-2">{course.title}</h1>
-            <p className="text-muted-foreground">{course.description}</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">{course.title}</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">{course.description}</p>
           </div>
           
           {course.isOwner && (
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
               <Button 
                 variant="outline"
                 onClick={() => navigate(`${location.pathname}/edit`)}
+                className="text-xs sm:text-sm"
               >
-                <Edit className="w-4 h-4 mr-2" />
+                <Edit className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                 Edit Course
               </Button>
               <Button 
                 style={{ backgroundColor: orgData.primaryColor }} 
-                className="text-white"
+                className="text-white text-xs sm:text-sm"
                 onClick={() => navigate(`${location.pathname}/settings`)}
               >
-                <Settings className="w-4 h-4 mr-2" />
+                <Settings className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                 Settings
               </Button>
             </div>
@@ -113,50 +118,50 @@ const InstructorCourseViewPage = () => {
       </div>
 
       {/* Course Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <Users className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
               <div>
-                <p className="text-2xl font-bold">{course.students}</p>
-                <p className="text-sm text-muted-foreground">Enrolled Students</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold">{course.students}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Enrolled Students</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center space-x-2">
-              <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
               <div>
-                <p className="text-2xl font-bold">{course.completionRate}%</p>
-                <p className="text-sm text-muted-foreground">Completion Rate</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold">{course.completionRate}%</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Completion Rate</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center space-x-2">
-              <Star className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <Star className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
               <div>
-                <p className="text-2xl font-bold">{course.rating}</p>
-                <p className="text-sm text-muted-foreground">Average Rating</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold">{course.rating}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Average Rating</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center space-x-2">
-              <Clock className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+              <Clock className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
               <div>
-                <p className="text-2xl font-bold">{course.progress}%</p>
-                <p className="text-sm text-muted-foreground">Course Progress</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold">{course.progress}%</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Course Progress</p>
               </div>
             </div>
           </CardContent>
@@ -164,38 +169,38 @@ const InstructorCourseViewPage = () => {
       </div>
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="students">Students</TabsTrigger>
-          <TabsTrigger value="modules">Modules</TabsTrigger>
-          <TabsTrigger value="activity">Activity</TabsTrigger>
+      <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+          <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+          <TabsTrigger value="students" className="text-xs sm:text-sm">Students</TabsTrigger>
+          <TabsTrigger value="modules" className="text-xs sm:text-sm">Modules</TabsTrigger>
+          <TabsTrigger value="activity" className="text-xs sm:text-sm">Activity</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
+        <TabsContent value="overview" className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
               <Card>
-                <CardHeader>
-                  <CardTitle>Course Information</CardTitle>
+                <CardHeader className="px-4 sm:px-6">
+                  <CardTitle className="text-base sm:text-lg">Course Information</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                <CardContent className="space-y-4 px-4 sm:px-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm text-muted-foreground">Duration</p>
-                      <p className="font-semibold">{course.duration}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Duration</p>
+                      <p className="font-semibold text-sm sm:text-base">{course.duration}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Level</p>
-                      <Badge>{course.level}</Badge>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Level</p>
+                      <Badge className="text-xs">{course.level}</Badge>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Category</p>
-                      <p className="font-semibold">{course.category}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Category</p>
+                      <p className="font-semibold text-sm sm:text-base">{course.category}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Status</p>
-                      <Badge variant="default" style={{ backgroundColor: orgData.primaryColor }}>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Status</p>
+                      <Badge variant="default" className="text-xs" style={{ backgroundColor: orgData.primaryColor }}>
                         {course.status}
                       </Badge>
                     </div>
@@ -370,6 +375,10 @@ const InstructorCourseViewPage = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      </div>
+      
+      {/* Mobile Bottom Navigation */}
+      <InstructorMobileBottomNav currentPage="courses" />
     </div>
   );
 };

@@ -19,6 +19,8 @@ import {
   AlertCircle,
   Megaphone
 } from "lucide-react";
+import { OrganizationHeader } from "@/components/OrganizationHeader";
+import InstructorMobileBottomNav from "@/components/responsive/InstructorMobileBottomNav";
 
 const OrganizationDashboardPage = () => {
   const { orgId } = useParams();
@@ -187,40 +189,42 @@ const OrganizationDashboardPage = () => {
   const headerContent = getHeaderContent();
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">{headerContent.title}</h1>
-        <p className="text-muted-foreground">{headerContent.subtitle}</p>
-      </div>
+    <div className="w-full min-h-screen">
+      <OrganizationHeader orgData={orgData} />
+      <div className={`w-full px-2 sm:px-3 md:px-4 ${user?.role === 'instructor' ? 'pb-16 sm:pb-20 md:pb-6' : 'pb-6'}`} style={{ paddingTop: '80px' }}>
+        <div className="mb-3 sm:mb-4 pt-2">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground break-words">{headerContent.title}</h1>
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground break-words leading-relaxed">{headerContent.subtitle}</p>
+        </div>
 
             {/* News Feed Carousel */}
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Megaphone className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                  <span>Latest Updates & Announcements</span>
+            <Card className={`mb-2 sm:mb-3 ${user?.role === 'instructor' ? 'hidden sm:block' : ''}`}>
+              <CardHeader className="px-2 sm:px-3 md:px-4 pb-1 sm:pb-2">
+                <CardTitle className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base md:text-lg">
+                  <Megaphone className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" style={{ color: orgData.primaryColor }} />
+                  <span className="text-xs sm:text-sm md:text-base break-words">Latest Updates & Announcements</span>
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-xs sm:text-sm break-words leading-relaxed">
                   Important news, course deadlines, and announcements
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-2 sm:px-3 md:px-4 pt-0">
                 <Carousel className="w-full">
-                  <CarouselContent>
+                  <CarouselContent className="-ml-1">
                     {newsFeedItems.map((item) => (
-                      <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
-                        <div className="p-1">
+                      <CarouselItem key={item.id} className="pl-1 basis-full sm:basis-1/2 lg:basis-1/3">
+                        <div className="p-0.5 sm:p-1">
                           <Card className="h-full">
-                            <CardHeader className="pb-3">
-                              <div className="flex items-start justify-between">
-                                <div className="flex items-center space-x-2">
+                            <CardHeader className="pb-1 sm:pb-2 px-2 sm:px-3 pt-2 sm:pt-3">
+                              <div className="flex items-start justify-between mb-1 sm:mb-2">
+                                <div className="flex items-center space-x-1">
                                   <item.icon 
-                                    className="h-4 w-4" 
+                                    className="h-2.5 w-2.5 sm:h-3 sm:w-3" 
                                     style={{ color: getPriorityColor(item.priority) }}
                                   />
                                   <Badge 
                                     variant="secondary" 
-                                    className="text-xs"
+                                    className="text-xs px-1"
                                     style={{ 
                                       backgroundColor: `${getPriorityColor(item.priority)}20`,
                                       color: getPriorityColor(item.priority)
@@ -233,12 +237,12 @@ const OrganizationDashboardPage = () => {
                                   {new Date(item.date).toLocaleDateString()}
                                 </span>
                               </div>
-                              <CardTitle className="text-sm font-semibold leading-tight">
+                              <CardTitle className="text-xs font-semibold leading-tight break-words">
                                 {item.title}
                               </CardTitle>
                             </CardHeader>
-                            <CardContent className="pt-0">
-                              <p className="text-xs text-muted-foreground leading-relaxed">
+                            <CardContent className="pt-0 px-2 sm:px-3">
+                              <p className="text-xs text-muted-foreground leading-relaxed break-words">
                                 {item.content}
                               </p>
                             </CardContent>
@@ -247,73 +251,73 @@ const OrganizationDashboardPage = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
+                  <CarouselPrevious className="hidden sm:flex" />
+                  <CarouselNext className="hidden sm:flex" />
                 </Carousel>
               </CardContent>
             </Card>
 
             {/* Quick Actions */}
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <span>Quick Actions</span>
+            <Card className={`mb-2 sm:mb-3 ${user?.role === 'instructor' ? 'hidden sm:block' : ''}`}>
+              <CardHeader className="px-2 sm:px-3 md:px-4 pb-1 sm:pb-2">
+                <CardTitle className="flex items-center space-x-2 text-sm sm:text-base md:text-lg">
+                  <span className="break-words">Quick Actions</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+              <CardContent className="px-2 sm:px-3 md:px-4 pt-0">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2 md:gap-3">
                   <Button 
                     variant="outline" 
-                    className="h-16 md:h-20 flex flex-col items-center justify-center space-y-1 md:space-y-2"
+                    className="h-12 sm:h-14 md:h-16 flex flex-col items-center justify-center space-y-0.5 sm:space-y-1 text-center"
                     onClick={() => navigate(`/${orgData.acronym}/courses`)}
                   >
-                    <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                    <span className="text-xs md:text-sm">View Courses</span>
+                    <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" style={{ color: orgData.primaryColor }} />
+                    <span className="text-xs leading-tight break-words text-center">View Courses</span>
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="h-16 md:h-20 flex flex-col items-center justify-center space-y-1 md:space-y-2"
+                    className="h-12 sm:h-14 md:h-16 flex flex-col items-center justify-center space-y-0.5 sm:space-y-1 text-center"
                     onClick={() => navigate(`/${orgData.acronym}/students`)}
                   >
-                    <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                    <span className="text-xs md:text-sm">Manage Students</span>
+                    <Users className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" style={{ color: orgData.primaryColor }} />
+                    <span className="text-xs leading-tight break-words text-center">Manage Students</span>
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="h-16 md:h-20 flex flex-col items-center justify-center space-y-1 md:space-y-2"
+                    className="h-12 sm:h-14 md:h-16 flex flex-col items-center justify-center space-y-0.5 sm:space-y-1 text-center"
                     onClick={() => navigate(`/${orgData.acronym}/assessments`)}
                   >
-                    <ClipboardList className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                    <span className="text-xs md:text-sm">Assessments</span>
+                    <ClipboardList className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" style={{ color: orgData.primaryColor }} />
+                    <span className="text-xs leading-tight break-words text-center">Assessments</span>
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="h-16 md:h-20 flex flex-col items-center justify-center space-y-1 md:space-y-2"
+                    className="h-12 sm:h-14 md:h-16 flex flex-col items-center justify-center space-y-0.5 sm:space-y-1 text-center"
                     onClick={() => navigate(`/${orgData.acronym}/analytics`)}
                   >
-                    <BarChart3 className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                    <span className="text-xs md:text-sm">View Analytics</span>
+                    <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" style={{ color: orgData.primaryColor }} />
+                    <span className="text-xs leading-tight break-words text-center">View Analytics</span>
                   </Button>
                 </div>
               </CardContent>
             </Card>
 
             {/* Dashboard Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2 md:gap-3 mb-2 sm:mb-3">
               {dashboardStats.map((stat, index) => (
                 <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm font-medium text-muted-foreground">
+                  <CardHeader className="pb-1 sm:pb-2 px-2 sm:px-3 pt-2 sm:pt-3">
+                    <div className="flex items-center justify-between mb-1 sm:mb-2">
+                      <CardTitle className="text-xs font-medium text-muted-foreground break-words flex-1 pr-2">
                         {stat.title}
                       </CardTitle>
-                      <stat.icon className="h-5 w-5" style={{ color: stat.color }} />
+                      <stat.icon className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" style={{ color: stat.color }} />
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="text-3xl font-bold" style={{ color: stat.color }}>
+                    <div className="flex items-center space-x-1 sm:space-x-2 flex-wrap">
+                      <div className="text-lg sm:text-xl md:text-2xl font-bold break-all" style={{ color: stat.color }}>
                         {stat.value}
                       </div>
-                      <Badge variant="secondary" className="text-green-700 bg-green-50">
+                      <Badge variant="secondary" className="text-green-700 bg-green-50 text-xs flex-shrink-0">
                         {stat.change}
                       </Badge>
                     </div>
@@ -324,27 +328,31 @@ const OrganizationDashboardPage = () => {
 
             {/* Recent Activities */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Clock className="h-5 w-5" style={{ color: orgData.primaryColor }} />
-                  <span>Recent Activities</span>
+              <CardHeader className="px-2 sm:px-3 md:px-4 pb-1 sm:pb-2">
+                <CardTitle className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base md:text-lg">
+                  <Clock className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" style={{ color: orgData.primaryColor }} />
+                  <span className="break-words">Recent Activities</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-1.5 sm:space-y-2 px-2 sm:px-3 md:px-4 pt-0">
                 {recentActivities.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50">
+                  <div key={index} className="flex items-start space-x-2 p-1.5 sm:p-2 rounded-lg hover:bg-muted/50 transition-colors">
                     <div 
-                      className="w-2 h-2 rounded-full mt-2"
+                      className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mt-1.5 sm:mt-2 flex-shrink-0"
                       style={{ backgroundColor: orgData.primaryColor }}
                     />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{activity.action}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium leading-relaxed break-words">{activity.action}</p>
+                      <p className="text-xs text-muted-foreground break-words">{activity.time}</p>
                     </div>
                   </div>
                 ))}
               </CardContent>
             </Card>
+      </div>
+      
+      {/* Mobile Bottom Navigation - only show for instructors */}
+      {user?.role === 'instructor' && <InstructorMobileBottomNav currentPage="dashboard" />}
     </div>
   );
 };

@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { OrganizationHeader } from "@/components/OrganizationHeader";
+import InstructorMobileBottomNav from "@/components/responsive/InstructorMobileBottomNav";
 import { 
   ArrowLeft,
   Download,
@@ -142,7 +144,9 @@ const InstructorCourseAnalyticsPage = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-7xl">
+    <div className="w-full overflow-x-hidden">
+      <OrganizationHeader orgData={orgData} />
+      <div className="container mx-auto px-4 sm:px-6 pb-20 md:pb-6 max-w-7xl" style={{ paddingTop: '80px' }}>
       {/* Header */}
       <div className="mb-8">
         <Button 
@@ -215,7 +219,7 @@ const InstructorCourseAnalyticsPage = () => {
       </div>
 
       <Tabs value={viewType} onValueChange={setViewType} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="engagement">Engagement</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
@@ -570,6 +574,10 @@ const InstructorCourseAnalyticsPage = () => {
           </div>
         </TabsContent>
       </Tabs>
+      </div>
+      
+      {/* Mobile Bottom Navigation */}
+      <InstructorMobileBottomNav currentPage="analytics" />
     </div>
   );
 };

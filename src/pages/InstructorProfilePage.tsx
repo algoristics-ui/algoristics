@@ -11,6 +11,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { OrganizationHeader } from "@/components/OrganizationHeader";
+import InstructorMobileBottomNav from "@/components/responsive/InstructorMobileBottomNav";
 import { 
   User, 
   Save,
@@ -75,11 +77,13 @@ const InstructorProfilePage = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-6xl">
+    <div className="w-full overflow-x-hidden">
+      <OrganizationHeader orgData={orgData} />
+      <div className="container mx-auto px-4 sm:px-6 pb-20 md:pb-6 max-w-6xl" style={{ paddingTop: '80px' }}>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold mb-2">Profile Settings</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">Profile Settings</h1>
+        <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
           Manage your instructor profile and preferences
         </p>
       </div>
@@ -89,7 +93,7 @@ const InstructorProfilePage = () => {
         <CardContent className="p-6">
           <div className="flex items-start space-x-6">
             <div className="relative">
-              <Avatar className="w-24 h-24">
+              <Avatar className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24">
                 <AvatarImage src="/placeholder.svg" />
                 <AvatarFallback 
                   className="text-2xl font-bold text-white"
@@ -108,20 +112,20 @@ const InstructorProfilePage = () => {
             </div>
             
             <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-1">{profileData.name}</h2>
-              <p className="text-lg text-muted-foreground mb-2">{profileData.title}</p>
-              <p className="text-muted-foreground mb-4">{profileData.department} • {user?.organization}</p>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-1">{profileData.name}</h2>
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-2">{profileData.title}</p>
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-4">{profileData.department} • {user?.organization}</p>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
                 {instructorStats.map((stat, index) => (
-                  <div key={index} className="text-center p-3 bg-muted/30 rounded-lg">
+                  <div key={index} className="text-center px-2 py-3 sm:px-3 sm:py-4 bg-muted/30 rounded-lg">
                     <div className="flex items-center justify-center mb-2">
-                      <stat.icon className="w-5 h-5" style={{ color: stat.color }} />
+                      <stat.icon className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: stat.color }} />
                     </div>
-                    <div className="text-xl font-bold" style={{ color: stat.color }}>
+                    <div className="text-lg sm:text-xl font-bold" style={{ color: stat.color }}>
                       {stat.value}
                     </div>
-                    <div className="text-xs text-muted-foreground">{stat.label}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -131,7 +135,7 @@ const InstructorProfilePage = () => {
       </Card>
 
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="contact">Contact</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
@@ -143,13 +147,13 @@ const InstructorProfilePage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <User className="w-5 h-5" />
+                <User className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>Basic Information</span>
               </CardTitle>
               <CardDescription>Update your basic profile information</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
                   <Input
@@ -200,13 +204,13 @@ const InstructorProfilePage = () => {
               
               <div className="space-y-2">
                 <Label>Areas of Expertise</Label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1 sm:gap-2">
                   {profileData.expertise.map((skill, index) => (
                     <Badge key={index} variant="outline">
                       {skill}
                     </Badge>
                   ))}
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="text-xs sm:text-sm">
                     + Add Skill
                   </Button>
                 </div>
@@ -220,13 +224,13 @@ const InstructorProfilePage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Globe className="w-5 h-5" />
+                <Globe className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>Contact Information</span>
               </CardTitle>
               <CardDescription>Manage how students and colleagues can reach you</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -275,7 +279,7 @@ const InstructorProfilePage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Bell className="w-5 h-5" />
+                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>Notification Preferences</span>
               </CardTitle>
               <CardDescription>Choose how you want to be notified about course activities</CardDescription>
@@ -346,7 +350,7 @@ const InstructorProfilePage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Lock className="w-5 h-5" />
+                <Lock className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>Privacy Settings</span>
               </CardTitle>
               <CardDescription>Control what information is visible to students and other instructors</CardDescription>
@@ -409,10 +413,14 @@ const InstructorProfilePage = () => {
           style={{ backgroundColor: orgData.primaryColor }}
           className="text-white"
         >
-          <Save className="w-4 h-4 mr-2" />
+          <Save className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
           Save Changes
         </Button>
       </div>
+      </div>
+      
+      {/* Mobile Bottom Navigation */}
+      <InstructorMobileBottomNav currentPage="profile" />
     </div>
   );
 };

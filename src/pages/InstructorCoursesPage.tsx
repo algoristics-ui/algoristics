@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getOrganizationDataFromPath } from "@/utils/organizationData";
+import { OrganizationHeader } from "@/components/OrganizationHeader";
+import InstructorMobileBottomNav from "@/components/responsive/InstructorMobileBottomNav";
 import { 
   BookOpen, 
   Users, 
@@ -278,96 +280,98 @@ const InstructorCoursesPage = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 pb-6 max-w-7xl">
+    <div className="w-full overflow-x-hidden">
+      <OrganizationHeader orgData={orgData} />
+      <div className="container mx-auto px-4 sm:px-6 pb-20 md:pb-6 max-w-7xl" style={{ paddingTop: '80px' }}>
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl lg:text-3xl font-bold mb-2">My Courses</h1>
-            <p className="text-muted-foreground">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">My Courses</h1>
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
               Manage your courses and view other instructor's courses
             </p>
           </div>
           <Button 
             style={{ backgroundColor: orgData.primaryColor }} 
-            className="text-white"
+            className="text-white w-full sm:w-auto text-sm"
             onClick={() => navigate(`${location.pathname}/new`)}
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
             Create Course
           </Button>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center space-x-2">
               <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center"
                 style={{ backgroundColor: `${orgData.primaryColor}15` }}
               >
-                <BookOpen className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+                <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
               </div>
               <div>
-                <p className="text-2xl font-bold">{instructorCourses.length}</p>
-                <p className="text-sm text-muted-foreground">My Courses</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold">{instructorCourses.length}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">My Courses</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center space-x-2">
               <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center"
                 style={{ backgroundColor: `${orgData.primaryColor}15` }}
               >
-                <Users className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+                <Users className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
               </div>
               <div>
-                <p className="text-2xl font-bold">{instructorCourses.reduce((acc, course) => acc + course.students, 0)}</p>
-                <p className="text-sm text-muted-foreground">Total Students</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold">{instructorCourses.reduce((acc, course) => acc + course.students, 0)}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Total Students</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center space-x-2">
               <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center"
                 style={{ backgroundColor: `${orgData.primaryColor}15` }}
               >
-                <TrendingUp className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
               </div>
               <div>
-                <p className="text-2xl font-bold">
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold">
                   {Math.round(instructorCourses.reduce((acc, course) => acc + course.completionRate, 0) / instructorCourses.length)}%
                 </p>
-                <p className="text-sm text-muted-foreground">Avg Completion</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Avg Completion</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center space-x-2">
               <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center"
                 style={{ backgroundColor: `${orgData.primaryColor}15` }}
               >
-                <Star className="h-5 w-5" style={{ color: orgData.primaryColor }} />
+                <Star className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: orgData.primaryColor }} />
               </div>
               <div>
-                <p className="text-2xl font-bold">
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold">
                   {(instructorCourses.reduce((acc, course) => acc + course.rating, 0) / instructorCourses.length).toFixed(1)}
                 </p>
-                <p className="text-sm text-muted-foreground">Avg Rating</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Avg Rating</p>
               </div>
             </div>
           </CardContent>
@@ -375,18 +379,18 @@ const InstructorCoursesPage = () => {
       </div>
 
       {/* Search and Filter */}
-      <div className="flex items-center space-x-4 mb-6">
-        <div className="relative flex-1 max-w-sm">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-6">
+        <div className="relative flex-1 sm:max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             placeholder="Search courses..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
+            className="pl-9 text-sm"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-40">
+          <SelectTrigger className="w-full sm:w-40">
             <Filter className="h-4 w-4 mr-2" />
             <SelectValue />
           </SelectTrigger>
@@ -422,6 +426,10 @@ const InstructorCoursesPage = () => {
           </div>
         </TabsContent>
       </Tabs>
+      </div>
+      
+      {/* Mobile Bottom Navigation */}
+      <InstructorMobileBottomNav currentPage="courses" />
     </div>
   );
 };
